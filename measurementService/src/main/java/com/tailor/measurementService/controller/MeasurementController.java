@@ -20,7 +20,7 @@ public class MeasurementController {
     }
 
     @GetMapping("/measurementById/{id}")
-    public ResponseDto getMeasurementById(@PathVariable Long id){
+    public Measurement getMeasurementById(@PathVariable Long id){
         return  measurementService.getMeasurementById(id);
     }
     @GetMapping("/measurementByUserId/{id}")
