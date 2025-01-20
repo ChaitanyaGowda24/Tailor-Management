@@ -23,25 +23,12 @@ public class MeasurementService {
         return measurementRepository.save(measurement);
     }
 
-    public ResponseDto getMeasurementById(Long id){
-        ResponseDto responseDto = new ResponseDto();
-        Measurement measurement = measurementRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Measurements not found"));
-        MeasurementDto measurementDto = mapToMeasurement(measurement);
-        // Fetch flights for the airline
-
-            CustomerDto customerDto = webClientBuilder.baseUrl("http://localhost:8082/api")
-                    .build()
-                    .get()
-                    .uri("/users/" + measurement.getUserId())
-                    .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<CustomerDto>() {})
-                    .block();
-
-        responseDto.setMeasurementDto(measurementDto);
-        responseDto.setCustomerDto(customerDto);
-
-        return responseDto;
+    public Measurement getMeasurementById(Long id){
+        Optional<Measurement> mesurement = measurementRepository.findById(id);
+        if(mesurement.isPresent()){
+            return  mesurement.get();
+        }
+        return  null;
     }
 
     private MeasurementDto mapToMeasurement(Measurement measurement) {
