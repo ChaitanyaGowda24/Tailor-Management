@@ -196,32 +196,27 @@ footer {
 .sidebar {
   position: fixed;
   top: 0;
-  left: -100%;
+  right: -100%;
   width: 300px;
-  height: auto;
-  min-height: 100%;
-  background: #2A2F3F; /* Matching navbar background */
+  height: 100%;
+  background: #FFF;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  transition: left 0.3s ease;
+  transition: right 0.3s ease;
   z-index: 1000;
-  padding: 20px;
-  color: #FFF; /* Text color */
 }
 
 .sidebar.open {
-  left: 0;
+  right: 0;
 }
 
 .sidebar-content {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  padding: 20px;
 }
 
 .sidebar h2 {
   margin-bottom: 20px;
   font-size: 1.5rem;
-  color: #FFD700; /* Matching logo color */
+  color: #2A2F3F;
 }
 
 .sidebar input,
@@ -229,25 +224,23 @@ footer {
 .sidebar button {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   border: 1px solid #E0E0E0;
   border-radius: 5px;
   font-size: 1rem;
-  background: #FFF; /* White background for inputs */
-  color: #1C1C1C; /* Dark text for inputs */
 }
 
 .sidebar button {
-  background: #3E4E8F; /* Matching navbar gradient */
+  background: #3E4E8F;
   color: #FFF;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease;
+  position: static;
 }
 
 .sidebar button:hover {
-  background: #FFD700; /* Gold hover effect */
-  color: #1C1C1C; /* Dark text on hover */
+  background: #2A2F3F;
 }
 
 .close-btn {
@@ -258,11 +251,7 @@ footer {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: #FFD700; /* Matching logo color */
-}
-
-.close-btn:hover {
-  color: #FFF; /* White on hover */
+  color: #2A2F3F;
 }
 
 /* Overlay for sidebar */
