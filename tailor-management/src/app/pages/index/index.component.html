@@ -1,0 +1,58 @@
+<header class="navbar">
+  <div class="logo">
+    <img src="assets/logo.png" alt="TailorPro Logo">
+    <span>TailorPro</span>
+  </div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#features">Features</a>
+    <a href="#testimonials">Testimonials</a>
+    <a (click)="navigateTo('login')">Login</a>
+  </nav>
+</header>
+
+<section id="hero" class="hero-section">
+  <div class="carousel">
+    <div class="carousel-slide">
+      <img src="assets/hero-image.png" alt="Tailor Hero Image 1">
+      <img src="assets/hero-image.png" alt="Tailor Hero Image 2">
+      <img src="assets/hero-image.png" alt="Tailor Hero Image 3">
+    </div>
+  </div>
+  <div class="hero-content">
+    <h1>Your Tailoring Business, Simplified</h1>
+    <p>Manage orders, customers, and appointments seamlessly.</p>
+    <button (click)="navigateTo('register')">Register Now!</button>
+  </div>
+</section>
+
+<section id="features" class="features-section">
+  <h2>Features</h2>
+  <div class="feature">
+    <i class="fas fa-cut"></i>
+    <h3>Order Management</h3>
+    <p>Track and manage tailoring orders with ease.</p>
+  </div>
+  <div class="feature">
+    <i class="fas fa-user-friends"></i>
+    <h3>Customer Profiles</h3>
+    <p>Maintain detailed customer preferences.</p>
+  </div>
+  <div class="feature">
+    <i class="fas fa-calendar-alt"></i>
+    <h3>Appointment Scheduling</h3>
+    <p>Schedule fittings and delivery dates easily.</p>
+  </div>
+</section>
+
+<section id="testimonials" class="testimonials-section">
+  <h2>What Our Users Say</h2>
+  <div class="testimonial">
+    <p>"TailorPro transformed the way I manage my business!"</p>
+    <span>- Alex Tailor</span>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 TailorPro. All Rights Reserved.</p>
+</footer>
