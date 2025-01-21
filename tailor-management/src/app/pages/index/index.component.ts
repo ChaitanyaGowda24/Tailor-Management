@@ -16,6 +16,15 @@ constructor(private router: Router) {}
   navigateTo(route: string): void {
     this.router.navigate([`/${route}`]); // This will navigate to the desired route
 }
+activeSidebar: string | null = null;
+
+  openSidebar(sidebarType: string) {
+    this.activeSidebar = sidebarType;
+  }
+
+  closeSidebar() {
+    this.activeSidebar = null;
+  }
 }
 
 
