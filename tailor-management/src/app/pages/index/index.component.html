@@ -86,7 +86,12 @@
       <label><input type="checkbox" (change)="togglePriceInput('salwaarKameez')"> Salwaar Kameez</label>
       <input type="number" placeholder="Price for Salwaar Kameez" *ngIf="showSalwaarKameezPrice" class="price-input">
 
-      <input type="text" placeholder="Location" required>
+      <!-- Other form fields -->
+      <div id="tailorMap" style="height: 300px; width: 100%;"></div>
+      <button type="button" (click)="useMyLocation()">Use My Location</button> <!-- Add this button -->
+      <input type="hidden" name="latitude" [(ngModel)]="latitude">
+      <input type="hidden" name="longitude" [(ngModel)]="longitude">
+      <!-- Other form fields -->
       <button type="submit">Register</button>
       <button type="button" (click)="closeTailorRegistrationPopup()">Cancel</button>
     </form>
