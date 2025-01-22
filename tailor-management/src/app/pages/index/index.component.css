@@ -192,80 +192,110 @@ footer {
   background: #1C1C1C;
   color: #FFF;
 }
-/* Sidebar Styles */
-.sidebar {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 300px;
-  height: 100%;
-  background: #FFF;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  transition: right 0.3s ease;
-  z-index: 1000;
-}
-
-.sidebar.open {
-  right: 0;
-}
-
-.sidebar-content {
-  padding: 20px;
-}
-
-.sidebar h2 {
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  color: #2A2F3F;
-}
-
-.sidebar input,
-.sidebar select,
-.sidebar button {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #E0E0E0;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-.sidebar button {
-  background: #3E4E8F;
-  color: #FFF;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  position: static;
-}
-
-.sidebar button:hover {
-  background: #2A2F3F;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #2A2F3F;
-}
-
-/* Overlay for sidebar */
-.sidebar-overlay {
+/* Popup Overlay */
+.popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  display: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
-.sidebar-overlay.open {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Tailor Registration Popup Specific Styles */
+.popup {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-height: 90vh; /* Limit height to 90% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
+  box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+.popup h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.popup label {
   display: block;
+  margin: 10px 0 5px;
+  font-weight: 500;
+}
+
+.popup input,
+.popup select,
+.popup button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+.popup input:focus,
+.popup select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.popup button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
+}
+
+.popup button[type="button"] {
+  background-color: #6c757d;
+  margin-top: 10px;
+}
+
+.popup button[type="button"]:hover {
+  background-color: #5a6268;
+}
+
+/* Checkbox and Price Input Styles */
+.popup input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+.popup input[type="number"] {
+  margin-top: 5px;
+  width: calc(100% - 20px); /* Adjust width to fit container */
+}
+
+/* Ensure price inputs are displayed inline with checkboxes */
+.popup .price-input {
+  display: inline-block;
+  width: 70%;
+  margin-left: 10px;
 }

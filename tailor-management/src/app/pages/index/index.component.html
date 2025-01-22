@@ -7,14 +7,14 @@
     <a href="#home">Home</a>
     <a href="#features">Features</a>
     <a href="#testimonials">Testimonials</a>
-    <a (click)="openSidebar('login')">Login</a>
+    <a (click)="openLoginPopup()">Login</a>
   </nav>
 </header>
 
-<!-- Login Sidebar -->
-<div class="sidebar" [ngClass]="{'open': activeSidebar === 'login'}">
-  <div class="sidebar-content">
-    <button class="close-btn" (click)="closeSidebar()">&times;</button>
+<!-- Login Popup -->
+<div class="popup-overlay" *ngIf="isLoginPopupOpen">
+  <div class="popup">
+    <button class="close-btn" (click)="closeLoginPopup()">&times;</button>
     <h2>Login</h2>
     <form>
       <input type="email" placeholder="Email" required>
@@ -24,28 +24,74 @@
   </div>
 </div>
 
-<!-- Register Sidebar -->
-<div class="sidebar" [ngClass]="{'open': activeSidebar === 'register'}">
-  <div class="sidebar-content">
-    <button class="close-btn" (click)="closeSidebar()">&times;</button>
-    <h2>Register</h2>
+<!-- Register Role Selection Popup -->
+<div class="popup-overlay" *ngIf="isRoleSelectionPopupOpen">
+  <div class="popup">
+    <button class="close-btn" (click)="closeRoleSelectionPopup()">&times;</button>
+    <h2>Register As</h2>
+    <button (click)="openCustomerRegistrationPopup()">Customer</button>
+    <button (click)="openTailorRegistrationPopup()">Tailor</button>
+  </div>
+</div>
+
+<!-- Customer Registration Popup -->
+<div class="popup-overlay" *ngIf="isCustomerRegistrationPopupOpen">
+  <div class="popup">
+    <button class="close-btn" (click)="closeCustomerRegistrationPopup()">&times;</button>
+    <h2>Customer Registration</h2>
     <form>
       <input type="text" placeholder="Name" required>
       <input type="email" placeholder="Email" required>
       <input type="tel" placeholder="Phone Number" required>
       <input type="password" placeholder="Password" required>
-      <select required>
-        <option value="" disabled selected>Select Role</option>
-        <option value="tailor">Tailor</option>
-        <option value="customer">Customer</option>
-      </select>
       <button type="submit">Register</button>
+      <button type="button" (click)="closeCustomerRegistrationPopup()">Cancel</button>
     </form>
   </div>
 </div>
 
-<!-- Overlay -->
-<div class="sidebar-overlay" [ngClass]="{'open': activeSidebar !== null}" (click)="closeSidebar()"></div>
+<div class="popup-overlay" *ngIf="isTailorRegistrationPopupOpen">
+  <div class="popup">
+    <button class="close-btn" (click)="closeTailorRegistrationPopup()">&times;</button>
+    <h2>Tailor Registration</h2>
+    <form>
+      <input type="text" placeholder="Name" required>
+      <input type="text" placeholder="Shop Name" required>
+      <input type="tel" placeholder="Phone Number" required>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Password" required>
+
+      <h3>Dresses You Stitch</h3>
+      <label><input type="checkbox" (change)="togglePriceInput('shirts')"> Shirts</label>
+      <input type="number" placeholder="Price for Shirts" *ngIf="showShirtsPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('pants')"> Pants</label>
+      <input type="number" placeholder="Price for Pants" *ngIf="showPantsPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('kurta')"> Kurta</label>
+      <input type="number" placeholder="Price for Kurta" *ngIf="showKurtaPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('palazzaPants')"> Palazza Pants</label>
+      <input type="number" placeholder="Price for Palazza Pants" *ngIf="showPalazzaPantsPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('sherwani')"> Sherwani</label>
+      <input type="number" placeholder="Price for Sherwani" *ngIf="showSherwaniPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('suits')"> Suits</label>
+      <input type="number" placeholder="Price for Suits" *ngIf="showSuitsPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('blazers')"> Blazers</label>
+      <input type="number" placeholder="Price for Blazers" *ngIf="showBlazersPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('salwaarKameez')"> Salwaar Kameez</label>
+      <input type="number" placeholder="Price for Salwaar Kameez" *ngIf="showSalwaarKameezPrice" class="price-input">
+
+      <input type="text" placeholder="Location" required>
+      <button type="submit">Register</button>
+      <button type="button" (click)="closeTailorRegistrationPopup()">Cancel</button>
+    </form>
+  </div>
+</div>
 
 <section id="hero" class="hero-section">
   <div class="carousel">
@@ -58,7 +104,7 @@
   <div class="hero-content">
     <h1>Your Tailoring Business, Simplified</h1>
     <p>Manage orders, customers, and appointments seamlessly.</p>
-    <button (click)="openSidebar('register')">Register Now!</button>
+    <button (click)="openRoleSelectionPopup()">Register Now!</button>
   </div>
 </section>
 

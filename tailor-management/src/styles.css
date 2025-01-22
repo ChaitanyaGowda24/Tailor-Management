@@ -186,3 +186,4 @@ footer {
   background: #1C1C1C;
   color: #FFF;
 }
+@import '~leaflet/dist/leaflet.css';

@@ -14,6 +14,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/tailor-management",
+            "allowedCommonJsDependencies": ["leaflet"],
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -25,7 +26,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              {
+                "input": "node_modules/leaflet/dist/leaflet.css",
+                "inject": true,
+                "bundleName": "leaflet"
+              }
             ],
             "scripts": []
           },

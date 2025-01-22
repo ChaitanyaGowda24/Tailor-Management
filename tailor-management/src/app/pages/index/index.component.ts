@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import * as L from 'leaflet';
+
 
 
 @Component({
@@ -10,20 +12,82 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class IndexComponent {
+isLoginPopupOpen = false;
+isRoleSelectionPopupOpen = false;
+isCustomerRegistrationPopupOpen = false;
+isTailorRegistrationPopupOpen = false;
 
-constructor(private router: Router) {}
+// For dynamic price inputs
+showShirtsPrice = false;
+showPantsPrice = false;
+showKurtaPrice = false;
+showPalazzaPantsPrice = false;
+showSherwaniPrice = false;
+showSuitsPrice = false;
+showBlazersPrice = false;
+showSalwaarKameezPrice = false;
 
-  navigateTo(route: string): void {
-    this.router.navigate([`/${route}`]); // This will navigate to the desired route
-}
-activeSidebar: string | null = null;
-
-  openSidebar(sidebarType: string) {
-    this.activeSidebar = sidebarType;
+openLoginPopup() {
+    this.isLoginPopupOpen = true;
   }
 
-  closeSidebar() {
-    this.activeSidebar = null;
+  closeLoginPopup() {
+    this.isLoginPopupOpen = false;
+  }
+
+  openRoleSelectionPopup() {
+    this.isRoleSelectionPopupOpen = true;
+  }
+
+  closeRoleSelectionPopup() {
+    this.isRoleSelectionPopupOpen = false;
+  }
+
+  openCustomerRegistrationPopup() {
+    this.isCustomerRegistrationPopupOpen = true;
+    this.isRoleSelectionPopupOpen = false;
+  }
+
+  closeCustomerRegistrationPopup() {
+    this.isCustomerRegistrationPopupOpen = false;
+  }
+
+  openTailorRegistrationPopup() {
+    this.isTailorRegistrationPopupOpen = true;
+    this.isRoleSelectionPopupOpen = false;
+  }
+
+  closeTailorRegistrationPopup() {
+    this.isTailorRegistrationPopupOpen = false;
+  }
+
+  togglePriceInput(dressType: string) {
+    switch (dressType) {
+      case 'shirts':
+        this.showShirtsPrice = !this.showShirtsPrice;
+        break;
+      case 'pants':
+        this.showPantsPrice = !this.showPantsPrice;
+        break;
+      case 'kurta':
+        this.showKurtaPrice = !this.showKurtaPrice;
+        break;
+      case 'palazzaPants':
+        this.showPalazzaPantsPrice = !this.showPalazzaPantsPrice;
+        break;
+      case 'sherwani':
+        this.showSherwaniPrice = !this.showSherwaniPrice;
+        break;
+      case 'suits':
+        this.showSuitsPrice = !this.showSuitsPrice;
+        break;
+      case 'blazers':
+        this.showBlazersPrice = !this.showBlazersPrice;
+        break;
+      case 'salwaarKameez':
+        this.showSalwaarKameezPrice = !this.showSalwaarKameezPrice;
+        break;
+    }
   }
 }
 
