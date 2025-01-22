@@ -4,12 +4,10 @@ import com.tailor.measurementService.dto.ResponseDto;
 import com.tailor.measurementService.entity.Measurement;
 import com.tailor.measurementService.service.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/measurements")
 public class MeasurementController {
     @Autowired
     MeasurementService measurementService;
