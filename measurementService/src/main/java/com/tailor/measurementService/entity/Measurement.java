@@ -10,11 +10,16 @@ public class Measurement {
     @GeneratedValue
     Long measurement_id;
     Long userId;
+    Long tailorId;
     Gender gender;
     String category;
     String design;
     String measurements;
     Double  price;
+
+    public Long getTailorId() { return tailorId;}
+
+    public void setTailorId(Long tailorId) { this.tailorId = tailorId;}
 
     public Double getPrice() {
         return price;
@@ -75,9 +80,10 @@ public class Measurement {
     public Measurement() {
     }
 
-    public Measurement(Long measurement_id, Long userId, Gender gender, String category, String design, String measurements, Double price) {
+    public Measurement(Long measurement_id, Long userId, Long tailorId, Gender gender, String category, String design, String measurements, Double price) {
         this.measurement_id = measurement_id;
         this.userId = userId;
+        this.tailorId = tailorId;
         this.gender = gender;
         this.category = category;
         this.design = design;

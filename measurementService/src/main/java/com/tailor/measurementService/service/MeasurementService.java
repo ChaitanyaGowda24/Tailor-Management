@@ -10,6 +10,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Optional;
+
 @Service
 public class MeasurementService {
 
@@ -24,11 +26,13 @@ public class MeasurementService {
     }
 
     public Measurement getMeasurementById(Long id){
+
         Optional<Measurement> mesurement = measurementRepository.findById(id);
         if(mesurement.isPresent()){
             return  mesurement.get();
         }
         return  null;
+
     }
 
     private MeasurementDto mapToMeasurement(Measurement measurement) {

@@ -52,8 +52,6 @@ public class OrderService {
 
             OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
             orderDetailsDTO.setOrderId(order.getOrderId());
-//            orderDetailsDTO.setCustomerId(order.getCustomerId());
-//            orderDetailsDTO.setMeasureId(order.getMeasureId());
             orderDetailsDTO.setCustomerDetails(customerDetails);
             orderDetailsDTO.setMeasurementDetails(measurementDetails);
             orderDetailsDTO.setOrderDate(order.getOrderDate());
@@ -114,6 +112,11 @@ public class OrderService {
     // Delete order
     public void deleteOrder(long orderId) {
         orderRepository.deleteById(orderId);
+    }
+
+    //Get Order by shopId
+    public List<Order> getOrdersByShopId(Long shopId) {
+        return orderRepository.findByShopId(shopId);
     }
 
 }

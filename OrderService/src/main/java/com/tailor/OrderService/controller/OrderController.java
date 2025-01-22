@@ -51,6 +51,13 @@ public class OrderController {
         return orderService.getOrdersByStatus(status);
     }
 
+    // Endpoint to fetch orders by shop ID
+    @GetMapping("/shop/{shopId}")
+    public ResponseEntity<List<Order>> getOrdersByShopId(@PathVariable("shopId") Long shopId) {
+        List<Order> orders = orderService.getOrdersByShopId(shopId);
+        return ResponseEntity.ok(orders);
+    }
+
 
     // Edit order
     @PutMapping("/{id}")

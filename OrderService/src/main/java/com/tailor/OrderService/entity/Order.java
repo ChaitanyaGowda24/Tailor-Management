@@ -14,8 +14,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
     private Long customerId;
-    private Date orderDate;
     private Long measureId;
+    private Long tailorId;
+    private Long shopId;
+    private Date orderDate;
+    private Date deliveryDate;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -26,28 +29,43 @@ public class Order {
         COMPLETED
     }
 
-    private Date deliveryDate;
+    public Order(Long orderId, Long customerId, Long measureId, Long tailorId, Long shopId, Date orderDate, Date deliveryDate, Status status) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.measureId = measureId;
+        this.tailorId = tailorId;
+        this.shopId = shopId;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+    }
 
-    // Getters and Setters
+    public Order() {
+    }
+
+    public Long getTailorId() {
+        return tailorId;
+    }
+
+    public void setTailorId(Long tailorId) {
+        this.tailorId = tailorId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+// Getters and Setters
 
     public Long getMeasureId() {
         return measureId;
     }
 
-    public void setInvoiceId(Long measureId) {
+    public void setMeasureId(Long measureId) {
         this.measureId = measureId;
-    }
-
-    public Order(long orderId, long customerId, Date orderDate, Status status, Date deliveryDate, Long measureId) {
-        this.orderId = orderId;
-        this.customerId = customerId;
-        this.orderDate = orderDate;
-        this.status = status;
-        this.deliveryDate = deliveryDate;
-        this.measureId = measureId;
-    }
-
-    public Order() {
     }
 
     public long getOrderId() {

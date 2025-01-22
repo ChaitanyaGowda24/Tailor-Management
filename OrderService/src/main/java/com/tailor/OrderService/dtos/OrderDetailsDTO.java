@@ -9,14 +9,10 @@ import java.util.Date;
 public class OrderDetailsDTO {
 
     private Long orderId;
-    //private Long customerId;
     private Date orderDate;
-    //private Long measureId;
     private CustomerDetailsDTO customerDetails;
     private MeasurementDetailsDTO measurementDetails;
-
     private Order.Status status;
-
     private Date deliveryDate;
 
     public OrderDetailsDTO() {
@@ -40,9 +36,7 @@ public class OrderDetailsDTO {
 
     public OrderDetailsDTO(Long orderId,Date orderDate, CustomerDetailsDTO customerDetails, MeasurementDetailsDTO measurementDetails, Order.Status status, Date deliveryDate) {
         this.orderId = orderId;
-        //this.customerId = customerId;
         this.orderDate = orderDate;
-        //this.measureId = measureId;
         this.customerDetails = customerDetails;
         this.measurementDetails = measurementDetails;
         this.status = status;
@@ -57,13 +51,6 @@ public class OrderDetailsDTO {
         this.orderId = orderId;
     }
 
-//    public Long getCustomerId() {
-//        return customerId;
-//    }
-//
-//    public void setCustomerId(Long customerId) {
-//        this.customerId = customerId;
-//    }
 
     public Date getOrderDate() {
         return orderDate;
@@ -73,13 +60,6 @@ public class OrderDetailsDTO {
         this.orderDate = orderDate;
     }
 
-//    public Long getMeasureId() {
-//        return measureId;
-//    }
-//
-//    public void setMeasureId(Long measureId) {
-//        this.measureId = measureId;
-//    }
 
     public Order.Status getStatus() {
         return status;
