@@ -86,6 +86,20 @@
       <label><input type="checkbox" (change)="togglePriceInput('salwaarKameez')"> Salwaar Kameez</label>
       <input type="number" placeholder="Price for Salwaar Kameez" *ngIf="showSalwaarKameezPrice" class="price-input">
 
+
+      <label><input type="checkbox" (change)="togglePriceInput('skirts')"> Skirts</label>
+      <input type="number" placeholder="Price for Skirts" *ngIf="showSkirtsPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('lehengas')"> Lehengas</label>
+      <input type="number" placeholder="Price for Lehengas" *ngIf="showLehengasPrice" class="price-input">
+
+      <label><input type="checkbox" (change)="togglePriceInput('anarkaliSuits')"> Anarkali Suits</label>
+      <input type="number" placeholder="Price for Anarkali Suits" *ngIf="showAnarkaliSuitsPrice" class="price-input">
+
+
+      <label><input type="checkbox" (change)="togglePriceInput('tops')"> Tops</label>
+      <input type="number" placeholder="Price for Tops" *ngIf="showTopsPrice" class="price-input">
+
       <!-- Other form fields -->
       <div id="tailorMap" style="height: 300px; width: 100%;"></div>
       <button type="button" (click)="useMyLocation()">Use My Location</button> <!-- Add this button -->

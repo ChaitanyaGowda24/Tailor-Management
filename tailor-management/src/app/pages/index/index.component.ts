@@ -39,6 +39,10 @@ showSherwaniPrice = false;
 showSuitsPrice = false;
 showBlazersPrice = false;
 showSalwaarKameezPrice = false;
+showSkirtsPrice = false;
+showLehengasPrice = false;
+showAnarkaliSuitsPrice = false;
+showTopsPrice = false;
 
 openLoginPopup() {
     this.isLoginPopupOpen = true;
@@ -107,6 +111,18 @@ openLoginPopup() {
         break;
       case 'salwaarKameez':
         this.showSalwaarKameezPrice = !this.showSalwaarKameezPrice;
+        break;
+      case 'skirts':
+        this.showSkirtsPrice = !this.showSkirtsPrice;
+        break;
+      case 'lehengas':
+        this.showLehengasPrice = !this.showLehengasPrice;
+        break;
+      case 'anarkaliSuits':
+        this.showAnarkaliSuitsPrice = !this.showAnarkaliSuitsPrice;
+        break;
+      case 'tops':
+        this.showTopsPrice = !this.showTopsPrice;
         break;
     }
   }
