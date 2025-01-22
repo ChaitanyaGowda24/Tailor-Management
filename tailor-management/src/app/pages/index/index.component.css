@@ -1,0 +1,301 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #1C1C1C;
+  background: #F4F6F8;
+}
+
+/* Navigation Bar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: linear-gradient(90deg, #3E4E8F, #2A2F3F);
+  color: #FFF;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  color: #FFF;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 1.1rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar a:hover {
+  color: #FFD700;
+  transform: scale(1.1);
+}
+
+.logo img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.logo span {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #FFD700;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  background: linear-gradient(to right, #6B8DD6, #F4A261);
+  color: #FFF;
+  position: relative;
+}
+
+.carousel {
+  position: relative;
+  width: 50%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.carousel-slide {
+  display: flex;
+  animation: slideAnimation 12s infinite;
+}
+
+.carousel img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+@keyframes slideAnimation {
+  0%, 20% { transform: translateX(0); }
+  25%, 45% { transform: translateX(-100%); }
+  50%, 70% { transform: translateX(-200%); }
+  75%, 100% { transform: translateX(0); }
+}
+
+.hero-content {
+  flex: 1;
+  padding-left: 30px;
+}
+
+.hero-content h1 {
+  font-size: 3.2rem;
+  margin-bottom: 15px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.hero-content button {
+  background: #FFD700;
+  color: #333;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.hero-content button:hover {
+  transform: scale(1.05);
+  background: #333;
+  color: #FFD700;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #2A2F3F;
+  color: #FFF;
+}
+
+/* Features Section */
+.features-section {
+  padding: 50px 30px;
+  text-align: center;
+  background: #E0E0E0;
+}
+
+.features-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.feature {
+  display: inline-block;
+  margin: 15px;
+  padding: 20px;
+  width: 300px;
+  border-radius: 8px;
+  background: #FFF;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.feature i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #4A90E2;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  padding: 40px 20px;
+  background: #FFF;
+}
+
+.testimonials-section h2 {
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.testimonial {
+  text-align: center;
+  padding: 15px;
+  border-left: 4px solid #F5A623;
+  margin-bottom: 15px;
+}
+
+.testimonial p {
+  font-size: 1rem;
+  color: #333;
+}
+
+.testimonial span {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #4A90E2;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #1C1C1C;
+  color: #FFF;
+}
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Tailor Registration Popup Specific Styles */
+.popup {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-height: 90vh; /* Limit height to 90% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
+  box-sizing: border-box; /* Ensure padding is included in height calculation */
+}
+
+.popup h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.popup label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: 500;
+}
+
+.popup input,
+.popup select,
+.popup button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+.popup input:focus,
+.popup select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.popup button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
+}
+
+.popup button[type="button"] {
+  background-color: #6c757d;
+  margin-top: 10px;
+}
+
+.popup button[type="button"]:hover {
+  background-color: #5a6268;
+}
+
+/* Checkbox and Price Input Styles */
+.popup input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+.popup input[type="number"] {
+  margin-top: 5px;
+  width: calc(100% - 20px); /* Adjust width to fit container */
+}
+
+/* Ensure price inputs are displayed inline with checkboxes */
+.popup .price-input {
+  display: inline-block;
+  width: 70%;
+  margin-left: 10px;
+}
