@@ -1,9 +1,9 @@
 <div class="profile-container">
   <!-- Profile Header -->
   <div class="profile-header">
-    <h1>Tailor Profile</h1>
+    <h1>User Profile</h1>
     <button mat-raised-button color="primary" (click)="toggleEdit()">
-      {{ isEditing ? 'Cancel' : 'Edit Profile' }}
+      {{ isEditing ? 'Cancel' : 'Edit Details' }}
     </button>
   </div>
 
@@ -25,11 +25,6 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Shop Name</mat-label>
-          <input matInput formControlName="shopName" [disabled]="!isEditing" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" [disabled]="!isEditing" />
         </mat-form-field>
@@ -38,45 +33,14 @@
           <mat-label>Phone</mat-label>
           <input matInput formControlName="phone" [disabled]="!isEditing" />
         </mat-form-field>
-
-        <!-- Map Section -->
-        <div class="map-section">
-          <h3>Location</h3>
-          <app-map
-            [initialLocation]="initialLocation"
-            [isEditing]="isEditing"
-            (locationChanged)="onLocationChanged($event)"
-          ></app-map>
-          <button
-            mat-raised-button
-            color="accent"
-            (click)="useMyLocation()"
-            *ngIf="isEditing"
-          >
-            Use My Location
-          </button>
-        </div>
       </form>
     </div>
 
-    <!-- Accepted Categories Section -->
-    <div class="categories-section">
-      <h2>Accepted Categories</h2>
-      <div class="category-list">
-        <div class="category-item" *ngFor="let category of acceptedCategories">
-          <span class="category-name">{{ category.name }}</span>
-          <span class="category-price">
-            <input
-              type="number"
-              [(ngModel)]="category.price"
-              [ngModelOptions]="{ standalone: true }"
-              [disabled]="!isEditing"
-              (change)="updatePrice(category, category.price)"
-            />
-            INR
-          </span>
-        </div>
-      </div>
+    <!-- Change Password Button -->
+    <div class="change-password-section">
+      <button mat-raised-button color="accent" (click)="openChangePasswordDialog()">
+        Change Password
+      </button>
     </div>
   </div>
 

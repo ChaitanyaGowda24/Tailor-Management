@@ -1,4 +1,3 @@
-/* General Styles */
 .profile-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -20,14 +19,12 @@
   color: #3f51b5;
 }
 
-/* Profile Content Grid Layout */
 .profile-content {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 20px;
 }
 
-/* Profile Picture Section */
 .profile-picture-section {
   display: flex;
   justify-content: center;
@@ -52,7 +49,6 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Profile Details Section */
 .profile-details-section {
   background-color: #f9f9f9;
   padding: 20px;
@@ -69,56 +65,12 @@ mat-form-field {
   width: 100%;
 }
 
-/* Accepted Categories Section */
-.categories-section {
+.change-password-section {
   grid-column: span 2;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 20px;
 }
 
-.categories-section h2 {
-  font-size: 1.5rem;
-  color: #3f51b5;
-  margin-bottom: 15px;
-}
-
-.category-list {
-  display: grid;
-  gap: 10px;
-}
-
-.category-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.category-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.category-name {
-  font-weight: bold;
-  color: #333;
-}
-
-.category-price input {
-  width: 80px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  text-align: right;
-}
-
-/* Save Button */
 .save-button {
   display: flex;
   justify-content: flex-end;
@@ -128,18 +80,4 @@ mat-form-field {
 .save-button button {
   padding: 10px 20px;
   font-size: 1rem;
-}
-
-.map-section {
-  margin-top: 20px;
-}
-
-.map-section h3 {
-  font-size: 1.2rem;
-  color: #3f51b5;
-  margin-bottom: 10px;
-}
-
-.map-section button {
-  margin-top: 10px;
 }
