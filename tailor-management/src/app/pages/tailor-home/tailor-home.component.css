@@ -1,0 +1,13 @@
+.container {
+  padding: 20px;
+}
+
+.filter-section {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+}
