@@ -1,0 +1,146 @@
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="logo">
+    <img src="assets/images/logo.png" alt="App Logo">
+    <span>Tailor Management</span>
+  </div>
+  <div class="user-info">
+    <span>Welcome, John Doe</span>
+    <div class="nav-links">
+      <a (click)="navigateTo('/users')" title="Profile">
+        <i class="fas fa-user"></i>
+      </a>
+      <a (click)="navigateTo('notifications')" title="Notifications">
+        <i class="fas fa-bell"></i>
+      </a>
+      <a (click)="navigateTo('pending-orders')" title="Pending Orders">
+        <i class="fas fa-clipboard-list"></i>
+      </a>
+      <a (click)="logout()" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <!-- Gender Selection -->
+  <div class="step">
+    <div class="gender-icons">
+      <div class="gender-icon" (click)="selectGender('male')">
+        <img src="assets/icons/man.png" alt="Male Icon">
+      </div>
+      <div class="gender-icon" (click)="selectGender('female')">
+        <img src="assets/icons/woman.png" alt="Female Icon">
+      </div>
+    </div>
+  </div>
+
+  <!-- Dress Category Selection -->
+  <div class="step">
+    <h2>Select Dress Category</h2>
+    <div class="dress-grid">
+      <div *ngFor="let dress of dressCategories" class="dress-card" (click)="onDressSelect(dress)">
+        <img [src]="dress.image" alt="{{ dress.name }}">
+        <p>{{ dress.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tailor Shop Selection -->
+  <div class="step" id="tailor-shops">
+    <h2>Select Tailor Shop</h2>
+    <div *ngIf="selectedDress; else noCategorySelected">
+      <div *ngIf="tailorShops.length > 0" class="shop-list">
+        <div *ngFor="let shop of tailorShops" class="shop-card" (click)="onShopSelect(shop)">
+          <p><strong>Shop Name:</strong> {{ shop.name }}</p>
+          <p><strong>Price for {{ selectedDress.name }}:</strong> {{ shop.price }}</p>
+          <button (click)="viewShopDashboard(shop.id); $event.stopPropagation()">View Shop</button>
+        </div>
+      </div>
+      <div *ngIf="tailorShops.length === 0">
+        <p>No shops available for this category.</p>
+      </div>
+    </div>
+    <ng-template #noCategorySelected>
+      <p>No category selected.</p>
+    </ng-template>
+  </div>
+
+  <!-- Fixed Buttons at Bottom -->
+  <div class="fixed-buttons">
+    <button [disabled]="!selectedShop" (click)="openDesignModal()">Enter Design</button>
+    <button [disabled]="!selectedShop" (click)="openMeasurementModal()">Enter Measurement</button>
+    <button [disabled]="price <= 0" (click)="openBillModal()">Generate Bill</button>
+  </div>
+
+</div>
+
+<!-- Design Options Modal -->
+  <div *ngIf="isDesignModalOpen" class="modal-overlay">
+    <div class="modal">
+      <h2>Select Design Options</h2>
+      <form [formGroup]="designForm">
+        <div *ngFor="let option of objectKeys(designOptions)">
+          <label>{{ option }}</label>
+
+          <!-- Check if designOptions[option] is an array -->
+          <div *ngIf="isArray(designOptions[option])">
+            <select [formControlName]="option">
+              <option *ngFor="let value of designOptions[option]" [value]="value">
+                {{ value }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Check if designOptions[option] is a string -->
+          <div *ngIf="!isArray(designOptions[option])">
+            <input type="text" [formControlName]="option" />
+          </div>
+        </div>
+        <button type="button" (click)="closeDesignModal()">Close</button>
+        <button type="button" (click)="saveDesignOptions()">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Measurement Modal -->
+  <div *ngIf="isMeasurementModalOpen" class="modal-overlay">
+    <div class="modal">
+      <h2>Enter Measurements</h2>
+      <form [formGroup]="measurementForm">
+        <div *ngFor="let field of measurementFields">
+          <label>{{ field.label }}</label>
+          <input [formControlName]="field.name" [placeholder]="field.placeholder">
+        </div>
+        <button type="button" (click)="closeMeasurementModal()">Close</button>
+        <button type="button" (click)="calculatePrice()">Calculate Price</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bill Modal -->
+  <div *ngIf="isBillModalOpen" class="modal-overlay">
+    <div class="modal">
+      <h2>Bill Details</h2>
+      <div *ngIf="billDetails">
+        <p><strong>Order ID:</strong> {{ billDetails.orderId }}</p>
+        <p><strong>Customer ID:</strong> {{ billDetails.customerId }}</p>
+        <p><strong>Customer Name:</strong> {{ billDetails.customerName }}</p>
+        <p><strong>Measurement ID:</strong> {{ billDetails.measureId }}</p>
+        <p><strong>Shop ID:</strong> {{ billDetails.shopId }}</p>
+        <p><strong>Shop Name:</strong> {{ billDetails.shopName }}</p>
+        <p><strong>Order Date:</strong> {{ billDetails.orderDate | date }}</p>
+        <p><strong>Delivery Date:</strong> {{ billDetails.deliveryDate | date }}</p>
+        <p><strong>Gender:</strong> {{ billDetails.gender }}</p>
+        <p><strong>Dress:</strong> {{ billDetails.dress.name }}</p>
+        <p><strong>Measurements:</strong> {{ billDetails.measurements | json }}</p>
+        <p><strong>Design:</strong> {{ billDetails.design | json }}</p>
+        <p><strong>Price:</strong> {{ billDetails.price }}</p>
+      </div>
+      <button type="button" (click)="closeBillModal()">Close</button>
+      <button type="button" (click)="downloadBill()">Download Bill</button>
+    </div>
+  </div>
+
