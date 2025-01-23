@@ -1,0 +1,55 @@
+.dashboard-container {
+  padding: 20px;
+}
+
+.quick-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  flex: 1;
+  text-align: center;
+  background-color: #f5f5f5;
+}
+
+.chart-section {
+  margin-bottom: 20px;
+}
+
+.recent-orders {
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+}
+
+.status-completed {
+  color: #4CAF50;
+}
+
+.status-pending {
+  color: #FFC107;
+}
+
+.status-rejected {
+  color: #F44336;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.chart-section {
+  margin-bottom: 20px;
+}
+
+/* Ensure the canvas has a height */
+#ordersChart {
+  height: 300px; /* Adjust the height as needed */
+  width: 100%;
+}

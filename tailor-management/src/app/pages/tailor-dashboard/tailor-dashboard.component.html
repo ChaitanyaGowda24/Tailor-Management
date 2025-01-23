@@ -1,1 +1,86 @@
-<p>tailor-dashboard works!</p>
+<div class="dashboard-container">
+  <h2>Tailor Dashboard</h2>
+
+  <!-- Quick Stats -->
+  <div class="quick-stats">
+    <mat-card class="stat-card">
+      <mat-card-title>Total Orders</mat-card-title>
+      <mat-card-content>{{ totalOrders }}</mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-title>Completed Orders</mat-card-title>
+      <mat-card-content>{{ completedOrders }}</mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-title>Pending Orders</mat-card-title>
+      <mat-card-content>{{ pendingOrders }}</mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-title>Rejected Orders</mat-card-title>
+      <mat-card-content>{{ rejectedOrders }}</mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="chart-section">
+    <mat-card>
+      <mat-card-title>Orders Overview</mat-card-title>
+      <mat-card-content>
+        <canvas id="ordersChart"></canvas>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="recent-orders">
+    <mat-card>
+      <mat-card-title>Recent Orders</mat-card-title>
+      <mat-card-content>
+        <table mat-table [dataSource]="recentOrders" class="mat-elevation-z8">
+          <!-- Order ID Column -->
+          <ng-container matColumnDef="orderId">
+            <th mat-header-cell *matHeaderCellDef>Order ID</th>
+            <td mat-cell *matCellDef="let order">{{ order.orderId }}</td>
+          </ng-container>
+
+          <!-- Customer Name Column -->
+          <ng-container matColumnDef="customerName">
+            <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+            <td mat-cell *matCellDef="let order">{{ order.customerName }}</td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let order">
+              <span [ngClass]="{
+                'status-completed': order.status === 'Completed',
+                'status-pending': order.status === 'Pending',
+                'status-rejected': order.status === 'Rejected'
+              }">
+                {{ order.status }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Due Date Column -->
+          <ng-container matColumnDef="dueDate">
+            <th mat-header-cell *matHeaderCellDef>Due Date</th>
+            <td mat-cell *matCellDef="let order">{{ order.dueDate }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['orderId', 'customerName', 'status', 'dueDate']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['orderId', 'customerName', 'status', 'dueDate']"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <button mat-raised-button color="primary">Create New Order</button>
+    <button mat-raised-button color="accent">View All Orders</button>
+  </div>
+</div>
