@@ -1,6 +1,10 @@
 package com.Tailor.UserService.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 import java.util.Date;
 
 @Entity
@@ -12,14 +16,19 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
+    @NotBlank(message = "Name cannot be empty")
+    @Column(name = "username", nullable = false, unique = true)
     private String name;
 
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email cannot be empty") // Ensures email is not blank
     @Column(unique = true)
     private String email;
 
     private String password;
     private String role;
 
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be exactly 10 digits")
     @Column(name = "phone_number")
     private String phoneNumber;
 

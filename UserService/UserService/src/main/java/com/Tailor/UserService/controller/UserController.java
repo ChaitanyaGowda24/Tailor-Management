@@ -1,8 +1,11 @@
 package com.Tailor.UserService.controller;
 
+import com.Tailor.UserService.exceptions.InvalidCredentialsException;
+import com.Tailor.UserService.model.LoginRequest;
 import com.Tailor.UserService.model.User;
 import com.Tailor.UserService.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,18 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
+            return ResponseEntity.ok("Login successful");
+        } catch (InvalidCredentialsException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        }
+    }
+
+
 
     // Endpoint to register a new user
     @PostMapping("/register")
