@@ -33,6 +33,8 @@ import { UserMyordersComponent } from './pages/user-myorders/user-myorders.compo
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +55,7 @@ import { ChangePasswordDialogComponent } from './components/change-password-dial
   ],
   imports: [
     BrowserModule,
+    HttpClientModule, // Add HttpClientModule here
     AppRoutingModule,
     FormsModule, // <-- Add this line
 ReactiveFormsModule,

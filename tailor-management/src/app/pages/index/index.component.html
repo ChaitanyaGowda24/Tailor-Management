@@ -16,9 +16,9 @@
   <div class="popup">
     <button class="close-btn" (click)="closeLoginPopup()">&times;</button>
     <h2>Login</h2>
-    <form>
-      <input type="email" placeholder="Email" required>
-      <input type="password" placeholder="Password" required>
+    <form (ngSubmit)="onLogin()">
+      <input type="email" placeholder="Email" [(ngModel)]="loginRequest.email" name="email" required>
+      <input type="password" placeholder="Password"  [(ngModel)]="loginRequest.password" name="password" required>
       <button type="submit">Login</button>
     </form>
   </div>
@@ -39,11 +39,11 @@
   <div class="popup">
     <button class="close-btn" (click)="closeCustomerRegistrationPopup()">&times;</button>
     <h2>Customer Registration</h2>
-    <form>
-      <input type="text" placeholder="Name" required>
-      <input type="email" placeholder="Email" required>
-      <input type="tel" placeholder="Phone Number" required>
-      <input type="password" placeholder="Password" required>
+    <form (ngSubmit)="onCustomerRegister()">
+      <input type="text" placeholder="Name"  [(ngModel)]="user.name" name="name" required>
+      <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" required>
+      <input type="tel" placeholder="Phone Number"  [(ngModel)]="user.phoneNumber" name="phoneNumber"  required>
+      <input type="password" placeholder="Password" [(ngModel)]="user.password" name="password"  required>
       <button type="submit">Register</button>
       <button type="button" (click)="closeCustomerRegistrationPopup()">Cancel</button>
     </form>

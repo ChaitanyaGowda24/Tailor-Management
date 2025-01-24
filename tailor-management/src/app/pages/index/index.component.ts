@@ -1,6 +1,8 @@
 import { Component, AfterViewChecked } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service'; // Import the service
+import { User, LoginRequest } from '../../models/user.model'; // Import the models
 import * as L from 'leaflet';
 
 
@@ -17,6 +19,21 @@ latitude: number | undefined;
 longitude: number | undefined;
 private map: L.Map | undefined;
 private isMapInitialized = false;
+
+// User registration and login models
+  user: User = {
+    name: '',
+    email: '',
+    phoneNumber: '',
+    password: '',
+  };
+
+  loginRequest: LoginRequest = {
+    email: '',
+    password: '',
+  };
+
+constructor(private userService: UserService) {}
 
 ngAfterViewChecked(): void {
     if (this.isTailorRegistrationPopupOpen && !this.isMapInitialized) {
@@ -84,6 +101,36 @@ openLoginPopup() {
       this.map.remove(); // Remove the map instance
       this.map = undefined; // Reset the map variable
     }
+  }
+
+ // Handle customer registration
+  onCustomerRegister() {
+    this.userService.registerUser(this.user).subscribe(
+      (response) => {
+        console.log('Registration successful', response);
+        this.closeCustomerRegistrationPopup(); // Close the popup on success
+        alert('Registration successful!'); // Show success message
+      },
+      (error) => {
+        console.error('Registration failed', error);
+        alert('Registration failed. Please try again.'); // Show error message
+      }
+    );
+  }
+
+  // Handle user login
+  onLogin() {
+    this.userService.loginUser(this.loginRequest).subscribe(
+      (response) => {
+        console.log('Login successful', response);
+        alert('Login successful!'); // Show success message
+        // Optionally, navigate to another page
+      },
+      (error) => {
+        console.error('Login failed', error);
+        alert('Login failed. Please check your credentials.'); // Show error message
+      }
+    );
   }
 
   togglePriceInput(dressType: string) {
