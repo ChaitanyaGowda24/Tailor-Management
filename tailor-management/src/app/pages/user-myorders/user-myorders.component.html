@@ -1,1 +1,93 @@
-<p>user-myorders works!</p>
+<div class="dashboard-container">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <h1>My Orders Dashboard</h1>
+  </div>
+
+  <!-- Dashboard Cards -->
+  <div class="dashboard-cards">
+    <div class="card">
+      <h3>Total Orders Placed</h3>
+      <p>{{ totalOrders }}</p>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-section">
+    <div class="chart-card">
+      <h3>Orders by Status</h3>
+      <div class="chart-container">
+        <canvas id="statusChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <h2>Filter Orders</h2>
+    <div class="filters">
+      <input type="text" [(ngModel)]="filterOrderId" placeholder="Order ID" />
+      <select [(ngModel)]="filterStatus">
+        <option value="">All Statuses</option>
+        <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+      </select>
+      <input type="text" [(ngModel)]="filterShopName" placeholder="Shop Name" />
+      <input type="text" [(ngModel)]="filterTailorId" placeholder="Tailor ID" />
+      <button (click)="applyFilters()">Apply Filters</button>
+      <button (click)="clearFilters()">Clear Filters</button>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="orders-table">
+    <h2>My Orders</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Tailor ID</th>
+        <th>Shop Name</th>
+        <th>Ordered On</th>
+        <th>Delivered On</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let order of filteredOrders">
+        <td>{{ order.orderId }}</td>
+        <td>{{ order.tailorId }}</td>
+        <td>{{ order.shopName }}</td>
+        <td>{{ order.orderedOn | date }}</td>
+        <td>{{ order.deliveredOn | date }}</td>
+        <td>{{ order.status }}</td>
+        <td>
+          <button (click)="viewOrderDetails(order)">View Details</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Order Details Popup -->
+<div *ngIf="isOrderDetailsModalOpen" class="modal-overlay">
+  <div class="modal">
+    <button class="close-button" (click)="closeOrderDetailsModal()">&times;</button>
+    <h2>Order Details</h2>
+    <div *ngIf="selectedOrder">
+      <p><strong>Order ID:</strong> {{ selectedOrder.orderId }}</p>
+      <p><strong>Tailor ID:</strong> {{ selectedOrder.tailorId }}</p>
+      <p><strong>Shop Name:</strong> {{ selectedOrder.shopName }}</p>
+      <p><strong>Ordered On:</strong> {{ selectedOrder.orderedOn | date }}</p>
+      <p><strong>Delivered On:</strong> {{ selectedOrder.deliveredOn | date }}</p>
+      <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
+
+      <h3>Dress Details</h3>
+      <p><strong>Category:</strong> {{ selectedOrder.dressCategory }}</p>
+      <p><strong>Measurements:</strong> {{ selectedOrder.measurements | json }}</p>
+      <p><strong>Design:</strong> {{ selectedOrder.design | json }}</p>
+      <p><strong>Price:</strong> ₹{{ selectedOrder.price }}</p>
+    </div>
+  </div>
+</div>

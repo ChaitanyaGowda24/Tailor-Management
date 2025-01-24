@@ -3,13 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router'; // Import Router
 import { TailorService } from 'src/app/services/tailor.service';
 import jsPDF from 'jspdf';
-
+import * as L from 'leaflet';
 @Component({
 selector: 'app-order',
 templateUrl: './user-home.component.html',
 styleUrls: ['./user-home.component.css']
 })
 export class UserHomeComponent implements OnInit {
+isShopDetailsModalOpen: boolean = false;
+selectedShopDetails: any = null;
+private map: any; // Leaflet map instance
+
 genderForm: FormGroup;
 dressCategories: any[] = [];
 tailorShops: any[] = [];
@@ -337,10 +341,13 @@ selectGender(gender: string): void {
     return 0; // Default price if no price list is available
   }
 
-// Method to navigate to the shop dashboard
-viewShopDashboard(shopId: number): void {
-  this.router.navigate([`/shop-dashboard/${shopId}`]);
-}
+// Update the viewShopDashboard method to open the modal instead of navigating
+  viewShopDashboard(shopId: number): void {
+    const shop = this.tailorShops.find((s) => s.id === shopId);
+    if (shop) {
+      this.openShopDetailsModal(shop);
+    }
+  }
 
   onShopSelect(shop: any): void {
     this.selectedShop = shop;
@@ -448,4 +455,46 @@ viewShopDashboard(shopId: number): void {
   isArray(value: any): boolean {
     return Array.isArray(value);
   }
+
+// Method to open the shop details modal
+  openShopDetailsModal(shop: any): void {
+    this.selectedShopDetails = shop;
+    this.isShopDetailsModalOpen = true;
+
+    // Initialize the Leaflet map after the modal is opened
+    setTimeout(() => {
+      this.initMap();
+    }, 0);
+  }
+
+  // Method to close the shop details modal
+  closeShopDetailsModal(): void {
+    this.isShopDetailsModalOpen = false;
+    if (this.map) {
+      this.map.remove(); // Clean up the map when the modal is closed
+    }
+  }
+
+  // Method to initialize the Leaflet map
+  private initMap(): void {
+    // Default coordinates (you can replace these with the shop's actual coordinates)
+    const defaultLat = 28.6139; // Example: New Delhi
+    const defaultLng = 77.2090;
+
+    // Initialize the map
+    this.map = L.map('shop-map').setView([defaultLat, defaultLng], 13);
+
+    // Add a tile layer (you can use any tile layer, e.g., OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    // Add a marker for the shop's location
+    L.marker([defaultLat, defaultLng])
+      .addTo(this.map)
+      .bindPopup('Shop Location')
+      .openPopup();
+  }
+
+
 }

@@ -118,4 +118,39 @@
     <button type="button" (click)="downloadBill()">Download Bill</button>
   </div>
 </div>
+<!-- Shop Details Modal -->
+<div *ngIf="isShopDetailsModalOpen" class="modal-overlay">
+  <div class="modal">
+    <!-- Close Button -->
+    <button class="close-button" (click)="closeShopDetailsModal()">&times;</button>
 
+    <!-- Shop Image -->
+    <div class="shop-image-container">
+      <img [src]="selectedShopDetails.image || 'assets/tailor-shop.jpg'" alt="Shop Image" class="shop-image">
+      <div class="image-overlay"></div>
+      <h2 class="shop-name">{{ selectedShopDetails.name }}</h2>
+    </div>
+
+    <!-- Shop Details -->
+    <div class="shop-details">
+      <p><strong>Tailor Name:</strong> {{ selectedShopDetails.tailorName }}</p>
+      <p><strong>Phone:</strong> {{ selectedShopDetails.phone }}</p>
+      <p><strong>Email:</strong> {{ selectedShopDetails.email }}</p>
+      <p><strong>Location:</strong> {{ selectedShopDetails.location }}</p>
+    </div>
+
+    <!-- Leaflet Map -->
+    <div id="shop-map" class="map-container"></div>
+
+    <!-- Accepted Categories and Prices -->
+    <div class="categories-section">
+      <h3>Accepted Categories and Prices</h3>
+      <div class="categories-grid">
+        <div *ngFor="let category of selectedShopDetails.categories" class="category-card">
+          <p class="category-name">{{ category.name }}</p>
+          <p class="category-price">₹{{ category.price }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
