@@ -39,10 +39,23 @@
           <input matInput formControlName="phone" [disabled]="!isEditing" />
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Location</mat-label>
-          <input matInput formControlName="location" [disabled]="!isEditing" />
-        </mat-form-field>
+        <!-- Map Section -->
+        <div class="map-section">
+          <h3>Location</h3>
+          <app-map
+            [initialLocation]="initialLocation"
+            [isEditing]="isEditing"
+            (locationChanged)="onLocationChanged($event)"
+          ></app-map>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="useMyLocation()"
+            *ngIf="isEditing"
+          >
+            Use My Location
+          </button>
+        </div>
       </form>
     </div>
 

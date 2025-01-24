@@ -27,7 +27,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { UserLayoutComponent } from './shared/user-layout/user-layout.component';
+import { UserHomeComponent } from './pages/user-home/user-home.component';
+import { UserMyordersComponent } from './pages/user-myorders/user-myorders.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +44,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     TailorDashboardComponent,
     TailorProfileComponent,
     TailorLayoutComponent,
-    OrderDetailsDialogComponent
+    OrderDetailsDialogComponent,
+    UserLayoutComponent,
+    UserHomeComponent,
+    UserMyordersComponent,
+    UserProfileComponent,
+    ChangePasswordDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +69,7 @@ MatInputModule,
 MatDialogModule,
 MatButtonModule,
 MatCardModule,
+MatBadgeModule,
 
 
   ],

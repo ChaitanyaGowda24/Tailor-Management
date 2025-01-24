@@ -1,0 +1,35 @@
+.user-orders-container {
+  padding: 20px;
+}
+
+h1 {
+  color: #3f51b5;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filters mat-form-field {
+  flex: 1;
+}
+
+table {
+  width: 100%;
+}
+
+/* Status Styling */
+.status-delivered {
+  color: #4caf50; /* Green for delivered */
+}
+
+.status-in-progress {
+  color: #ffc107; /* Yellow for in progress */
+}
+
+.status-pending {
+  color: #f44336; /* Red for pending */
+}
