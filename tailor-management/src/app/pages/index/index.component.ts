@@ -3,6 +3,8 @@ import { ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service'; // Import the service
 import { User, LoginRequest } from '../../models/user.model'; // Import the models
+import { TailorService } from '../../services/tailor.service'; // Import the TailorService
+import { Tailor, Location, Dress } from '../../models/tailor.model'; // Import the Tailor model
 import * as L from 'leaflet';
 
 
@@ -33,7 +35,19 @@ private isMapInitialized = false;
     password: '',
   };
 
-constructor(private userService: UserService) {}
+  // Tailor registration model
+    tailor: Tailor = {
+      name: '',
+      shopName: '',
+      location: { latitude: 0, longitude: 0 },
+      email: '',
+      phone: '',
+      password: '',
+      //isDelivery: 'No', // Default value
+      dress: [],
+    };
+
+constructor(private userService: UserService, private tailorService: TailorService) {}
 
 ngAfterViewChecked(): void {
     if (this.isTailorRegistrationPopupOpen && !this.isMapInitialized) {
@@ -48,18 +62,18 @@ isCustomerRegistrationPopupOpen = false;
 isTailorRegistrationPopupOpen = false;
 
 // For dynamic price inputs
-showShirtsPrice = false;
-showPantsPrice = false;
-showKurtaPrice = false;
-showPalazzaPantsPrice = false;
-showSherwaniPrice = false;
 showSuitsPrice = false;
-showBlazersPrice = false;
-showSalwaarKameezPrice = false;
-showSkirtsPrice = false;
-showLehengasPrice = false;
-showAnarkaliSuitsPrice = false;
-showTopsPrice = false;
+showEthnicSuitPrice = false;
+showTrousersPrice = false;
+showFormalShirtsPrice = false;
+showPathaniSuitPrice = false;
+showDesiJacketPrice = false;
+showBlousePrice = false;
+showKurtiPrice = false;
+showAnarkaliSuitPrice = false;
+showPunjabiSuitPrice = false;
+showChudidarSuitPrice = false;
+showLehengaPrice = false;
 
 openLoginPopup() {
     this.isLoginPopupOpen = true;
@@ -105,6 +119,9 @@ openLoginPopup() {
 
  // Handle customer registration
   onCustomerRegister() {
+    // Set the current date and time
+      this.user.createdAt = new Date();
+
     this.userService.registerUser(this.user).subscribe(
       (response) => {
         console.log('Registration successful', response);
@@ -133,43 +150,65 @@ openLoginPopup() {
     );
   }
 
+
+  // Handle tailor registration
+    onTailorRegister() {
+      // Set the location from the map
+      if (this.latitude && this.longitude) {
+        this.tailor.location = { latitude: this.latitude, longitude: this.longitude };
+      }
+
+      // Call the TailorService to register the tailor
+      this.tailorService.registerTailor(this.tailor).subscribe(
+        (response) => {
+          console.log('Tailor registration successful', response);
+          this.closeTailorRegistrationPopup(); // Close the popup on success
+          alert('Tailor registration successful!'); // Show success message
+        },
+        (error) => {
+          console.error('Tailor registration failed', error);
+          alert('Tailor registration failed. Please try again.'); // Show error message
+        }
+      );
+    }
+
   togglePriceInput(dressType: string) {
     switch (dressType) {
-      case 'shirts':
-        this.showShirtsPrice = !this.showShirtsPrice;
-        break;
-      case 'pants':
-        this.showPantsPrice = !this.showPantsPrice;
-        break;
-      case 'kurta':
-        this.showKurtaPrice = !this.showKurtaPrice;
-        break;
-      case 'palazzaPants':
-        this.showPalazzaPantsPrice = !this.showPalazzaPantsPrice;
-        break;
-      case 'sherwani':
-        this.showSherwaniPrice = !this.showSherwaniPrice;
-        break;
-      case 'suits':
+      case 'Suits':
         this.showSuitsPrice = !this.showSuitsPrice;
         break;
-      case 'blazers':
-        this.showBlazersPrice = !this.showBlazersPrice;
+      case 'Ethnic Suit':
+        this.showEthnicSuitPrice = !this.showEthnicSuitPrice;
         break;
-      case 'salwaarKameez':
-        this.showSalwaarKameezPrice = !this.showSalwaarKameezPrice;
+      case 'Trousers':
+        this.showTrousersPrice = !this.showTrousersPrice;
         break;
-      case 'skirts':
-        this.showSkirtsPrice = !this.showSkirtsPrice;
+      case 'Formal Shirts':
+        this.showFormalShirtsPrice = !this.showFormalShirtsPrice;
         break;
-      case 'lehengas':
-        this.showLehengasPrice = !this.showLehengasPrice;
+      case 'Pathani Suit':
+        this.showPathaniSuitPrice = !this.showPathaniSuitPrice;
         break;
-      case 'anarkaliSuits':
-        this.showAnarkaliSuitsPrice = !this.showAnarkaliSuitsPrice;
+      case 'Desi Jacket':
+        this.showDesiJacketPrice = !this.showDesiJacketPrice;
         break;
-      case 'tops':
-        this.showTopsPrice = !this.showTopsPrice;
+      case 'Blouse':
+        this.showBlousePrice = !this.showBlousePrice;
+        break;
+      case 'Kurti':
+        this.showKurtiPrice = !this.showKurtiPrice;
+        break;
+      case 'Anarkali Suit':
+        this.showAnarkaliSuitPrice = !this.showAnarkaliSuitPrice;
+        break;
+      case 'Punjabi Suit':
+        this.showPunjabiSuitPrice = !this.showPunjabiSuitPrice;
+        break;
+      case 'Chudidar Suit':
+        this.showChudidarSuitPrice = !this.showChudidarSuitPrice;
+        break;
+      case 'Lehenga':
+        this.showLehengaPrice = !this.showLehengaPrice;
         break;
     }
   }

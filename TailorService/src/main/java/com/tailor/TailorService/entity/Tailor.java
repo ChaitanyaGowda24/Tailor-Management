@@ -39,8 +39,8 @@ public class Tailor {
     @Column(nullable = false)
     private String status = "open";
 
-    @Column(nullable = false)
-    private String isDelivery;
+//    @Column(nullable = false)
+//    private String isDelivery;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "tailor_id")
@@ -52,7 +52,7 @@ public class Tailor {
     public Tailor() {
     }
 
-    public Tailor(Long tailorId, String name, String shopName, Location location, String email, String phone, String password, int ordersCount, int completed, String status, String isDelivery, List<Dress> dress) {
+    public Tailor(Long tailorId, String name, String shopName, Location location, String email, String phone, String password, int ordersCount, int completed, String status, List<Dress> dress) {
         this.tailorId = tailorId;
         this.name = name;
         this.shopName = shopName;
@@ -63,7 +63,6 @@ public class Tailor {
         this.ordersCount = ordersCount;
         this.completed = completed;
         this.status = status;
-        this.isDelivery = isDelivery;
         this.dress = dress;
 
     }
@@ -148,13 +147,13 @@ public class Tailor {
         this.status = status;
     }
 
-    public String getIsDelivery() {
-        return isDelivery;
-    }
-
-    public void setIsDelivery(String isDelivery) {
-        this.isDelivery = isDelivery;
-    }
+//    public String getIsDelivery() {
+//        return isDelivery;
+//    }
+//
+//    public void setIsDelivery(String isDelivery) {
+//        this.isDelivery = isDelivery;
+//    }
 
     public List<Dress> getDress() {
         return dress;

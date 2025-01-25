@@ -1,9 +1,12 @@
 package com.tailor.TailorService.controller;
 
 import com.tailor.TailorService.entity.Dress;
+import com.tailor.TailorService.entity.LoginRequest;
 import com.tailor.TailorService.entity.Tailor;
+import com.tailor.TailorService.exception.*;
 import com.tailor.TailorService.service.TailorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +20,33 @@ public class TailorController {
     @Autowired
     private TailorService tailorService;
 
-    // Add a new tailor
-    @PostMapping
-    public ResponseEntity<Tailor> addTailor(@RequestBody Tailor tailor) {
-        return ResponseEntity.ok(tailorService.addTailor(tailor));
+    // Login for a tailor
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            Tailor tailor = tailorService.loginUser(loginRequest);
+            return ResponseEntity.ok(tailor);  // Return the tailor data
+        } catch (InvalidCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerTailor(@RequestBody Tailor tailor) {
+        try {
+            // Delegate registration to the service layer
+            Tailor registeredTailor = tailorService.addTailor(tailor);
+            // Return success response
+            return new ResponseEntity<>("Tailor successfully registered: " + registeredTailor.getEmail(), HttpStatus.CREATED);
+        } catch (UsernameAlreadyTakenException | InvalidUsernameFormatException |
+                 EmailAlreadyExistsException | InvalidEmailFormatException | InvalidPasswordFormatException ex) {
+            // Handle validation exceptions and send BAD_REQUEST
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            // Handle unexpected errors
+            return new ResponseEntity<>("An unexpected error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Get a tailor by ID

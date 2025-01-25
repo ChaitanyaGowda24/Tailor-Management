@@ -1,11 +1,21 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { Tailor } from '../models/tailor.model';
 
 @Injectable({
-providedIn: 'root'
+  providedIn: 'root',
 })
 export class TailorService {
-// Mock data for tailor shops
+  private baseUrl = 'http://localhost:8085/tailors'; // Replace with your backend URL
+
+  constructor(private http: HttpClient) {}
+
+  // Register a new tailor
+  registerTailor(tailor: Tailor): Observable<Tailor> {
+    return this.http.post<Tailor>(`${this.baseUrl}/register`, tailor);
+  }
+
 private tailorShopsData = [
 { id: 1, name: 'Tailor Shop A', category: ['Suits', 'Ethnic Suit'] ,
 priceList :[
@@ -28,10 +38,6 @@ priceList :[
 // Add other tailor shops here...
 ];
 
-
-
-
-constructor() {}
 
   // Method to fetch tailor shops
   getTailorShops(): Observable<any[]> {

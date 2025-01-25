@@ -32,9 +32,9 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @Column(name = "created_at", nullable = false, updatable = false)
-//    private Date createdAt = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Date createdAt = new Date();
 
     // Getters and setters
 
@@ -42,13 +42,14 @@ public class User {
     }
 
 
-    public User(Long userId, String name, String email, String password, String role, String phoneNumber) {
+    public User(Long userId, String name, String email, String password, String role, String phoneNumber, Date createdAt) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.role = "CUSTOMER";
         this.phoneNumber = phoneNumber;
+        this.createdAt = createdAt;
     }
 
     public Long getUserId() {
@@ -99,12 +100,12 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-//    public Date getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public void setCreatedAt(Date createdAt) {
-//        this.createdAt = createdAt;
-//    }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }
 
