@@ -63,6 +63,7 @@ public class UserService {
         }
 
         logger.info("User successfully registered: {}", user.getEmail());
+        user.setRole("CUSTOMER");
         return userRepository.save(user); // Save the user to the database
     }
 

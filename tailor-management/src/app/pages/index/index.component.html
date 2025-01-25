@@ -69,42 +69,136 @@
 
       <h3>Dresses You Stitch</h3>
       <label><input type="checkbox" (change)="togglePriceInput('Suits')"> Suits</label>
-      <input type="number" placeholder="Price for Suits" *ngIf="showSuitsPrice" [(ngModel)]="tailor.dress[0].price" name="suitsPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Suits"
+        *ngIf="showSuitsPrice"
+        [ngModel]="getDressPrice('Suits')"
+        (ngModelChange)="setDressPrice('Suits', $event)"
+        name="suitsPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('EthnicSuit')"> Ethnic Suit</label>
-      <input type="number" placeholder="Price for Ethnic Suit" *ngIf="showEthnicSuitPrice" [(ngModel)]="tailor.dress[1].price" name="ethnicSuitPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Ethnic Suit"
+        *ngIf="showEthnicSuitPrice"
+        [ngModel]="getDressPrice('EthnicSuit')"
+        (ngModelChange)="setDressPrice('EthnicSuit', $event)"
+        name="ethnicSuitPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('Trousers')"> Trousers</label>
-      <input type="number" placeholder="Price for Trousers" *ngIf="showTrousersPrice" [(ngModel)]="tailor.dress[2].price" name="trousersPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Trousers"
+        *ngIf="showTrousersPrice"
+        [ngModel]="getDressPrice('Trousers')"
+        (ngModelChange)="setDressPrice('Trousers', $event)"
+        name="trousersPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('FormalShirts')"> Formal Shirts</label>
-      <input type="number" placeholder="Price for Formal Shirts" *ngIf="showFormalShirtsPrice" [(ngModel)]="tailor.dress[3].price" name="formalShirtsPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Formal Shirts"
+        *ngIf="showFormalShirtsPrice"
+        [ngModel]="getDressPrice('FormalShirts')"
+        (ngModelChange)="setDressPrice('FormalShirts', $event)"
+        name="formalShirtsPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('PathaniSuit')"> Pathani Suit</label>
-      <input type="number" placeholder="Price for Pathani Suit" *ngIf="showPathaniSuitPrice" [(ngModel)]="tailor.dress[4].price" name="pathaniSuitPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Pathani Suit"
+        *ngIf="showPathaniSuitPrice"
+        [ngModel]="getDressPrice('PathaniSuit')"
+        (ngModelChange)="setDressPrice('PathaniSuit', $event)"
+        name="pathaniSuitPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('DesiJacket')"> Desi Jacket</label>
-      <input type="number" placeholder="Price for Desi Jacket" *ngIf="showDesiJacketPrice" [(ngModel)]="tailor.dress[5].price" name="desiJacketPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Desi Jacket"
+        *ngIf="showDesiJacketPrice"
+        [ngModel]="getDressPrice('DesiJacket')"
+        (ngModelChange)="setDressPrice('DesiJacket', $event)"
+        name="desiJacketPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('Blouse')"> Blouse</label>
-      <input type="number" placeholder="Price for Blouse" *ngIf="showBlousePrice" [(ngModel)]="tailor.dress[6].price" name="blousePrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Blouse"
+        *ngIf="showBlousePrice"
+        [ngModel]="getDressPrice('Blouse')"
+        (ngModelChange)="setDressPrice('Blouse', $event)"
+        name="blousePrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('Kurti')"> Kurti</label>
-      <input type="number" placeholder="Price for Kurti" *ngIf="showKurtiPrice" [(ngModel)]="tailor.dress[7].price" name="kurtiPrice" class="price-input">
-
+      <input
+        type="number"
+        placeholder="Price for Kurti"
+        *ngIf="showKurtiPrice"
+        [ngModel]="getDressPrice('Kurti')"
+        (ngModelChange)="setDressPrice('Kurti', $event)"
+        name="kurtiPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('AnarkaliSuit')"> Anarkali Suit</label>
-      <input type="number" placeholder="Price for Anarkali Suit" *ngIf="showAnarkaliSuitPrice" [(ngModel)]="tailor.dress[8].price" name="anarkaliSuitPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Anarkali Suit"
+        *ngIf="showAnarkaliSuitPrice"
+        [ngModel]="getDressPrice('AnarkaliSuit')"
+        (ngModelChange)="setDressPrice('AnarkaliSuit', $event)"
+        name="anarkaliSuitPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('PunjabiSuit')"> Punjabi Suit</label>
-      <input type="number" placeholder="Price for PunjabiSuit" *ngIf="showPunjabiSuitPrice" [(ngModel)]="tailor.dress[9].price" name="punjabiSuitPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for PunjabiSuit"
+        *ngIf="showPunjabiSuitPrice"
+        [ngModel]="getDressPrice('PunjabiSuit')"
+        (ngModelChange)="setDressPrice('PunjabiSuit', $event)"
+        name="punjabiSuitPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('ChudidarSuit')"> Chudidar Suit</label>
-      <input type="number" placeholder="Price for Chudidar Suit" *ngIf="showChudidarSuitPrice" [(ngModel)]="tailor.dress[10].price" name="chudidarSuitPrice" class="price-input">
-
+      <input
+        type="number"
+        placeholder="Price for Chudidar Suit"
+        *ngIf="showChudidarSuitPrice"
+        [ngModel]="getDressPrice('ChudidarSuit')"
+        (ngModelChange)="setDressPrice('ChudidarSuit', $event)"
+        name="chudidarSuitPrice"
+        class="price-input"
+      />
 
       <label><input type="checkbox" (change)="togglePriceInput('Lehenga')"> Lehenga</label>
-      <input type="number" placeholder="Price for Lehenga" *ngIf="showLehengaPrice" [(ngModel)]="tailor.dress[11].price" name="lehengaPrice" class="price-input">
+      <input
+        type="number"
+        placeholder="Price for Lehenga"
+        *ngIf="showLehengaPrice"
+        [ngModel]="getDressPrice('Lehenga')"
+        (ngModelChange)="setDressPrice('Lehenga', $event)"
+        name="lehengaPrice"
+        class="price-input"
+      />
 
       <!-- Other form fields -->
       <div id="tailorMap" style="height: 300px; width: 100%;"></div>

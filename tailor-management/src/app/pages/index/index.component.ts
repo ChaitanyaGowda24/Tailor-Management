@@ -153,6 +153,9 @@ openLoginPopup() {
 
   // Handle tailor registration
     onTailorRegister() {
+       // Filter out dresses with price 0
+      this.tailor.dress = this.tailor.dress.filter((d: any) => d.price > 0);
+
       // Set the location from the map
       if (this.latitude && this.longitude) {
         this.tailor.location = { latitude: this.latitude, longitude: this.longitude };
@@ -171,25 +174,49 @@ openLoginPopup() {
         }
       );
     }
+  getDressPrice(dressName: string): number {
+    const dress = this.tailor.dress.find((d: any) => d.name === dressName);
+    return dress ? dress.price : 0;
+  }
+
+  setDressPrice(dressName: string, price: number) {
+    const dress = this.tailor.dress.find((d: any) => d.name === dressName);
+    if (dress) {
+      dress.price = price;
+    } else {
+      this.tailor.dress.push({ name: dressName, price: price });
+    }
+  }
 
   togglePriceInput(dressType: string) {
+
+    const dressIndex = this.tailor.dress.findIndex((d: any) => d.name === dressType);
+
+      if (dressIndex === -1) {
+        // If the dress is not in the array, add it with a price of 0
+        this.tailor.dress.push({ name: dressType, price: 0 });
+      } else {
+        // If the dress is already in the array, remove it
+        this.tailor.dress.splice(dressIndex, 1);
+      }
+
     switch (dressType) {
       case 'Suits':
         this.showSuitsPrice = !this.showSuitsPrice;
         break;
-      case 'Ethnic Suit':
+      case 'EthnicSuit':
         this.showEthnicSuitPrice = !this.showEthnicSuitPrice;
         break;
       case 'Trousers':
         this.showTrousersPrice = !this.showTrousersPrice;
         break;
-      case 'Formal Shirts':
+      case 'FormalShirts':
         this.showFormalShirtsPrice = !this.showFormalShirtsPrice;
         break;
-      case 'Pathani Suit':
+      case 'PathaniSuit':
         this.showPathaniSuitPrice = !this.showPathaniSuitPrice;
         break;
-      case 'Desi Jacket':
+      case 'DesiJacket':
         this.showDesiJacketPrice = !this.showDesiJacketPrice;
         break;
       case 'Blouse':
@@ -198,13 +225,13 @@ openLoginPopup() {
       case 'Kurti':
         this.showKurtiPrice = !this.showKurtiPrice;
         break;
-      case 'Anarkali Suit':
+      case 'AnarkaliSuit':
         this.showAnarkaliSuitPrice = !this.showAnarkaliSuitPrice;
         break;
-      case 'Punjabi Suit':
+      case 'PunjabiSuit':
         this.showPunjabiSuitPrice = !this.showPunjabiSuitPrice;
         break;
-      case 'Chudidar Suit':
+      case 'ChudidarSuit':
         this.showChudidarSuitPrice = !this.showChudidarSuitPrice;
         break;
       case 'Lehenga':

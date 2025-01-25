@@ -32,11 +32,13 @@ public class Tailor {
 
     //private double revenue = 0;
 
+    @Column(columnDefinition = "int default 0")
     private int ordersCount = 0;
 
+    @Column(columnDefinition = "int default 0")
     private int completed = 0;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "varchar(255) default 'open'")
     private String status = "open";
 
 //    @Column(nullable = false)
@@ -46,7 +48,7 @@ public class Tailor {
     @JoinColumn(name = "tailor_id")
     private List<Dress> dress;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "varchar(255) default 'TAILOR'")
     private String role = "TAILOR";
 
     public Tailor() {

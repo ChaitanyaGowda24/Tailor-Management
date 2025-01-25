@@ -10,9 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/tailors")
 public class TailorController {
@@ -33,20 +37,34 @@ public class TailorController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerTailor(@RequestBody Tailor tailor) {
+    public ResponseEntity<Map<String, String>> registerTailor(@RequestBody Tailor tailor) {
         try {
+
+            tailor.setDress(tailor.getDress().stream()
+                    .filter(dress -> dress.getPrice() > 0)
+                    .collect(Collectors.toList()));
+
             // Delegate registration to the service layer
             Tailor registeredTailor = tailorService.addTailor(tailor);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Tailor successfully registered");
+            response.put("email", tailor.getEmail());
             // Return success response
-            return new ResponseEntity<>("Tailor successfully registered: " + registeredTailor.getEmail(), HttpStatus.CREATED);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (UsernameAlreadyTakenException | InvalidUsernameFormatException |
                  EmailAlreadyExistsException | InvalidEmailFormatException | InvalidPasswordFormatException ex) {
             // Handle validation exceptions and send BAD_REQUEST
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", ex.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
             // Handle unexpected errors
-            return new ResponseEntity<>("An unexpected error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "An unexpected error occurred: " + ex.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     // Get a tailor by ID
