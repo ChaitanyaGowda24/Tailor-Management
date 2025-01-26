@@ -11,6 +11,7 @@ import { UserLayoutComponent } from './shared/user-layout/user-layout.component'
 import { UserHomeComponent } from './pages/user-home/user-home.component';
 import { UserMyordersComponent } from './pages/user-myorders/user-myorders.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
 { path: '', component: IndexComponent },
@@ -20,7 +21,7 @@ const routes: Routes = [
 path: '',
 component: TailorLayoutComponent, // Use tailor-layout as a wrapper
 children: [
-{ path: 'tailor-home', component: TailorHomeComponent },
+{ path: 'tailor-home', component: TailorHomeComponent, canActivate: [AuthGuard] },
 { path: 'tailor-dashboard', component: TailorDashboardComponent },
 { path: 'tailor-profile', component: TailorProfileComponent },
 ],
@@ -29,7 +30,7 @@ children: [
 path: '',
 component: UserLayoutComponent, // Use tailor-layout as a wrapper
 children: [
-{ path: 'user-home', component: UserHomeComponent },
+{ path: 'user-home', component: UserHomeComponent, canActivate: [AuthGuard] },
 { path: 'user-myorders', component: UserMyordersComponent },
 { path: 'user-profile', component: UserProfileComponent },
 ],

@@ -6,8 +6,8 @@ import { User, LoginRequest } from '../../models/user.model'; // Import the mode
 import { TailorService } from '../../services/tailor.service'; // Import the TailorService
 import { Tailor, Location, Dress } from '../../models/tailor.model'; // Import the Tailor model
 import * as L from 'leaflet';
-
-
+import { jwtDecode } from 'jwt-decode';
+import { LoginService} from '../../services/login.service'; // Import the service and models
 
 
 @Component({
@@ -47,7 +47,8 @@ private isMapInitialized = false;
       dress: [],
     };
 
-constructor(private userService: UserService, private tailorService: TailorService) {}
+constructor(private userService: UserService, private tailorService: TailorService, private router: Router, private loginService: LoginService,) {}
+
 
 ngAfterViewChecked(): void {
     if (this.isTailorRegistrationPopupOpen && !this.isMapInitialized) {
@@ -135,20 +136,33 @@ openLoginPopup() {
     );
   }
 
-  // Handle user login
   onLogin() {
-    this.userService.loginUser(this.loginRequest).subscribe(
-      (response) => {
-        console.log('Login successful', response);
-        alert('Login successful!'); // Show success message
-        // Optionally, navigate to another page
-      },
-      (error) => {
-        console.error('Login failed', error);
-        alert('Login failed. Please check your credentials.'); // Show error message
+  this.loginService.loginUser(this.loginRequest).subscribe(
+    (response: string) => {
+      // Decode the JWT token
+      const decodedToken: any = jwtDecode(response);
+      const role = decodedToken.role; // Extract the role
+
+      // Store the token in local storage
+      localStorage.setItem('authToken', response);
+
+      // Navigate based on the role
+      if (role === 'USER') {
+        this.router.navigate(['/user-home']);
+      } else if (role === 'TAILOR') {
+        this.router.navigate(['/tailor-home']);
+      } else {
+        alert('Unknown role. Please contact support.');
       }
-    );
-  }
+    },
+    (error) => {
+      console.error('Login failed', error);
+      alert('Login failed. Please check your credentials.');
+    }
+  );
+}
+
+
 
 
   // Handle tailor registration

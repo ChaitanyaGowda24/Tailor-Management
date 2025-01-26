@@ -299,15 +299,17 @@ selectGender(gender: string): void {
     this.router.navigate([`/${route}`]);
   }
 
-  logout(): void {
-    this.router.navigate(['/landing']); // Redirect to landing page
-  }
+  logout() {
+  localStorage.removeItem('authToken'); // Clear the token
+  this.router.navigate(['/']); // Redirect to the login page
+}
 
   updateDressCategories(gender: string): void {
     this.dressCategories = gender === 'male' ? this.maleDresses : this.femaleDresses;
     this.selectedDress = null; // Reset selected dress when gender changes
     this.selectedShop = null; // Reset selected shop when gender changes
   }
+
 
   onDressSelect(dress: any): void {
     this.selectedDress = dress;

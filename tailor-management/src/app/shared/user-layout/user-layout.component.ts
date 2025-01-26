@@ -1,5 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
 selector: 'app-user-layout',
@@ -7,6 +8,7 @@ templateUrl: './user-layout.component.html',
 styleUrls: ['./user-layout.component.css'],
 })
 export class UserLayoutComponent implements AfterViewInit {
+constructor(private router: Router) {}
 @ViewChild('sidenav') sidenav!: MatSidenav;
 isProfileDropdownOpen = false; // Controls profile dropdown visibility
 isNotificationDropdownOpen = false; // Controls notification dropdown visibility
@@ -50,10 +52,10 @@ ngAfterViewInit() {
     this.isNotificationDropdownOpen = false; // Close notification dropdown
   }
 
-  logout() {
-    console.log('User logged out');
-    // Add logout logic here (e.g., clear session, navigate to login page)
-  }
+    logout() {
+  localStorage.removeItem('authToken'); // Clear the token
+  this.router.navigate(['/']); // Redirect to the login page
+}
 // Add this to the UserLayoutComponent class
 get unreadNotificationsCount(): number {
   return this.notifications.filter((notification) => !notification.read).length;
