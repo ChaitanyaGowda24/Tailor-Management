@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
+@CrossOrigin("*")
 public class OrderController {
 
     @Autowired
@@ -55,6 +56,13 @@ public class OrderController {
     @GetMapping("/shop/{shopId}")
     public ResponseEntity<List<Order>> getOrdersByShopId(@PathVariable("shopId") Long shopId) {
         List<Order> orders = orderService.getOrdersByShopId(shopId);
+        return ResponseEntity.ok(orders);
+    }
+
+    // Endpoint to fetch orders by shop ID
+    @GetMapping("/tailor/{tailorId}")
+    public ResponseEntity<List<Order>> getOrdersByTailorId(@PathVariable("tailorId") Long tailorId) {
+        List<Order> orders = orderService.getOrdersByTailorId(tailorId);
         return ResponseEntity.ok(orders);
     }
 

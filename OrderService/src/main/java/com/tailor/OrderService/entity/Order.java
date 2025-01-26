@@ -26,7 +26,8 @@ public class Order {
     public enum Status {
         PENDING,
         IN_PROGRESS,
-        COMPLETED
+        COMPLETED,
+        REJECTED
     }
 
     public Order(Long orderId, Long customerId, Long measureId, Long tailorId, Long shopId, Date orderDate, Date deliveryDate, Status status) {

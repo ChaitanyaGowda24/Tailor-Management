@@ -119,4 +119,8 @@ public class OrderService {
         return orderRepository.findByShopId(shopId);
     }
 
+    public List<Order> getOrdersByTailorId(Long tailorId) {
+        return orderRepository.findByTailorId(tailorId);
+    }
+
 }

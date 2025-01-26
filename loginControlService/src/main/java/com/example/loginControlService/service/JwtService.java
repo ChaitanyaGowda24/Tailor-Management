@@ -66,6 +66,7 @@ public class JwtService {
 
         // Add role to claims
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", user.getId());
         claims.put("role", user.getRole()); // Assuming `getRole()` returns the role of the user
 
         return createToken(claims, userName);

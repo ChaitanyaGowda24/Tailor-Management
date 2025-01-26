@@ -16,6 +16,15 @@ export class TailorService {
     return this.http.post<Tailor>(`${this.baseUrl}/register`, tailor);
   }
 
+// Fetch tailor details by ID
+  getTailorById(tailorId: number): Observable<Tailor> {
+    return this.http.get<Tailor>(`${this.baseUrl}/${tailorId}`);
+  }
+// Update tailor details
+  updateTailor(tailor: Tailor): Observable<Tailor> {
+    return this.http.put<Tailor>(`${this.baseUrl}/${tailor.tailorId}`, tailor);
+  }
+
 private tailorShopsData = [
 { id: 1, name: 'Tailor Shop A', category: ['Suits', 'Ethnic Suit'] ,
 priceList :[

@@ -139,12 +139,14 @@ openLoginPopup() {
   onLogin() {
   this.loginService.loginUser(this.loginRequest).subscribe(
     (response: string) => {
-      // Decode the JWT token
-      const decodedToken: any = jwtDecode(response);
-      const role = decodedToken.role; // Extract the role
+     // Decode the JWT token
+           const decodedToken: any = jwtDecode(response);
+           const role = decodedToken.role; // Extract the role
+           const id = decodedToken.id; // Extract the ID (tailor ID or customer ID)
 
-      // Store the token in local storage
-      localStorage.setItem('authToken', response);
+           // Store the token and ID in local storage
+           localStorage.setItem('authToken', response);
+           localStorage.setItem('id', id);
 
       // Navigate based on the role
       if (role === 'CUSTOMER') {
