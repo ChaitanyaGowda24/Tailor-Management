@@ -1,5 +1,6 @@
 package com.Tailor.UserService.controller;
 
+import com.Tailor.UserService.dtos.LoginDto;
 import com.Tailor.UserService.exceptions.InvalidCredentialsException;
 import com.Tailor.UserService.model.LoginRequest;
 import com.Tailor.UserService.model.User;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
@@ -36,6 +41,23 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User registeredUser = userService.registerUser(user); // Register the user
+
+        // Prepare login details to send to the Login Microservice
+        LoginDto loginDto = new LoginDto();
+        loginDto.setEmail(registeredUser.getEmail());
+        loginDto.setPassword(registeredUser.getPassword());
+        loginDto.setRole("CUSTOMER"); // Assuming the role is fixed for tailors
+
+// Send login details to the Login Microservice using WebClient
+        String url = "http://localhost:8086/login/saveLoginDetails"; // Ensure the URL is correct
+        LoginDto responsee = webClientBuilder.build()
+                .post()
+                .uri(url)
+                .header("Authorization", "Bearer ") // Add token if needed
+                .bodyValue(loginDto)
+                .retrieve()
+                .bodyToMono(LoginDto.class)
+                .block();
         return ResponseEntity.ok(registeredUser); // Return the registered user details
     }
 

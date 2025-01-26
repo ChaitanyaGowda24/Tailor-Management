@@ -147,7 +147,7 @@ openLoginPopup() {
       localStorage.setItem('authToken', response);
 
       // Navigate based on the role
-      if (role === 'USER') {
+      if (role === 'CUSTOMER') {
         this.router.navigate(['/user-home']);
       } else if (role === 'TAILOR') {
         this.router.navigate(['/tailor-home']);

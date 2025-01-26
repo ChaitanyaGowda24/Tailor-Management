@@ -1,5 +1,6 @@
 package com.tailor.TailorService.controller;
 
+import com.tailor.TailorService.dtos.LoginDto;
 import com.tailor.TailorService.entity.Dress;
 import com.tailor.TailorService.entity.LoginRequest;
 import com.tailor.TailorService.entity.Tailor;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +26,9 @@ public class TailorController {
 
     @Autowired
     private TailorService tailorService;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder; // Inject the WebClient bean
 
     // Login for a tailor
     @PostMapping("/login")
@@ -46,6 +52,24 @@ public class TailorController {
 
             // Delegate registration to the service layer
             Tailor registeredTailor = tailorService.addTailor(tailor);
+
+            // Prepare login details to send to the Login Microservice
+            LoginDto loginDto = new LoginDto();
+            loginDto.setEmail(registeredTailor.getEmail());
+            loginDto.setPassword(registeredTailor.getPassword());
+            loginDto.setRole("TAILOR"); // Assuming the role is fixed for tailors
+
+// Send login details to the Login Microservice using WebClient
+            String url = "http://localhost:8086/login/saveLoginDetails"; // Ensure the URL is correct
+            LoginDto responsee = webClientBuilder.build()
+                    .post()
+                    .uri(url)
+                    .header("Authorization", "Bearer ") // Add token if needed
+                    .bodyValue(loginDto)
+                    .retrieve()
+                    .bodyToMono(LoginDto.class)
+                    .block();
+
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "Tailor successfully registered");
