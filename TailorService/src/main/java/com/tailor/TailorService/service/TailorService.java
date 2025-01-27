@@ -8,6 +8,7 @@ import com.tailor.TailorService.repository.TailorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class TailorService {
     @Autowired
     private TailorRepository tailorRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Tailor loginUser(LoginRequest loginRequest) {
         // Get email and password from loginRequest
         String email = loginRequest.getEmail();
@@ -28,7 +32,7 @@ public class TailorService {
 
         Optional<Tailor> userOptional = tailorRepository.findByEmail(email);
 
-        if (userOptional.isPresent() && userOptional.get().getPassword().equals(password)) {
+        if (userOptional.isPresent() && passwordEncoder.matches(password, userOptional.get().getPassword())) {
             return userOptional.get(); // Login successful
         } else {
             throw new InvalidCredentialsException("Invalid credentials");

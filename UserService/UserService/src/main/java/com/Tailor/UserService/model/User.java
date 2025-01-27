@@ -27,6 +27,8 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    private String address;
+
     private String password;
     private String role;
 
@@ -44,14 +46,23 @@ public class User {
     }
 
 
-    public User(Long userId, String name, String email, String password, String role, String phoneNumber, Date createdAt) {
+    public User(Long userId, String name, String email, String address, String password, String role, String phoneNumber, Date createdAt) {
         this.userId = userId;
         this.name = name;
         this.email = email;
+        this.address = address;
         this.password = password;
         this.role = "CUSTOMER";
         this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Long getUserId() {

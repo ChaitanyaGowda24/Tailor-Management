@@ -26,6 +26,7 @@ private isMapInitialized = false;
   user: User = {
     name: '',
     email: '',
+    address: '',
     phoneNumber: '',
     password: '',
   };

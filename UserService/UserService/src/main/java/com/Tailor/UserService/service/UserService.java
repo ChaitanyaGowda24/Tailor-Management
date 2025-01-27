@@ -6,6 +6,7 @@ import com.Tailor.UserService.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -20,16 +21,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Inject PasswordEncoder
+
     public User loginUser(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
-        if (userOptional.isPresent() && userOptional.get().getPassword().equals(password)) {
+        if (userOptional.isPresent() && passwordEncoder.matches(password, userOptional.get().getPassword())) {
             return userOptional.get(); // Login successful
         } else {
             throw new InvalidCredentialsException("Invalid credentials");
         }
     }
-
 
 
     // Register a new user
@@ -100,6 +103,7 @@ public class UserService {
         return userRepository.findById(id).map(existingUser -> {
             existingUser.setName(updatedUser.getName());
             existingUser.setEmail(updatedUser.getEmail());
+            existingUser.setAddress(updatedUser.getAddress());
             existingUser.setPassword(updatedUser.getPassword());
             existingUser.setRole(updatedUser.getRole());
             existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
