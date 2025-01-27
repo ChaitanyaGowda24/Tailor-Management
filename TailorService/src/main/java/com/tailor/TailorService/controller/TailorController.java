@@ -125,8 +125,12 @@ public class TailorController {
     }
 
     @PutMapping("/put/{id}")
+    public ResponseEntity<?> updateTailor(@PathVariable Long id, @RequestBody Tailor updatedTailor) {
         try {
+            Tailor result = tailorService.updateTailor(id, updatedTailor);
+            return ResponseEntity.ok(result);
         } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
         }
     }
 

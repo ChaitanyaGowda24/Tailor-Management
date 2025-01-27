@@ -125,6 +125,7 @@ public class TailorService {
     // Update a tailor
     public Tailor updateTailor(Long tailorId, Tailor updatedTailor) {
         return tailorRepository.findById(tailorId).map(tailor -> {
+            // Update basic fields
             tailor.setName(updatedTailor.getName());
             tailor.setShopName(updatedTailor.getShopName());
             tailor.setLocation(updatedTailor.getLocation());
@@ -132,6 +133,12 @@ public class TailorService {
             tailor.setEmail(updatedTailor.getEmail());
             tailor.setPassword(updatedTailor.getPassword());
             tailor.setStatus(updatedTailor.getStatus());
+
+            // Update dress collection
+            List<Dress> existingDresses = tailor.getDress();
+            existingDresses.clear(); // Clear the old collection
+            existingDresses.addAll(updatedTailor.getDress()); // Add updated dresses
+
             return tailorRepository.save(tailor);
         }).orElseThrow(() -> new RuntimeException("Tailor not found with ID: " + tailorId));
     }

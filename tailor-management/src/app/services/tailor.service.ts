@@ -22,6 +22,7 @@ export class TailorService {
   }
 // Update tailor details
   updateTailor(tailor: Tailor): Observable<Tailor> {
+    return this.http.put<Tailor>(`${this.baseUrl}/put/${tailor.tailorId}`, tailor);
   }
 
 private tailorShopsData = [
