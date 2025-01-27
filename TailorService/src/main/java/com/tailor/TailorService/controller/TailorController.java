@@ -124,13 +124,9 @@ public class TailorController {
         return ResponseEntity.ok(tailorService.getShopByName(shopName));
     }
 
-    // Update a tailor
     @PutMapping("/put/{id}")
-    public ResponseEntity<Tailor> updateTailor(@PathVariable Long id, @RequestBody Tailor updatedTailor) {
         try {
-            return ResponseEntity.ok(tailorService.updateTailor(id, updatedTailor));
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
         }
     }
 

@@ -132,12 +132,9 @@ public class TailorService {
             tailor.setEmail(updatedTailor.getEmail());
             tailor.setPassword(updatedTailor.getPassword());
             tailor.setStatus(updatedTailor.getStatus());
-//            tailor.setIsDelivery(updatedTailor.getIsDelivery());
-            tailor.setDress(updatedTailor.getDress());
             return tailorRepository.save(tailor);
         }).orElseThrow(() -> new RuntimeException("Tailor not found with ID: " + tailorId));
     }
-
     // Delete a tailor by ID
     public void deleteTailor(Long tailorId) {
         tailorRepository.deleteById(tailorId);
