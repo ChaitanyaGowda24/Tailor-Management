@@ -122,7 +122,6 @@ public class TailorService {
         return tailorRepository.findByShopNameContainingIgnoreCase(shopName);
     }
 
-    // Update a tailor
     public Tailor updateTailor(Long tailorId, Tailor updatedTailor) {
         return tailorRepository.findById(tailorId).map(tailor -> {
             // Update basic fields
