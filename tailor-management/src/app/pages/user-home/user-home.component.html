@@ -12,6 +12,8 @@
     </div>
   </div>
 
+
+
   <!-- Dress Category Selection -->
   <div class="step">
     <h2>Select Dress Category</h2>
@@ -19,6 +21,31 @@
       <div *ngFor="let dress of dressCategories" class="dress-card" (click)="onDressSelect(dress)">
         <img [src]="dress.image" alt="{{ dress.name }}">
         <p>{{ dress.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dress Details Modal -->
+  <div *ngIf="isDressDetailsModalOpen" class="modal-overlay">
+    <div class="modal">
+      <!-- Close Button -->
+      <button class="close-button" (click)="closeDressDetailsModal()">&times;</button>
+
+      <!-- Dress Image -->
+      <div class="dress-image-container">
+        <img [src]="selectedDress.image" alt="{{ selectedDress.name }}" class="dress-image">
+      </div>
+
+      <!-- Dress Details -->
+      <div class="dress-details">
+        <h2><strong>{{ selectedDress.name }}</strong></h2>
+        <p><strong>Description:</strong> {{ selectedDress.description }}</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="modal-actions">
+        <button (click)="selectDress(selectedDress)">OK</button>
+        <button (click)="closeDressDetailsModal()">Cancel</button>
       </div>
     </div>
   </div>
@@ -52,28 +79,46 @@
 
 </div>
 
+
 <!-- Design Options Modal -->
 <div *ngIf="isDesignModalOpen" class="modal-overlay">
   <div class="modal">
     <h2>Select Design Options</h2>
     <form [formGroup]="designForm">
+      <!-- Yes/No Checkbox for Cloth Material -->
+      <div>
+        <label>Will you provide the cloth material?</label>
+        <label>
+          <input type="radio" formControlName="willProvideCloth" [value]="true" (change)="onClothMaterialChange(true)" /> Yes
+        </label>
+        <label>
+          <input type="radio" formControlName="willProvideCloth" [value]="false" (change)="onClothMaterialChange(false)" /> No
+        </label>
+      </div>
+
+      <!-- Additional Fields for Cloth Type and Color (if No is selected) -->
+      <div *ngIf="!designForm.value.willProvideCloth">
+        <label>Cloth Type:</label>
+        <input type="text" formControlName="clothType" placeholder="Enter cloth type" />
+
+        <label>Cloth Color:</label>
+        <input type="text" formControlName="clothColor" placeholder="Enter cloth color" />
+      </div>
+
+      <!-- Other Design Options -->
       <div *ngFor="let option of objectKeys(designOptions)">
         <label>{{ option }}</label>
-
-        <!-- Check if designOptions[option] is an array -->
         <div *ngIf="isArray(designOptions[option])">
           <select [formControlName]="option">
-            <option *ngFor="let value of designOptions[option]" [value]="value">
-              {{ value }}
-            </option>
+            <option *ngFor="let value of designOptions[option]" [value]="value">{{ value }}</option>
           </select>
         </div>
-
-        <!-- Check if designOptions[option] is a string -->
         <div *ngIf="!isArray(designOptions[option])">
           <input type="text" [formControlName]="option" />
         </div>
       </div>
+
+      <!-- Modal Buttons -->
       <button type="button" (click)="closeDesignModal()">Close</button>
       <button type="button" (click)="saveDesignOptions()">Save</button>
     </form>

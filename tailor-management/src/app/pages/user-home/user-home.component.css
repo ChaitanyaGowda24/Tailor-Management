@@ -476,3 +476,59 @@ h2 {
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Dress Image Container */
+.dress-image-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.dress-image {
+  max-width: 80%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Dress Details */
+.dress-details {
+  margin-bottom: 20px;
+}
+
+.dress-details h2 {
+  margin-bottom: 10px;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-actions button:first-child {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-actions button:last-child {
+  background-color: #6c757d;
+  color: white;
+}

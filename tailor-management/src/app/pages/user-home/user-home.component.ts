@@ -14,6 +14,11 @@ isShopDetailsModalOpen: boolean = false;
 selectedShopDetails: any = null;
 private map: any; // Leaflet map instance
 
+// Existing properties
+isDressDetailsModalOpen: boolean = false; // New property for dress details modal
+
+
+
 genderForm: FormGroup;
 dressCategories: any[] = [];
 tailorShops: any[] = [];
@@ -33,6 +38,7 @@ maleDresses = [
 id: 1,
 name: 'Suits',
 image: 'assets/images/suit.jpg',
+description:"A classic and timeless formal attire, perfect for business meetings, weddings, and upscale events. Available in various styles, including single-breasted and double-breasted designs. Tailor your suit to perfection with options for lapel types, sleeve lengths, and vent styles.",
 measurementFields: [
 { label: 'Chest', name: 'chest', placeholder: 'Chest in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -51,6 +57,7 @@ otherOptions: ['Ventless', 'Single Vent', 'Double Vent']
 id: 2,
 name: 'Ethnic Suit',
 image: 'assets/images/MensEthenicWear.jpg',
+description:"A traditional outfit combining elegance and cultural charm. Ideal for festive occasions, weddings, or celebrations. Features intricate embroidery and unique necklines, including mandarin collars and round necks.",
 measurementFields: [
 { label: 'Chest', name: 'chest', placeholder: 'Chest in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -70,6 +77,7 @@ otherOptions: ['Side Slits', 'Embroidered Designs']
 id: 3,
 name: 'Trousers',
 image: 'assets/images/MensTrousers.jpg',
+description: "Essential for every wardrobe, these trousers offer comfort and versatility. Choose from slim fit, regular fit, or relaxed fit styles to suit formal or casual occasions. Additional options include pleated, flat-front, and cuffed designs.",
 measurementFields: [
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
 { label: 'Hip', name: 'hip', placeholder: 'Hip in inches' },
@@ -86,6 +94,7 @@ otherOptions: ['Pleated', 'Flat Front', 'Cuffed Bottom']
 id: 4,
 name: 'Formal Shirts',
 image: 'assets/images/MensFormal.jpg',
+description:"Tailored for style and sophistication, formal shirts are perfect for office wear and special events. Options include spread collars, point collars, and mandarin collars, with pocket and button-down designs available.",
 measurementFields: [
 { label: 'Chest', name: 'chest', placeholder: 'Chest in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -105,6 +114,7 @@ otherOptions: ['Pocket', 'No Pocket', 'Button-down Collar']
 id: 5,
 name: 'Pathani Suit',
 image: 'assets/images/pathani suit.jpg',
+description:"A versatile and elegant traditional outfit that combines style with comfort. Often worn during cultural events or celebrations, it features unique necklines, embroidered designs, and practical additions like front or side pockets.",
 measurementFields: [
 { label: 'Chest', name: 'chest', placeholder: 'Chest in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -125,6 +135,7 @@ otherOptions: ['Button-down', 'Side Pockets', 'Front Pockets']
 id: 6,
 name: 'Desi Jacket',
 image: 'assets/images/jacket.jpg',
+description: "A stylish ethnic jacket that adds sophistication to any attire. Available in silk, cotton, or linen, these jackets come with various neck designs, button styles, and embroidered options for a refined look.",
 measurementFields: [
 { label: 'Chest', name: 'chest', placeholder: 'Chest in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -148,6 +159,7 @@ femaleDresses = [
 id: 1,
 name: 'Blouse',
 image: 'assets/images/WomensBlouse.jpg',
+description:"A chic and versatile upper garment, designed to pair with sarees or lehengas. Customizable with various sleeve types, necklines, and intricate back designs like keyhole or backless styles.",
 measurementFields: [
 { label: 'Bust', name: 'bust', placeholder: 'Bust in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -166,6 +178,7 @@ backDesign: ['Keyhole', 'Backless', 'Buttoned', 'Plain']
 id: 2,
 name: 'Kurti',
 image: 'assets/images/kurtha.jpg',
+description: "A comfortable and stylish outfit suitable for casual or semi-formal occasions. Available in straight, flared, or asymmetrical hemlines, with diverse necklines and sleeve options to match your preference.",
 measurementFields: [
 { label: 'Bust', name: 'bust', placeholder: 'Bust in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -183,6 +196,7 @@ hemline: ['Straight', 'Flared', 'Asymmetrical']
 id: 3,
 name: 'Anarkali Suit',
 image: 'assets/images/AnarkaliSuit.jpg',
+description:"A regal and elegant outfit, known for its high, medium, or low flare designs. Perfect for weddings and festive occasions, it features luxurious fabrics, ornate patterns, and stunning necklines.",
 measurementFields: [
 { label: 'Bust', name: 'bust', placeholder: 'Bust in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -201,6 +215,7 @@ neckline: ['Round Neck', 'Deep V Neck', 'Square Neck']
 id: 4,
 name: 'Punjabi Suit',
 image: 'assets/images/PunjabiSuits.jpg',
+description:"A vibrant and comfortable ethnic outfit comprising a kameez, salwar, and dupatta. Known for its unique salwar styles like Patiala and dhoti, it is adorned with embroidered or printed designs, complemented by elegant dupattas.",
 measurementFields: [
 { label: 'Bust', name: 'bust', placeholder: 'Bust in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -220,6 +235,7 @@ dupattaStyle: ['Heavy Work', 'Simple', 'Bordered']
 id: 5,
 name: 'Churidar Suit',
 image: 'assets/images/chudidarSuit.jpg',
+description:"A classic traditional outfit, perfect for formal events or celebrations. Features a snug-fitting churidar paired with a well-tailored kameez. Customizable with stylish necklines, sleeve designs, and churidar fits.",
 measurementFields: [
 { label: 'Bust', name: 'bust', placeholder: 'Bust in inches' },
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
@@ -239,6 +255,7 @@ neckline: ['Round Neck', 'Deep Neck', 'Boat Neck']
 id: 6,
 name: 'Lehenga',
 image: 'assets/images/Lehenga.jpg',
+description: "A grand and luxurious ethnic attire for weddings and festive events. Features flared, mermaid, or straight-cut lehengas, paired with exquisitely designed blouses. Dupattas with intricate embroidery add a touch of elegance.",
 measurementFields: [
 { label: 'Waist', name: 'waist', placeholder: 'Waist in inches' },
 { label: 'Hip', name: 'hip', placeholder: 'Hip in inches' },
@@ -272,11 +289,15 @@ constructor(private fb: FormBuilder,
     private router: Router // Inject Router
     ) {
    this.genderForm = this.fb.group({
+
          gender: ['male', Validators.required] // Default to 'male'
        });
-
     this.measurementForm = this.fb.group({});
-    this.designForm = this.fb.group({});
+    this.designForm = this.fb.group({
+               willProvideCloth: [true], // Default to "Yes"
+                     clothType: [''], // Will only be used if "No" is selected
+                     clothColor: [''],
+             });
   }
 
   ngOnInit(): void {
@@ -310,8 +331,22 @@ selectGender(gender: string): void {
     this.selectedShop = null; // Reset selected shop when gender changes
   }
 
+// Method to open the dress details modal
+  openDressDetailsModal(dress: any): void {
+    this.selectedDress = dress;
+    this.isDressDetailsModalOpen = true;
+  }
 
-  onDressSelect(dress: any): void {
+  // Method to close the dress details modal
+  closeDressDetailsModal(): void {
+    this.isDressDetailsModalOpen = false;
+    //this.selectedDress = null; // Reset selected dress
+  }
+
+
+
+  selectDress(dress: any): void {
+
     this.selectedDress = dress;
     this.designOptions = dress.designOptions; // Load design options specific to the dress
     // Fetch tailor shops that support the selected dress category
@@ -323,6 +358,7 @@ selectGender(gender: string): void {
                    price: this.getPriceForDress(shop, dress.name), // Add price for the selected dress
                  }));
 
+
         // Scroll to tailor shops section
               setTimeout(() => {
                 const element = document.getElementById('tailor-shops');
@@ -331,7 +367,13 @@ selectGender(gender: string): void {
                 }
               }, 100);
         });
+      this.closeDressDetailsModal();
+
   }
+
+   onDressSelect(dress: any): void {
+      this.openDressDetailsModal(dress);
+    }
 
   getPriceForDress(shop: any, dressName: string): number {
     // Assuming shop has a price list for different dresses
@@ -372,9 +414,26 @@ selectGender(gender: string): void {
     this.isDesignModalOpen = false;
   }
 
-  saveDesignOptions(): void {
-    this.closeDesignModal();
-  }
+  // Handle cloth material change
+    onClothMaterialChange(value: boolean) {
+      if (value) {
+        this.designForm.patchValue({ clothType: '', clothColor: '' }); // Clear inputs
+      }
+    }
+
+   saveDesignOptions() {
+      if (this.designForm.invalid) {
+        alert('Please fill all required fields.');
+        return;
+      }
+
+      const designData = this.designForm.value;
+      console.log('Design Data:', designData);
+
+      // Call the backend API to save the design options
+      // You can use a service to send the data to the backend
+      this.closeDesignModal();
+    }
 
   openMeasurementModal(): void {
     this.isMeasurementModalOpen = true;
