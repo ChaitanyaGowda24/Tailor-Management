@@ -22,9 +22,12 @@ export class UserService {
       responseType: 'text' as 'json', // Handle plain text response
     });
   }
-
+// Fetch user details by ID
+  getUserById(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${userId}`);
+  }
   // Get user details by ID
-  getUserDetails(id: number): Observable<User> {
+  getUserDetailsById(id: number): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/${id}`);
   }
 

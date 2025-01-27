@@ -1,3 +1,5 @@
+<!-- src/app/layouts/user-layout/user-layout.component.html -->
+
 <mat-sidenav-container class="sidenav-container">
   <!-- Sidebar -->
   <mat-sidenav #sidenav mode="side" opened class="custom-sidenav">
@@ -34,15 +36,13 @@
 
       <!-- Notification Icon -->
       <button mat-icon-button (click)="toggleNotificationDropdown()">
-        <mat-icon [matBadge]="unreadNotificationsCount" matBadgeColor="warn"
-        >notifications</mat-icon
-        >
+        <mat-icon [matBadge]="unreadNotificationsCount" matBadgeColor="warn">notifications</mat-icon>
       </button>
 
       <!-- Notification Dropdown -->
       <div class="notification-dropdown" *ngIf="isNotificationDropdownOpen">
         <div class="notification-item" *ngFor="let notification of notifications">
-          <span [class.read]="notification.read">{{ notification.message }}</span>
+          <span>{{ notification.message }}</span>
         </div>
         <button mat-button (click)="markAllAsRead()">Mark All as Read</button>
       </div>
@@ -50,7 +50,7 @@
       <!-- Profile Section -->
       <div class="profile-section" (click)="toggleProfileDropdown()">
         <div class="profile-info">
-          <span class="welcome-message">Welcome, {{ loggedInUser.name }}</span>
+          <span class="welcome-message">Welcome, {{ user?.name }}</span>
         </div>
         <div class="profile-logo">
           <img src="assets/profile-logo.png" alt="Profile Logo" />

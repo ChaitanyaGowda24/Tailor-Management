@@ -7,6 +7,7 @@ export class User {
   password: string;
   role?: string; // Optional for registration
   createdAt?: Date;
+  username? : string;
 
   constructor(
     name: string,
@@ -16,7 +17,8 @@ export class User {
     password: string,
     id?: number,
     role?: string,
-    createdAt?: Date
+    createdAt?: Date,
+    username? : string
   ) {
     this.id = id;
     this.name = name;
@@ -26,6 +28,7 @@ export class User {
     this.password = password;
     this.role = role;
     this.createdAt = createdAt;
+    this.username = username;
   }
 }
 

@@ -33,5 +33,17 @@ public class NotificationService {
         return notificationRepository.findByUserId(userId);
     }
 
+    public Notification readNotification(Long id, Status status){
+        Notification notification = notificationRepository.findById(id).orElse(null);
+        notification.setStatus(status);
+        return  notification;
+    }
+
+    public List<Notification> getUnreadNotificationsByUserId(Long userId) {
+        return notificationRepository.findByUserId(userId)
+                .stream()
+                .filter(notification -> notification.getStatus().equals(Status.UNREAD))
+                .toList();
+    }
 
 }
