@@ -23,7 +23,6 @@ public class OrderService {
     private WebClient.Builder webClientBuilder;
 
     public CustomerDetailsDTO fetchCustomerDetails(long customerId) {
-        String url = "http://localhost:8082/api/users/" + customerId;  // Replace with actual endpoint
         return webClientBuilder.build()
                 .get()
                 .uri(url)
@@ -33,7 +32,6 @@ public class OrderService {
     }
 
     public MeasurementDetailsDTO fetchMeasurementDetails(long measureId) {
-        String url = "http://localhost:8083/measurementById/" + measureId;  // Replace with actual endpoint
         return webClientBuilder.build()
                 .get()
                 .uri(url)

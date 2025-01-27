@@ -39,6 +39,15 @@
           <input matInput formControlName="phone" [disabled]="!isEditing" />
         </mat-form-field>
 
+        <!-- Shop Status -->
+        <mat-form-field appearance="outline">
+          <mat-label>Shop Status</mat-label>
+          <mat-select formControlName="shopStatus" [disabled]="!isEditing">
+            <mat-option value="open">Open</mat-option>
+            <mat-option value="close">Closed</mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <!-- Map Section -->
         <div class="map-section">
           <h3>Location</h3>
@@ -62,6 +71,9 @@
     <!-- Accepted Categories Section -->
     <div class="categories-section">
       <h2>Accepted Categories</h2>
+      <button mat-raised-button color="primary" (click)="openCategoryPopup()" *ngIf="isEditing">
+        Add/Edit Categories
+      </button>
       <div class="category-list">
         <div class="category-item" *ngFor="let category of acceptedCategories">
           <span class="category-name">{{ category.name }}</span>

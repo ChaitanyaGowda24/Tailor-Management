@@ -20,4 +20,9 @@ export class OrderService {
   updateOrderStatus(orderId: number, newStatus: string): Observable<Order> {
     return this.http.put<Order>(`${this.baseUrl}/${orderId}/status`, { status: newStatus });
   }
+
+ // Fetch order details by order ID
+  getOrderDetails(orderId: number): Observable<Order> {
+    return this.http.get<Order>(`${this.baseUrl}/${orderId}/details`);
+  }
 }

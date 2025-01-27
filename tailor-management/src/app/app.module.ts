@@ -34,6 +34,10 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { MatBadgeModule } from '@angular/material/badge';
 import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { CategoryPopupComponent } from './components/category-popup/category-popup.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,8 @@ import { HttpClientModule } from '@angular/common/http';
     UserHomeComponent,
     UserMyordersComponent,
     UserProfileComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
+    CategoryPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +78,9 @@ MatDialogModule,
 MatButtonModule,
 MatCardModule,
 MatBadgeModule,
-
+MatDatepickerModule, // Add this
+MatNativeDateModule, // Add this
+MatCheckboxModule,
 
   ],
   providers: [],

@@ -1,0 +1,73 @@
+.order-details-card {
+  max-width: 600px;
+  margin: auto;
+  padding: 16px;
+}
+
+mat-card-header {
+  background-color: #3f51b5;
+  color: white;
+  padding: 16px;
+  border-radius: 4px 4px 0 0;
+}
+
+mat-card-title {
+  font-size: 24px;
+}
+
+mat-card-subtitle {
+  color: white;
+}
+
+.dialog-content {
+  max-height: 60vh; /* Set a maximum height for the content */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 16px;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.section-title mat-icon {
+  margin-right: 8px;
+  color: #3f51b5;
+}
+
+.section-content {
+  padding-left: 32px; /* Indent content for better readability */
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #3f51b5;
+  margin-right: 8px;
+}
+
+.status-pending {
+  color: #ff9800;
+}
+
+.status-completed {
+  color: #4caf50;
+}
+
+.status-accepted {
+  color: #2196f3;
+}
+
+.status-rejected {
+  color: #f44336;
+}
+
+mat-dialog-actions {
+  padding: 16px;
+}

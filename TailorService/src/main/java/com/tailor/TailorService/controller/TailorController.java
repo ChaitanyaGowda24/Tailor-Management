@@ -108,7 +108,7 @@ public class TailorController {
     }
 
     // Update a tailor
-    @PutMapping("/{id}")
+    @PutMapping("/updateTailor/{id}")
     public ResponseEntity<Tailor> updateTailor(@PathVariable Long id, @RequestBody Tailor updatedTailor) {
         try {
             return ResponseEntity.ok(tailorService.updateTailor(id, updatedTailor));
