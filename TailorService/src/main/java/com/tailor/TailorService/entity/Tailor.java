@@ -1,6 +1,7 @@
 package com.tailor.TailorService.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
 
@@ -9,7 +10,8 @@ import java.util.List;
 public class Tailor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "custom-id-generator-reverse-date")
+    @GenericGenerator(name = "custom-id-generator-reverse-date", strategy = "com.tailor.TailorService.entity.CustomIdGeneratorReverseDate")
     private Long tailorId;
 
     @Column(nullable = false)
@@ -32,11 +34,11 @@ public class Tailor {
 
     //private double revenue = 0;
 
-    @Column(columnDefinition = "int default 0")
-    private int ordersCount = 0;
-
-    @Column(columnDefinition = "int default 0")
-    private int completed = 0;
+//    @Column(columnDefinition = "int default 0")
+//    private int ordersCount = 0;
+//
+//    @Column(columnDefinition = "int default 0")
+//    private int completed = 0;
 
     @Column(columnDefinition = "varchar(255) default 'open'")
     private String status = "open";
@@ -54,7 +56,7 @@ public class Tailor {
     public Tailor() {
     }
 
-    public Tailor(Long tailorId, String name, String shopName, Location location, String email, String phone, String password, int ordersCount, int completed, String status, List<Dress> dress) {
+    public Tailor(Long tailorId, String name, String shopName, Location location, String email, String phone, String password,String status, List<Dress> dress) {
         this.tailorId = tailorId;
         this.name = name;
         this.shopName = shopName;
@@ -62,8 +64,6 @@ public class Tailor {
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.ordersCount = ordersCount;
-        this.completed = completed;
         this.status = status;
         this.dress = dress;
 
@@ -125,21 +125,6 @@ public class Tailor {
         this.password = password;
     }
 
-    public int getOrdersCount() {
-        return ordersCount;
-    }
-
-    public void setOrdersCount(int ordersCount) {
-        this.ordersCount = ordersCount;
-    }
-
-    public int getCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(int completed) {
-        this.completed = completed;
-    }
 
     public String getStatus() {
         return status;

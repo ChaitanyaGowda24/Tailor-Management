@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
@@ -12,7 +13,8 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "custom-id-generator")
+    @GenericGenerator(name = "custom-id-generator", strategy = "com.Tailor.UserService.model.CustomIdGenerator")
     @Column(name = "user_id")
     private Long userId;
 

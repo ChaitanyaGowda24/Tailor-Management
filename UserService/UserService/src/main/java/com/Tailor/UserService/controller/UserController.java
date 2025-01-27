@@ -44,6 +44,7 @@ public class UserController {
 
         // Prepare login details to send to the Login Microservice
         LoginDto loginDto = new LoginDto();
+        loginDto.setId(registeredUser.getUserId());
         loginDto.setEmail(registeredUser.getEmail());
         loginDto.setPassword(registeredUser.getPassword());
         loginDto.setRole("CUSTOMER"); // Assuming the role is fixed for tailors

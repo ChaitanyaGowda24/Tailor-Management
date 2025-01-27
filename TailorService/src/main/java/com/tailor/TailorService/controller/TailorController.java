@@ -55,6 +55,7 @@ public class TailorController {
 
             // Prepare login details to send to the Login Microservice
             LoginDto loginDto = new LoginDto();
+            loginDto.setId(registeredTailor.getTailorId());
             loginDto.setEmail(registeredTailor.getEmail());
             loginDto.setPassword(registeredTailor.getPassword());
             loginDto.setRole("TAILOR"); // Assuming the role is fixed for tailors

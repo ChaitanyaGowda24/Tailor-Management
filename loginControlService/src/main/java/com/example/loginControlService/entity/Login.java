@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 @Entity
 public class Login {
     @Id
-    @GeneratedValue
     Long id;
     String email;
     String password;
