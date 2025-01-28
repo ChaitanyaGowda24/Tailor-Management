@@ -56,7 +56,7 @@
     <div *ngIf="selectedDress; else noCategorySelected">
       <div *ngIf="tailorShops.length > 0" class="shop-list">
         <div *ngFor="let shop of tailorShops" class="shop-card" (click)="onShopSelect(shop)">
-          <p><strong>Shop Name:</strong> {{ shop.name }}</p>
+          <p><strong>Shop Name:</strong> {{ shop.shopName }}</p>
           <p><strong>Price for {{ selectedDress.name }}:</strong> {{ shop.price }}</p>
           <button (click)="viewShopDashboard(shop.id); $event.stopPropagation()">View Shop</button>
         </div>

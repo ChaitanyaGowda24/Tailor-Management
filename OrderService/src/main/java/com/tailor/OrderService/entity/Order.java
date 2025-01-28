@@ -2,10 +2,12 @@ package com.tailor.OrderService.entity;
 
 import com.tailor.OrderService.dtos.OrderDetailsDTO;
 import jakarta.persistence.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 //import javax.persistence.*;
 import java.util.Date;
 
+@CrossOrigin("*")
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -16,7 +18,7 @@ public class Order {
     private Long customerId;
     private Long measureId;
     private Long tailorId;
-    private Long shopId;
+    private String shopName;
     private Date orderDate;
     private Date deliveryDate;
     private boolean willProvideCloth; // Whether the customer will provide the cloth material
@@ -66,12 +68,12 @@ public class Order {
         this.clothColor = clothColor;
     }
 
-    public Order(Long orderId, Long customerId, Long measureId, Long tailorId, Long shopId, Date orderDate, Date deliveryDate, boolean willProvideCloth, String clothType, String clothColor, Status status) {
+    public Order(Long orderId, Long customerId, Long measureId, Long tailorId, String shopName, Date orderDate, Date deliveryDate, boolean willProvideCloth, String clothType, String clothColor, Status status) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.measureId = measureId;
         this.tailorId = tailorId;
-        this.shopId = shopId;
+        this.shopName = shopName;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
         this.willProvideCloth = willProvideCloth;
@@ -91,12 +93,12 @@ public class Order {
         this.tailorId = tailorId;
     }
 
-    public Long getShopId() {
-        return shopId;
+    public String getShopName() {
+        return shopName;
     }
 
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 // Getters and Setters
 

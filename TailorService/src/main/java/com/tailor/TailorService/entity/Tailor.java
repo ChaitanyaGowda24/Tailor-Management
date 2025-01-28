@@ -2,9 +2,11 @@ package com.tailor.TailorService.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @Entity
 @Table(name = "tailor")
 public class Tailor {
@@ -32,21 +34,12 @@ public class Tailor {
     @Column(nullable = false)
     private String password;
 
-    //private double revenue = 0;
-
-//    @Column(columnDefinition = "int default 0")
-//    private int ordersCount = 0;
-//
-//    @Column(columnDefinition = "int default 0")
-//    private int completed = 0;
 
     @Column(columnDefinition = "varchar(255) default 'open'")
     private String status = "open";
 
-//    @Column(nullable = false)
-//    private String isDelivery;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "tailor_id")
     private List<Dress> dress;
 

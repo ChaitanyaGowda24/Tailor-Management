@@ -221,19 +221,19 @@ openLoginPopup() {
       case 'Suits':
         this.showSuitsPrice = !this.showSuitsPrice;
         break;
-      case 'EthnicSuit':
+      case 'Ethnic Suit':
         this.showEthnicSuitPrice = !this.showEthnicSuitPrice;
         break;
       case 'Trousers':
         this.showTrousersPrice = !this.showTrousersPrice;
         break;
-      case 'FormalShirts':
+      case 'Formal Shirts':
         this.showFormalShirtsPrice = !this.showFormalShirtsPrice;
         break;
-      case 'PathaniSuit':
+      case 'Pathani Suit':
         this.showPathaniSuitPrice = !this.showPathaniSuitPrice;
         break;
-      case 'DesiJacket':
+      case 'Desi Jacket':
         this.showDesiJacketPrice = !this.showDesiJacketPrice;
         break;
       case 'Blouse':
@@ -242,13 +242,13 @@ openLoginPopup() {
       case 'Kurti':
         this.showKurtiPrice = !this.showKurtiPrice;
         break;
-      case 'AnarkaliSuit':
+      case 'Anarkali Suit':
         this.showAnarkaliSuitPrice = !this.showAnarkaliSuitPrice;
         break;
-      case 'PunjabiSuit':
+      case 'Punjabi Suit':
         this.showPunjabiSuitPrice = !this.showPunjabiSuitPrice;
         break;
-      case 'ChudidarSuit':
+      case 'Chudidar Suit':
         this.showChudidarSuitPrice = !this.showChudidarSuitPrice;
         break;
       case 'Lehenga':

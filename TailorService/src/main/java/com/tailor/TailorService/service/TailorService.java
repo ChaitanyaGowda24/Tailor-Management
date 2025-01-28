@@ -141,6 +141,14 @@ public class TailorService {
             return tailorRepository.save(tailor);
         }).orElseThrow(() -> new RuntimeException("Tailor not found with ID: " + tailorId));
     }
+
+    public List<Tailor> getTailorsByDressName(String dressName) {
+        return tailorRepository.findTailorsByDressName(dressName);
+    }
+
+    public List<Tailor> getTailorsByDressId(Long dressId) {
+        return tailorRepository.findTailorsByDressId(dressId);
+    }
     // Delete a tailor by ID
     public void deleteTailor(Long tailorId) {
         tailorRepository.deleteById(tailorId);

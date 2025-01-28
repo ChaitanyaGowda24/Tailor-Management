@@ -134,6 +134,18 @@ public class TailorController {
         }
     }
 
+    @GetMapping("/by-dress-name")
+    public ResponseEntity<List<Tailor>> getTailorsByDressName(@RequestParam String dressName) {
+        List<Tailor> tailors = tailorService.getTailorsByDressName(dressName);
+        return ResponseEntity.ok(tailors);
+    }
+
+    @GetMapping("/by-dress-id")
+    public ResponseEntity<List<Tailor>> getTailorsByDressId(@RequestParam Long dressId) {
+        List<Tailor> tailors = tailorService.getTailorsByDressId(dressId);
+        return ResponseEntity.ok(tailors);
+    }
+
     // Delete a tailor by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTailor(@PathVariable Long id) {

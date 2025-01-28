@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router'; // Import Router
 import { TailorService } from 'src/app/services/tailor.service';
 import jsPDF from 'jspdf';
+import { Tailor, Dress } from '../../models/tailor.model';
 import * as L from 'leaflet';
 @Component({
 selector: 'app-order',
@@ -233,7 +234,7 @@ dupattaStyle: ['Heavy Work', 'Simple', 'Bordered']
 },
 {
 id: 5,
-name: 'Churidar Suit',
+name: 'Chudidar Suit',
 image: 'assets/images/chudidarSuit.jpg',
 description:"A classic traditional outfit, perfect for formal events or celebrations. Features a snug-fitting churidar paired with a well-tailored kameez. Customizable with stylish necklines, sleeve designs, and churidar fits.",
 measurementFields: [
@@ -273,13 +274,7 @@ dupattaStyle: ['Heavy Work', 'Plain', 'Bordered']
 }
 ];
 
-//   // Mock data for tailor shops
-//   tailorShopsData = [
-//     { id: 1, name: 'Tailor Shop A', category: ['Suits','Ethnic Wear'] },
-//     { id: 2, name: 'Tailor Shop B', category: ['Blouse', 'Lehenga','Churidar Suit']},
-//     { id: 3, name: 'Tailor Shop C', category: ['Blouse', 'Lehenga','Churidar Suit']},
-//     // Add other tailor shops here...
-//   ];
+
 
 measurementFields: any[] = [];
 designForm: FormGroup;
@@ -345,45 +340,63 @@ selectGender(gender: string): void {
 
 
 
-  selectDress(dress: any): void {
+ selectDress(dress: any): void {
 
-    this.selectedDress = dress;
-    this.designOptions = dress.designOptions; // Load design options specific to the dress
-    // Fetch tailor shops that support the selected dress category
-        this.tailorService.getTailorShops().subscribe((shops) => {
-          this.tailorShops = shops
-                 .filter((shop) => shop.category.includes(dress.name))
-                 .map((shop) => ({
-                   ...shop,
-                   price: this.getPriceForDress(shop, dress.name), // Add price for the selected dress
-                 }));
+  this.selectedDress = dress;
+  this.designOptions = dress.designOptions; // Load design options specific to the dress
+
+  // Fetch tailor shops that support the selected dress category using getTailorsByDressName
+  this.tailorService.getTailorsByDressName(dress.name).subscribe((tailors) => {
+    this.tailorShops = tailors.map((tailor) => {
+      const price = this.getPriceForDress(tailor, dress.name);
+      console.log(price);
+
+      return {
+        ...tailor,
+        price, // Add price for the selected dress
+      };
+    });
+
+    // Scroll to tailor shops section
+    setTimeout(() => {
+      const element = document.getElementById('tailor-shops');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  });
 
 
-        // Scroll to tailor shops section
-              setTimeout(() => {
-                const element = document.getElementById('tailor-shops');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }, 100);
-        });
-      this.closeDressDetailsModal();
+   this.closeDressDetailsModal();
+ }
 
-  }
 
    onDressSelect(dress: any): void {
       this.openDressDetailsModal(dress);
     }
 
-  getPriceForDress(shop: any, dressName: string): number {
-    // Assuming shop has a price list for different dresses
-    // Replace the logic with your actual data structure
-    if (shop && shop.priceList) {
-      const dressPrice = shop.priceList.find((item: any) => item.name === dressName);
-      return dressPrice ? dressPrice.price : 0; // Return the price if found, otherwise 0
-    }
-    return 0; // Default price if no price list is available
+getPriceForDress(tailor: Tailor, dressName: string): number {
+  console.log(tailor);
+  if (!tailor.dress || tailor.dress.length === 0) {
+    console.log("No dresses available for tailor:", tailor.name);
+    return 0; // Return 0 if there are no dresses
   }
+
+  const dress = tailor.dress.find((d: Dress) => d.name === dressName);
+  if (dress) {
+    console.log(`Price for ${dressName} in ${tailor.shopName}:`, dress.price);
+  } else {
+    console.log(`Dress ${dressName} not found in ${tailor.shopName}`);
+  }
+  return dress ? dress.price : 0; // Return the price if found, otherwise 0
+}
+
+
+
+//     getPriceForDress(tailor: Tailor, dressName: string): number {
+//       const dress = tailor.dresses.find((d: Dress) => d.name === dressName);
+//       return dress ? dress.price : 0;
+//     }
 
 // Update the viewShopDashboard method to open the modal instead of navigating
   viewShopDashboard(shopId: number): void {
@@ -392,6 +405,8 @@ selectGender(gender: string): void {
       this.openShopDetailsModal(shop);
     }
   }
+
+
 
   onShopSelect(shop: any): void {
     this.selectedShop = shop;

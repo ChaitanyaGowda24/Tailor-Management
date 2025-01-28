@@ -130,8 +130,8 @@ public class OrderService {
     }
 
     //Get Order by shopId
-    public List<Order> getOrdersByShopId(Long shopId) {
-        return orderRepository.findByShopId(shopId);
+    public List<Order> getOrdersByShopName(String shopName) {
+        return orderRepository.findByShopName(shopName);
     }
 
     public List<Order> getOrdersByTailorId(Long tailorId) {

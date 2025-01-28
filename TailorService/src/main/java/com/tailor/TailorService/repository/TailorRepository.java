@@ -18,4 +18,7 @@ public interface TailorRepository extends JpaRepository<Tailor, Long> {
     // Search by email for login purposes
     Optional<Tailor> findByEmail(String email);
 
+    List<Tailor> findTailorsByDressName(String dressName);
+
+    List<Tailor> findTailorsByDressId(Long dressId);
 }
