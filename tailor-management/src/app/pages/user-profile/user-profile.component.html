@@ -3,7 +3,7 @@
   <div class="profile-header">
     <h1>User Profile</h1>
     <button mat-raised-button color="primary" (click)="toggleEdit()">
-      {{ isEditing ? 'Cancel' : 'Edit Details' }}
+      {{ isEditing ? 'Cancel' : 'Edit Profile' }}
     </button>
   </div>
 
@@ -30,17 +30,15 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Phone</mat-label>
-          <input matInput formControlName="phone" [disabled]="!isEditing" />
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" [disabled]="!isEditing" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber" [disabled]="!isEditing" />
         </mat-form-field>
       </form>
-    </div>
-
-    <!-- Change Password Button -->
-    <div class="change-password-section">
-      <button mat-raised-button color="accent" (click)="openChangePasswordDialog()">
-        Change Password
-      </button>
     </div>
   </div>
 
