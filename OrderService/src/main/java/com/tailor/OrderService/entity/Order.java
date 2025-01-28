@@ -19,18 +19,54 @@ public class Order {
     private Long shopId;
     private Date orderDate;
     private Date deliveryDate;
+    private boolean willProvideCloth; // Whether the customer will provide the cloth material
+    private String clothType; // Type of cloth (if customer does not provide)
+    private String clothColor; // Color of cloth (if customer does not provide)
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     public enum Status {
+        YET_TO_PICK_UP,
         PENDING,
         IN_PROGRESS,
         COMPLETED,
         REJECTED
     }
 
-    public Order(Long orderId, Long customerId, Long measureId, Long tailorId, Long shopId, Date orderDate, Date deliveryDate, Status status) {
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public boolean isWillProvideCloth() {
+        return willProvideCloth;
+    }
+
+    public void setWillProvideCloth(boolean willProvideCloth) {
+        this.willProvideCloth = willProvideCloth;
+    }
+
+    public String getClothType() {
+        return clothType;
+    }
+
+    public void setClothType(String clothType) {
+        this.clothType = clothType;
+    }
+
+    public String getClothColor() {
+        return clothColor;
+    }
+
+    public void setClothColor(String clothColor) {
+        this.clothColor = clothColor;
+    }
+
+    public Order(Long orderId, Long customerId, Long measureId, Long tailorId, Long shopId, Date orderDate, Date deliveryDate, boolean willProvideCloth, String clothType, String clothColor, Status status) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.measureId = measureId;
@@ -38,6 +74,9 @@ public class Order {
         this.shopId = shopId;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
+        this.willProvideCloth = willProvideCloth;
+        this.clothType = clothType;
+        this.clothColor = clothColor;
         this.status = status;
     }
 

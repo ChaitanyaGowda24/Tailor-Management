@@ -294,7 +294,7 @@ constructor(private fb: FormBuilder,
        });
     this.measurementForm = this.fb.group({});
     this.designForm = this.fb.group({
-               willProvideCloth: [true], // Default to "Yes"
+               willProvideCloth: [true, Validators.required], // Default to "Yes"
                      clothType: [''], // Will only be used if "No" is selected
                      clothColor: [''],
              });
@@ -402,7 +402,7 @@ selectGender(gender: string): void {
     this.isDesignModalOpen = true;
 
     // Reset and initialize the design form
-    this.designForm = this.fb.group({});
+    //this.designForm = this.fb.group({});
     if (this.designOptions) {
       Object.keys(this.designOptions).forEach((key) => {
         this.designForm.addControl(key, this.fb.control('', Validators.required));

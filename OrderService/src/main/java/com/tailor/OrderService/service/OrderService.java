@@ -66,6 +66,21 @@ public class OrderService {
 
     // Create a new order
     public Order createOrder(Order order) {
+        Order newOrder = new Order();
+        order.setWillProvideCloth(order.isWillProvideCloth());
+
+        if (!order.isWillProvideCloth()) {
+            order.setClothType(order.getClothType());
+            order.setClothColor(order.getClothColor());
+        }
+
+        // Set order status based on whether the customer will provide the cloth material
+        if (order.isWillProvideCloth()) {
+            order.setStatus(Order.Status.YET_TO_PICK_UP);
+        } else {
+            order.setStatus(Order.Status.PENDING);
+        }
+
         return orderRepository.save(order);
     }
 

@@ -85,19 +85,33 @@
   <div class="modal">
     <h2>Select Design Options</h2>
     <form [formGroup]="designForm">
-      <!-- Yes/No Checkbox for Cloth Material -->
-      <div>
-        <label>Will you provide the cloth material?</label>
-        <label>
-          <input type="radio" formControlName="willProvideCloth" [value]="true" (change)="onClothMaterialChange(true)" /> Yes
-        </label>
-        <label>
-          <input type="radio" formControlName="willProvideCloth" [value]="false" (change)="onClothMaterialChange(false)" /> No
-        </label>
+      <!-- Yes/No Radio Buttons for Cloth Material -->
+      <div class="radio-group">
+        <label class="radio-label">Will you provide the cloth material?</label>
+        <div class="radio-options">
+          <label class="radio-option">
+            <input
+              type="radio"
+              formControlName="willProvideCloth"
+              [value]="true"
+              (change)="onClothMaterialChange(true)"
+            />
+            <span>Yes</span>
+          </label>
+          <label class="radio-option">
+            <input
+              type="radio"
+              formControlName="willProvideCloth"
+              [value]="false"
+              (change)="onClothMaterialChange(false)"
+            />
+            <span>No</span>
+          </label>
+        </div>
       </div>
 
       <!-- Additional Fields for Cloth Type and Color (if No is selected) -->
-      <div *ngIf="!designForm.value.willProvideCloth">
+      <div *ngIf="!designForm.value.willProvideCloth" class="cloth-fields">
         <label>Cloth Type:</label>
         <input type="text" formControlName="clothType" placeholder="Enter cloth type" />
 
@@ -106,7 +120,7 @@
       </div>
 
       <!-- Other Design Options -->
-      <div *ngFor="let option of objectKeys(designOptions)">
+      <div *ngFor="let option of objectKeys(designOptions)" class="design-option">
         <label>{{ option }}</label>
         <div *ngIf="isArray(designOptions[option])">
           <select [formControlName]="option">
@@ -119,11 +133,14 @@
       </div>
 
       <!-- Modal Buttons -->
-      <button type="button" (click)="closeDesignModal()">Close</button>
-      <button type="button" (click)="saveDesignOptions()">Save</button>
+      <div class="modal-actions">
+        <button type="button" (click)="closeDesignModal()">Close</button>
+        <button type="button" (click)="saveDesignOptions()">Save</button>
+      </div>
     </form>
   </div>
 </div>
+
 
 <!-- Measurement Modal -->
 <div *ngIf="isMeasurementModalOpen" class="modal-overlay">
