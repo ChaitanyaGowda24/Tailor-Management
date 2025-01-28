@@ -31,7 +31,7 @@
         <option value="">All Statuses</option>
         <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
       </select>
-      <input type="text" [(ngModel)]="filterShopName" placeholder="Shop Name" />
+      <input type="text" [(ngModel)]="filterShopName" placeholder="Customer Name" />
       <input type="text" [(ngModel)]="filterTailorId" placeholder="Tailor ID" />
       <button (click)="applyFilters()">Apply Filters</button>
       <button (click)="clearFilters()">Clear Filters</button>
@@ -46,9 +46,9 @@
       <tr>
         <th>Order ID</th>
         <th>Tailor ID</th>
-        <th>Shop Name</th>
+        <th>Customer Name</th>
         <th>Ordered On</th>
-        <th>Delivered On</th>
+        <th>Delivery Date</th>
         <th>Status</th>
         <th>Actions</th>
       </tr>
@@ -56,11 +56,11 @@
       <tbody>
       <tr *ngFor="let order of filteredOrders">
         <td>{{ order.orderId }}</td>
-        <td>{{ order.tailorId }}</td>
-        <td>{{ order.shopName }}</td>
-        <td>{{ order.orderedOn | date }}</td>
-        <td>{{ order.deliveredOn | date }}</td>
-        <td>{{ order.status }}</td>
+        <td>{{ order.tailorId !== undefined && order.tailorId !== null ? order.tailorId : 'No Tailor ID' }}</td>
+        <td>{{ order.customerDetails.name || 'Loading...' }}</td>
+        <td>{{ order.orderDate | date }}</td>
+        <td>{{ order.deliveryDate | date }}</td>
+        <td>{{ order.status}} </td>
         <td>
           <button (click)="viewOrderDetails(order)">View Details</button>
         </td>
@@ -75,19 +75,67 @@
   <div class="modal">
     <button class="close-button" (click)="closeOrderDetailsModal()">&times;</button>
     <h2>Order Details</h2>
-    <div *ngIf="selectedOrder">
-      <p><strong>Order ID:</strong> {{ selectedOrder.orderId }}</p>
-      <p><strong>Tailor ID:</strong> {{ selectedOrder.tailorId }}</p>
-      <p><strong>Shop Name:</strong> {{ selectedOrder.shopName }}</p>
-      <p><strong>Ordered On:</strong> {{ selectedOrder.orderedOn | date }}</p>
-      <p><strong>Delivered On:</strong> {{ selectedOrder.deliveredOn | date }}</p>
-      <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
 
-      <h3>Dress Details</h3>
-      <p><strong>Category:</strong> {{ selectedOrder.dressCategory }}</p>
-      <p><strong>Measurements:</strong> {{ selectedOrder.measurements | json }}</p>
-      <p><strong>Design:</strong> {{ selectedOrder.design | json }}</p>
-      <p><strong>Price:</strong> ₹{{ selectedOrder.price }}</p>
+    <!-- Tracking Bar -->
+    <div class="tracking-bar">
+      <div class="tracking-steps">
+        <div class="step" [class.active]="isStepActive('YET_TO_PICKUP')">
+          <span>Yet to Pickup</span>
+          <div class="circle" [class.blinking]="isStepActive('YET_TO_PICKUP')"></div>
+        </div>
+        <div class="step" [class.active]="isStepActive('PICKED_UP')">
+          <span>Picked Up</span>
+          <div class="circle" [class.blinking]="isStepActive('PICKED_UP')"></div>
+        </div>
+        <div class="step" [class.active]="isStepActive('IN_PROGRESS')">
+          <span>In Progress</span>
+          <div class="circle" [class.blinking]="isStepActive('IN_PROGRESS')"></div>
+        </div>
+        <div class="step" [class.active]="isStepActive('COMPLETED')">
+          <span>Completed</span>
+          <div class="circle" [class.blinking]="isStepActive('COMPLETED')"></div>
+        </div>
+        <div class="step" [class.active]="isStepActive('DELIVERED')">
+          <span>Delivered</span>
+          <div class="circle" [class.blinking]="isStepActive('DELIVERED')"></div>
+        </div>
+        <div class="step" [class.active]="isStepActive('REJECTED')">
+          <span>Rejected</span>
+          <div class="circle" [class.blinking]="isStepActive('REJECTED')"></div>
+        </div>
+
+        <!-- Scissors GIF Effect -->
+        <div [ngClass]="{'scissors-effect': true, 'rejected': selectedOrder?.status === 'REJECTED'}"></div>
+
+        <!-- Green/Red Line -->
+        <div class="status-line" [ngClass]="{'completed': selectedOrder?.status !== 'REJECTED'}"></div>
+      </div>
+    </div>
+
+
+    <div *ngIf="selectedOrder" class="order-details-content">
+      <div class="order-info">
+        <p><strong>Order ID:</strong> {{ selectedOrder.orderId }}</p>
+        <p><strong>Tailor ID:</strong> {{ selectedOrder.tailorId || 'N/A' }}</p>
+        <p><strong>Customer Name:</strong> {{ selectedOrder.customerDetails.name }}</p>
+        <p><strong>Email:</strong> {{ selectedOrder.customerDetails.email }}</p>
+        <p><strong>Phone Number:</strong> {{ selectedOrder.customerDetails.phoneNumber }}</p>
+        <p><strong>Ordered On:</strong> {{ selectedOrder.orderDate | date }}</p>
+        <p><strong>Delivery Date:</strong> {{ selectedOrder.deliveryDate | date }}</p>
+        <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
+      </div>
+
+      <!-- Measurement Details -->
+      <div class="measurement-details">
+        <h3>Measurement Details</h3>
+        <p><strong>Gender:</strong> {{ selectedOrder.measurementDetails.gender }}</p>
+        <p><strong>Category:</strong> {{ selectedOrder.measurementDetails.category }}</p>
+        <p><strong>Design:</strong> {{ selectedOrder.measurementDetails.design }}</p>
+        <p><strong>Measurements:</strong> {{ selectedOrder.measurementDetails.measurements }}</p>
+        <p><strong>Price:</strong> ₹{{ selectedOrder.measurementDetails.price }}</p>
+      </div>
+      </div>
     </div>
   </div>
-</div>
+
+

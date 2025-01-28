@@ -17,6 +17,15 @@ public class OrderDetailsDTO {
     private boolean willProvideCloth;
     private String clothType;
     private String clothColor;
+    private Long tailorId;
+
+    public Long getTailorId() {
+        return tailorId;
+    }
+
+    public void setTailorId(Long tailorId) {
+        this.tailorId = tailorId;
+    }
 
     public boolean isWillProvideCloth() {
         return willProvideCloth;
@@ -61,7 +70,7 @@ public class OrderDetailsDTO {
         this.measurementDetails = measurementDetails;
     }
 
-    public OrderDetailsDTO(Long orderId, Date orderDate, CustomerDetailsDTO customerDetails, MeasurementDetailsDTO measurementDetails, Order.Status status, Date deliveryDate, boolean willProvideCloth, String clothType, String clothColor) {
+    public OrderDetailsDTO(Long orderId, Date orderDate, CustomerDetailsDTO customerDetails, MeasurementDetailsDTO measurementDetails, Order.Status status, Date deliveryDate, boolean willProvideCloth, String clothType, String clothColor, Long tailorId) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerDetails = customerDetails;
@@ -71,6 +80,7 @@ public class OrderDetailsDTO {
         this.willProvideCloth = willProvideCloth;
         this.clothType = clothType;
         this.clothColor = clothColor;
+        this.tailorId = tailorId;
     }
 
     public Long getOrderId() {

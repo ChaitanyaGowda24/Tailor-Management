@@ -51,6 +51,7 @@ public class OrderService {
             MeasurementDetailsDTO measurementDetails = fetchMeasurementDetails(order.getMeasureId());
 
             OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+            orderDetailsDTO.setTailorId(order.getTailorId());
             orderDetailsDTO.setOrderId(order.getOrderId());
             orderDetailsDTO.setCustomerDetails(customerDetails);
             orderDetailsDTO.setMeasurementDetails(measurementDetails);
@@ -137,5 +138,10 @@ public class OrderService {
     public List<Order> getOrdersByTailorId(Long tailorId) {
         return orderRepository.findByTailorId(tailorId);
     }
+
+    public List<Order> getOrdersByCustomerId(Long customerId) {
+        return orderRepository.findByCustomerId(customerId);
+    }
+
 
 }

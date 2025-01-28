@@ -1,126 +1,215 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js'; // Import Chart.js
+import { Chart } from 'chart.js';
+import { OrderService } from 'src/app/services/order.service';
+import { Order, CustomerDetails, MeasurementDetails } from '../../models/order.model';
 
 @Component({
-selector: 'app-user-myorders',
-templateUrl: './user-myorders.component.html',
-styleUrls: ['./user-myorders.component.css']
+  selector: 'app-user-myorders',
+  templateUrl: './user-myorders.component.html',
+  styleUrls: ['./user-myorders.component.css']
 })
 export class UserMyordersComponent implements OnInit {
-// Filter Variables
-filterOrderId: string = '';
-filterStatus: string = '';
-filterShopName: string = '';
-filterTailorId: string = '';
+  // Filter Variables
+  filterOrderId: string = '';
+  filterStatus: string = '';
+  filterShopName: string = '';
+  filterTailorId: string = '';
 
-// Status Options for Filter
-statusOptions: string[] = ['Pending', 'In Progress', 'Completed', 'Cancelled'];
+  // Status Options for Filter
+  statusOptions: string[] = ['PENDING', 'COMPLETED', 'ACCEPTED', 'REJECTED', 'IN_PROGRESS', 'YET_TO_PICKUP', 'PICKED_UP'];
 
-// Orders Data (Mock Data)
-orders: any[] = [
-{
-orderId: '12345',
-tailorId: '101',
-shopName: 'Tailor Shop A',
-orderedOn: new Date('2023-10-01'),
-      deliveredOn: new Date('2023-10-10'),
-      status: 'Completed',
-      dressCategory: 'Suits',
-      measurements: { chest: 40, waist: 32, length: 42 },
-      design: { neckType: 'Notch Lapel', sleeveType: 'Full Sleeve' },
-      price: 2000
-    },
-    {
-      orderId: '67890',
-      tailorId: '102',
-      shopName: 'Tailor Shop B',
-      orderedOn: new Date('2023-10-05'),
-      deliveredOn: null,
-      status: 'In Progress',
-      dressCategory: 'Blouse',
-      measurements: { bust: 36, waist: 30, length: 38 },
-      design: { sleeveType: 'Half Sleeve', neckline: 'Round Neck' },
-      price: 1500
-    }
-  ];
-
-  // Filtered Orders
-  filteredOrders: any[] = this.orders;
+  // Orders Data
+  orders: Order[] = [];
+  filteredOrders: Order[] = [];
+  orderDetailsMap: Map<number, Order> = new Map();
 
   // Order Details Modal
   isOrderDetailsModalOpen: boolean = false;
-  selectedOrder: any = null;
+  selectedOrder: Order | null = null;
 
   // Dashboard Data
   totalOrders: number = 0;
   statusChart: any;
 
+  constructor(private orderService: OrderService) {}
+
   ngOnInit(): void {
-    this.totalOrders = this.orders.length;
-    this.applyFilters();
-    this.createStatusChart();
+    const customerId = localStorage.getItem('id');
+    if (customerId) {
+      this.loadOrders(+customerId);
+    }
   }
 
-  // Apply Filters
-  applyFilters(): void {
-    this.filteredOrders = this.orders.filter(order => {
-      return (
-        (!this.filterOrderId || order.orderId.includes(this.filterOrderId)) &&
-        (!this.filterStatus || order.status === this.filterStatus) &&
-        (!this.filterShopName || order.shopName.toLowerCase().includes(this.filterShopName.toLowerCase())) &&
-        (!this.filterTailorId || order.tailorId.includes(this.filterTailorId))
-      );
+  loadOrders(customerId: number): void {
+    this.orderService.getOrdersByCustomerId(customerId).subscribe({
+      next: (orders) => {
+        console.log('Orders from backend:', orders);  // Check if tailorId is here
+
+        this.orders = orders.map(order => ({
+          orderId: order.orderId,
+          customerId: order.customerId || customerId,
+          tailorId: order.tailorId,  // Ensure this field is populated
+          status: order.status,
+          orderDate: order.orderDate,
+          deliveryDate: order.deliveryDate,
+          customerDetails: order.customerDetails || {
+            userId: customerId,
+            name: 'Loading...',
+            email: '',
+            phoneNumber: '',
+            role: '',
+            createdAt: '',
+            password: ''
+          },
+          measurementDetails: order.measurementDetails || {
+            measurement_id: 0,
+            userId: customerId,
+            gender: '',
+            category: '',
+            design: '',
+            measurements: '',
+            price: 0
+          }
+        }));
+
+        this.filteredOrders = [...this.orders];
+        this.totalOrders = orders.length;
+        this.createStatusChart();
+
+        // Load full details for each order
+        this.orders.forEach(order => {
+          this.loadOrderDetails(order.orderId);
+          console.log(order);  // Check if tailorId is being set correctly
+        });
+      },
+      error: (error) => {
+        console.error('Error loading orders:', error);
+      }
     });
   }
 
-  // Clear Filters
+
+  loadOrderDetails(orderId: number): void {
+    this.orderService.getOrderDetails(orderId).subscribe({
+      next: (orderDetails) => {
+        console.log('Order Details:', orderDetails);  // Check if tailorId is in orderDetails
+
+        // Update both orders and filteredOrders arrays
+        const updateOrderInArray = (arr: Order[]) => {
+          const index = arr.findIndex(o => o.orderId === orderId);
+          if (index !== -1) {
+            arr[index] = { ...orderDetails };
+          }
+        };
+
+        updateOrderInArray(this.orders);
+        updateOrderInArray(this.filteredOrders);
+        this.orderDetailsMap.set(orderId, orderDetails);
+      },
+      error: (error) => {
+        console.error(`Error loading details for order ${orderId}:`, error);
+      }
+    });
+  }
+
+  applyFilters(): void {
+    this.filteredOrders = this.orders.filter(order => {
+      const orderIdMatch = !this.filterOrderId ||
+        order.orderId.toString().includes(this.filterOrderId);
+
+      const statusMatch = !this.filterStatus ||
+        order.status === this.filterStatus;
+
+      const tailorIdMatch = !this.filterTailorId ||
+        (order.tailorId && order.tailorId.toString().includes(this.filterTailorId));
+
+      const shopNameMatch = !this.filterShopName ||
+        (order.customerDetails && order.customerDetails.name.toLowerCase().includes(this.filterShopName.toLowerCase()));
+
+      return orderIdMatch && statusMatch && tailorIdMatch && shopNameMatch;
+    });
+  }
+
   clearFilters(): void {
     this.filterOrderId = '';
     this.filterStatus = '';
     this.filterShopName = '';
     this.filterTailorId = '';
-    this.applyFilters();
+    this.filteredOrders = [...this.orders];
   }
 
-  // View Order Details
-  viewOrderDetails(order: any): void {
-    this.selectedOrder = order;
-    this.isOrderDetailsModalOpen = true;
+  viewOrderDetails(order: Order): void {
+    if (this.orderDetailsMap.has(order.orderId)) {
+      this.selectedOrder = this.orderDetailsMap.get(order.orderId) || null;
+      this.isOrderDetailsModalOpen = true;
+    } else {
+      this.loadOrderDetails(order.orderId);
+      this.selectedOrder = order;
+      this.isOrderDetailsModalOpen = true;
+    }
   }
 
-  // Close Order Details Modal
   closeOrderDetailsModal(): void {
     this.isOrderDetailsModalOpen = false;
+    this.selectedOrder = null;
   }
 
-  // Create Status Chart
   createStatusChart(): void {
-    const statusCounts = this.statusOptions.map(status => {
-      return this.orders.filter(order => order.status === status).length;
-    });
+    const statusCounts = this.statusOptions.map(status =>
+      this.orders.filter(order => order.status === status).length
+    );
 
     const ctx = document.getElementById('statusChart') as HTMLCanvasElement;
+    if (this.statusChart) {
+      this.statusChart.destroy();
+    }
+
     this.statusChart = new Chart(ctx, {
-      type: 'pie', // You can also use 'bar' for a bar chart
+      type: 'pie',
       data: {
         labels: this.statusOptions,
-        datasets: [
-          {
-            label: 'Orders by Status',
-            data: statusCounts,
-            backgroundColor: [
-              '#FF6384', // Pending
-              '#36A2EB', // In Progress
-              '#4BC0C0', // Completed
-              '#FFCE56'  // Cancelled
-            ]
-          }
-        ]
+        datasets: [{
+          label: 'Orders by Status',
+          data: statusCounts,
+         backgroundColor: [
+           '#FF6384', // Pending
+           '#36A2EB', // Accepted
+           '#4BC0C0', // Completed
+           '#FFCE56', // Rejected
+           '#FF5733', // In Progress
+           '#DAF7A6', // Delivered
+           '#900C3F'  // Yet to Pickup
+         ]
+        }]
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // Disable aspect ratio to fit the container
+        maintainAspectRatio: false,
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.statusChart) {
+      this.statusChart.destroy();
+    }
+  }
+
+isStepActive(status: string): boolean {
+    if (!this.selectedOrder) return false;
+
+    const statusOrder = [
+      'YET_TO_PICKUP',
+      'PICKED_UP',
+      'IN_PROGRESS',
+      'COMPLETED',
+      'DELIVERED',
+      'REJECTED'
+    ];
+
+    const currentIndex = statusOrder.indexOf(this.selectedOrder.status);
+    const stepIndex = statusOrder.indexOf(status);
+
+    return stepIndex <= currentIndex;
   }
 }

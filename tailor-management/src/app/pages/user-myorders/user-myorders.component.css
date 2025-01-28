@@ -174,3 +174,226 @@ button:hover {
 .close-button:hover {
   color: #ff4757;
 }
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal */
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Order Details Content */
+.order-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-info, .measurement-details {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the Tracking Bar */
+.tracking-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Container for the steps */
+.tracking-steps {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 90%;
+  max-width: 800px;
+}
+
+/* Individual step styling */
+.step {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+/* Active step styling */
+.step.active {
+  color: #f7b162;
+}
+
+/* Circle indicators above each status step */
+.circle {
+  position: absolute;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  background-color: #f7b162;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  opacity: 0;
+}
+
+/* Blinking effect only when the step is active and line touches it */
+.step.blinking .circle {
+  animation: blink 1s ease-in-out 1;
+  opacity: 1;
+}
+
+@keyframes blink {
+  0% {
+    background-color: #f7b162;
+  }
+  50% {
+    background-color: #ff0000;
+  }
+  100% {
+    background-color: #f7b162;
+  }
+}
+
+/* Green and red status line */
+.status-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 0%;
+  height: 4px;
+  background: #f7b162;
+  z-index: 0;
+  transition: background 0.3s ease;
+}
+
+/* Green line when not rejected */
+.status-line.completed {
+  background: #4CAF50; /* Green */
+}
+
+/* Scissors effect */
+.scissors-effect {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  background-image: url('src/assets/images/scissors-icon.gif'); /* Provide the GIF URL */
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 2;
+  animation: moveScissors 5s linear forwards;
+}
+
+/* Red color for rejected status */
+.scissors-effect.rejected {
+  animation: moveScissors 5s linear forwards, scissorsReject 1s ease-in-out infinite;
+}
+
+/* Animation for the scissors moving across the steps */
+@keyframes moveScissors {
+  0% {
+    left: 0%;
+  }
+  20% {
+    left: 20%;
+  }
+  40% {
+    left: 40%;
+  }
+  60% {
+    left: 60%;
+  }
+  80% {
+    left: 80%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Animation when the status is rejected */
+@keyframes scissorsReject {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(45deg);
+  }
+}
+
+/* Create line drawing effect for each active status */
+.status-line {
+  width: 0%;
+  animation: drawLine 5s forwards;
+}
+
+@keyframes drawLine {
+  0% {
+    width: 0%;
+  }
+  20% {
+    width: 20%;
+  }
+  40% {
+    width: 40%;
+  }
+  60% {
+    width: 60%;
+  }
+  80% {
+    width: 80%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* Red line when rejected */
+.status-line.rejected {
+  animation: drawLine 5s forwards, lineReject 1s ease-in-out infinite;
+}
+
+@keyframes lineReject {
+  0% {
+    background: #f7b162;
+  }
+  100% {
+    background: #FF0000; /* Red */
+  }
+}

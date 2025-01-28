@@ -15,6 +15,10 @@ export class OrderService {
   getOrdersByTailorId(tailorId: number): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.baseUrl}/tailor/${tailorId}`);
   }
+  // Fetch orders for a specific tailor
+    getOrdersByCustomerId(customerId: number): Observable<Order[]> {
+      return this.http.get<Order[]>(`${this.baseUrl}/customer/${customerId}`);
+    }
 
  // Update the status of an order
   updateOrderStatus(orderId: number, newStatus: string): Observable<Order> {

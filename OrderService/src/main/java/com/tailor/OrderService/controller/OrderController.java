@@ -91,5 +91,10 @@ public class OrderController {
         }
     }
 
-
+    // Endpoint to fetch orders by shop ID
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<Order>> getOrdersByCustomerId(@PathVariable("customerId") Long customerId) {
+        List<Order> orders = orderService.getOrdersByCustomerId(customerId);
+        return ResponseEntity.ok(orders);
+    }
 }

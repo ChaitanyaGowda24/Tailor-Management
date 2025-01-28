@@ -7,6 +7,7 @@ orderDate: string; // ISO date string (e.g., "2023-10-15T12:34:56Z")
   customerDetails: CustomerDetails; // Nested customer details
   measurementDetails: MeasurementDetails; // Nested measurement details
   statusChanged?: boolean; // Optional flag to track if the status has been changed
+  tailorId: number;
 }
 
 export interface CustomerDetails {
