@@ -29,4 +29,7 @@ export class OrderService {
   getOrderDetails(orderId: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}/${orderId}/details`);
   }
+createOrder(data: any): Observable<any> {
+    return this.http.post(this.baseUrl, data);
+  }
 }

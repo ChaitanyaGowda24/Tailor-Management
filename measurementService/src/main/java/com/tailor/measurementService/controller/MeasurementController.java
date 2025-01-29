@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/measurements")
+@CrossOrigin("*")
 public class MeasurementController {
     @Autowired
     MeasurementService measurementService;

@@ -9,10 +9,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByStatus(Order.Status status);
 
     List<Order> findByTailorId(Long tailorId);
-<<<<<<< Updated upstream
+
 
     List<Order> findByShopName(String shopName);
-=======
+
     List<Order> findByCustomerId(Long customerId);
->>>>>>> Stashed changes
+
 }

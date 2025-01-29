@@ -24,16 +24,16 @@ export class TailorProfileComponent implements OnInit {
   // List of all available categories
   allCategories: string[] = [
     'Suits',
-    'EthnicSuit',
+    'Ethnic Suit',
     'Trousers',
-    'FormalShirts',
-    'PathaniSuit',
-    'DesiJacket',
+    'Formal Shirts',
+    'Pathani Suit',
+    'Desi Jacket',
     'Blouse',
     'Kurti',
-    'AnarkaliSuit',
-    'PunjabiSuit',
-    'ChudidarSuit',
+    'Anarkali Suit',
+    'Punjabi Suit',
+    'Chudidar Suit',
     'Lehenga',
   ];
 
