@@ -58,7 +58,7 @@
         <div *ngFor="let shop of tailorShops" class="shop-card" (click)="onShopSelect(shop)">
           <p><strong>Shop Name:</strong> {{ shop.shopName }}</p>
           <p><strong>Price for {{ selectedDress.name }}:</strong> {{ shop.price }}</p>
-          <button (click)="viewShopDashboard(shop.id); $event.stopPropagation()">View Shop</button>
+          <button (click)="openShopDetailsModal(shop.tailorId); $event.stopPropagation()">View Shop</button>
         </div>
       </div>
       <div *ngIf="tailorShops.length === 0">
@@ -180,6 +180,42 @@
     <button type="button" (click)="downloadBill()">Download Bill</button>
   </div>
 </div>
+<!--&lt;!&ndash; Shop Details Modal &ndash;&gt;-->
+<!--<div *ngIf="isShopDetailsModalOpen" class="modal-overlay">-->
+<!--  <div class="modal">-->
+<!--    &lt;!&ndash; Close Button &ndash;&gt;-->
+<!--    <button class="close-button" (click)="closeShopDetailsModal()">&times;</button>-->
+
+<!--    &lt;!&ndash; Shop Image &ndash;&gt;-->
+<!--    <div class="shop-image-container">-->
+<!--      <img [src]="selectedShopDetails.image || 'assets/tailor-shop.jpg'" alt="Shop Image" class="shop-image">-->
+<!--      <div class="image-overlay"></div>-->
+<!--      <h2 class="shop-name">{{ selectedShopDetails.name }}</h2>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Shop Details &ndash;&gt;-->
+<!--    <div class="shop-details">-->
+<!--      <p><strong>Tailor Name:</strong> {{ selectedShopDetails.tailorName }}</p>-->
+<!--      <p><strong>Phone:</strong> {{ selectedShopDetails.phone }}</p>-->
+<!--      <p><strong>Email:</strong> {{ selectedShopDetails.email }}</p>-->
+<!--      <p><strong>Location:</strong> {{ selectedShopDetails.location }}</p>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Leaflet Map &ndash;&gt;-->
+<!--    <div id="shop-map" class="map-container"></div>-->
+
+<!--    &lt;!&ndash; Accepted Categories and Prices &ndash;&gt;-->
+<!--    <div class="categories-section">-->
+<!--      <h3>Accepted Categories and Prices</h3>-->
+<!--      <div class="categories-grid">-->
+<!--        <div *ngFor="let category of selectedShopDetails.categories" class="category-card">-->
+<!--          <p class="category-name">{{ category.name }}</p>-->
+<!--          <p class="category-price">₹{{ category.price }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 <!-- Shop Details Modal -->
 <div *ngIf="isShopDetailsModalOpen" class="modal-overlay">
   <div class="modal">
@@ -188,17 +224,17 @@
 
     <!-- Shop Image -->
     <div class="shop-image-container">
-      <img [src]="selectedShopDetails.image || 'assets/tailor-shop.jpg'" alt="Shop Image" class="shop-image">
+      <img [src]="'assets/tailor-shop.jpg'" alt="Shop Image" class="shop-image">
       <div class="image-overlay"></div>
-      <h2 class="shop-name">{{ selectedShopDetails.name }}</h2>
     </div>
 
     <!-- Shop Details -->
     <div class="shop-details">
-      <p><strong>Tailor Name:</strong> {{ selectedShopDetails.tailorName }}</p>
-      <p><strong>Phone:</strong> {{ selectedShopDetails.phone }}</p>
-      <p><strong>Email:</strong> {{ selectedShopDetails.email }}</p>
-      <p><strong>Location:</strong> {{ selectedShopDetails.location }}</p>
+      <p><strong>Shop Name:</strong> {{ selectedShopDetails?.shopName }}</p>
+      <p><strong>Tailor Name:</strong> {{ selectedShopDetails?.name }}</p>
+      <p><strong>Phone:</strong> {{ selectedShopDetails?.phone }}</p>
+      <p><strong>Email:</strong> {{ selectedShopDetails?.email }}</p>
+      <p><strong>Location:</strong> </p>
     </div>
 
     <!-- Leaflet Map -->
@@ -206,11 +242,13 @@
 
     <!-- Accepted Categories and Prices -->
     <div class="categories-section">
-      <h3>Accepted Categories and Prices</h3>
+      <h3><strong>Accepted Categories and Prices</strong></h3>
       <div class="categories-grid">
-        <div *ngFor="let category of selectedShopDetails.categories" class="category-card">
-          <p class="category-name">{{ category.name }}</p>
-          <p class="category-price">₹{{ category.price }}</p>
+        <div *ngFor="let category of selectedShopDetails?.dress" class="category-card">
+          <p class="category-details">
+            <span class="category-name">{{ category.name }}</span>
+            <span class="category-price">₹{{ category.price }}</span>
+          </p>
         </div>
       </div>
     </div>

@@ -11,9 +11,12 @@ templateUrl: './user-home.component.html',
 styleUrls: ['./user-home.component.css']
 })
 export class UserHomeComponent implements OnInit {
+// isShopDetailsModalOpen: boolean = false;
+// selectedShopDetails: any = null;
+// private map: any; // Leaflet map instance
 isShopDetailsModalOpen: boolean = false;
-selectedShopDetails: any = null;
-private map: any; // Leaflet map instance
+selectedShopDetails: Tailor | null = null; // Use the Tailor model for type safety
+private map: L.Map | null = null; // Store the Leaflet map instance
 
 // Existing properties
 isDressDetailsModalOpen: boolean = false; // New property for dress details modal
@@ -532,16 +535,36 @@ getPriceForDress(tailor: Tailor, dressName: string): number {
     return Array.isArray(value);
   }
 
+// // Method to open the shop details modal
+//   openShopDetailsModal(shop: any): void {
+//     this.selectedShopDetails = shop;
+//     this.isShopDetailsModalOpen = true;
+//
+//     // Initialize the Leaflet map after the modal is opened
+//     setTimeout(() => {
+//       this.initMap();
+//     }, 0);
+//   }
 // Method to open the shop details modal
-  openShopDetailsModal(shop: any): void {
-    this.selectedShopDetails = shop;
-    this.isShopDetailsModalOpen = true;
+openShopDetailsModal(shopId: number): void {
+  this.isShopDetailsModalOpen = true;
 
-    // Initialize the Leaflet map after the modal is opened
-    setTimeout(() => {
-      this.initMap();
-    }, 0);
-  }
+  // Fetch shop details from the backend
+  this.tailorService.getTailorById(shopId).subscribe(
+    (data: Tailor) => {
+      this.selectedShopDetails = data; // Assign fetched data to selectedShopDetails
+
+      // Initialize the Leaflet map after the modal is opened and data is fetched
+      setTimeout(() => {
+        this.initMap();
+      }, 0);
+    },
+    (error) => {
+      console.error('Error fetching shop details:', error);
+      this.isShopDetailsModalOpen = false; // Close the modal if there's an error
+    }
+  );
+}
 
   // Method to close the shop details modal
   closeShopDetailsModal(): void {
@@ -551,26 +574,52 @@ getPriceForDress(tailor: Tailor, dressName: string): number {
     }
   }
 
-  // Method to initialize the Leaflet map
-  private initMap(): void {
-    // Default coordinates (you can replace these with the shop's actual coordinates)
-    const defaultLat = 28.6139; // Example: New Delhi
-    const defaultLng = 77.2090;
-
-    // Initialize the map
-    this.map = L.map('shop-map').setView([defaultLat, defaultLng], 13);
-
-    // Add a tile layer (you can use any tile layer, e.g., OpenStreetMap)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(this.map);
-
-    // Add a marker for the shop's location
-    L.marker([defaultLat, defaultLng])
-      .addTo(this.map)
-      .bindPopup('Shop Location')
-      .openPopup();
+//   // Method to initialize the Leaflet map
+//   private initMap(): void {
+//     // Default coordinates (you can replace these with the shop's actual coordinates)
+//     const defaultLat = 28.6139; // Example: New Delhi
+//     const defaultLng = 77.2090;
+//
+//     // Initialize the map
+//     this.map = L.map('shop-map').setView([defaultLat, defaultLng], 13);
+//
+//     // Add a tile layer (you can use any tile layer, e.g., OpenStreetMap)
+//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//       attribution: '© OpenStreetMap contributors'
+//     }).addTo(this.map);
+//
+//     // Add a marker for the shop's location
+//     L.marker([defaultLat, defaultLng])
+//       .addTo(this.map)
+//       .bindPopup('Shop Location')
+//       .openPopup();
+//   }
+// Method to initialize the Leaflet map
+private initMap(): void {
+  // Check if the map container exists
+  const mapContainer = document.getElementById('shop-map');
+  if (!mapContainer) {
+    console.error('Map container not found');
+    return;
   }
 
+  // Use the shop's coordinates if available, otherwise use default coordinates
+  const shopLat = this.selectedShopDetails?.location?.latitude || 28.6139; // Default: New Delhi
+  const shopLng = this.selectedShopDetails?.location?.longitude || 77.2090;
+
+  // Initialize the map
+  this.map = L.map('shop-map').setView([shopLat, shopLng], 13);
+
+  // Add a tile layer (e.g., OpenStreetMap)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(this.map);
+
+  // Add a marker for the shop's location
+  L.marker([shopLat, shopLng])
+    .addTo(this.map)
+    .bindPopup('Shop Location')
+    .openPopup();
+}
 
 }

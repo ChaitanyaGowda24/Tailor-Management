@@ -617,3 +617,33 @@ h2 {
 .modal-actions button:hover {
   background-color: #0056b3;
 }
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.category-card {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.category-name {
+  font-weight: bold;
+}
+
+.category-price {
+  color: #4caf50; /* Green color for the price */
+  font-weight: bold;
+}
+
