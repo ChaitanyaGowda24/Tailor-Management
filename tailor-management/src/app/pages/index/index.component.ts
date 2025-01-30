@@ -17,6 +17,7 @@ import { LoginService} from '../../services/login.service'; // Import the servic
   encapsulation: ViewEncapsulation.None
 })
 export class IndexComponent implements AfterViewChecked {
+
 latitude: number | undefined;
 longitude: number | undefined;
 private map: L.Map | undefined;
@@ -48,7 +49,11 @@ private isMapInitialized = false;
       dress: [],
     };
 
-constructor(private userService: UserService, private tailorService: TailorService, private router: Router, private loginService: LoginService,) {}
+  constructor(private userService: UserService, private tailorService: TailorService, private router: Router, private loginService: LoginService,) {
+
+  }
+
+
 
 
 ngAfterViewChecked(): void {
