@@ -22,6 +22,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder; // Inject PasswordEncoder
 
     public User loginUser(String email, String password) {
@@ -67,6 +70,13 @@ public class UserService {
 
         logger.info("User successfully registered: {}", user.getEmail());
         user.setRole("CUSTOMER");
+        // Send welcome email
+        try {
+            emailService.sendWelcomeEmail(user.getEmail(), user.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+        }
+
         return userRepository.save(user); // Save the user to the database
     }
 

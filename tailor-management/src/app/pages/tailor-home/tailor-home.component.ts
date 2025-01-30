@@ -99,27 +99,47 @@ constructor(
 
  updateStatus(order: Order): void {
   const url = `http://localhost:8084/orders/${order.orderId}/status`;
-
+  const tailorId = Number(localStorage.getItem('id'));
+  
   // Send the new status as a plain string
-  const body = `"${order.status}"`; // Wrap the status in double quotes
+  const body = `"${order.status}"`;
 
+  // First update the order status
   this.http.put<Order>(url, body, { headers: { 'Content-Type': 'application/json' } }).subscribe(
     (updatedOrder: Order) => {
       console.log('Status updated successfully:', updatedOrder);
 
-      // Update the order status in the original data
+      // Update local data
       const index = this.originalData.findIndex((o) => o.orderId === order.orderId);
       if (index !== -1) {
         this.originalData[index].status = updatedOrder.status;
         this.originalData[index].statusChanged = false;
       }
 
-      // Update the order status in the filtered data
       const filteredIndex = this.dataSource.data.findIndex((o) => o.orderId === order.orderId);
       if (filteredIndex !== -1) {
         this.dataSource.data[filteredIndex].status = updatedOrder.status;
         this.dataSource.data[filteredIndex].statusChanged = false;
       }
+
+      // Send notification
+      const notificationData = {
+        tailorId: tailorId,
+        userId: order.customerId,
+        orderId: order.orderId,
+        message: `Your order #${order.orderId} is ${order.status}`,
+        status: 'UNREAD'
+      };
+
+      // Send notification to notification service
+      this.http.post('http://localhost:8087/notifications/add', notificationData).subscribe(
+        response => {
+          console.log('Notification sent successfully:', response);
+        },
+        error => {
+          console.error('Failed to send notification:', error);
+        }
+      );
     },
     (error) => {
       console.error('Failed to update status:', error);

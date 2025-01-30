@@ -33,7 +33,8 @@ public class Order {
         PENDING,
         IN_PROGRESS,
         COMPLETED,
-        REJECTED
+        REJECTED,
+        PICKED_UP
     }
 
     public void setOrderId(Long orderId) {

@@ -25,6 +25,9 @@ public class TailorService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     public Tailor loginUser(LoginRequest loginRequest) {
         // Get email and password from loginRequest
         String email = loginRequest.getEmail();
@@ -72,6 +75,12 @@ public class TailorService {
 
         // Log success message before saving
         logger.info("Tailor successfully registered: {}", tailor.getEmail());
+
+        try {
+            emailService.sendWelcomeEmail(tailor.getEmail(), tailor.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+        }
 
         // Save the tailor if all validations pass
         return tailorRepository.save(tailor);

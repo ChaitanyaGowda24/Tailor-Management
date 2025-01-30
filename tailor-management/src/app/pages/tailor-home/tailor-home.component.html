@@ -26,8 +26,10 @@
         <mat-option value="">All</mat-option>
         <mat-option value="PENDING">Pending</mat-option>
         <mat-option value="COMPLETED">Completed</mat-option>
-        <mat-option value="ACCEPTED">Accepted</mat-option>
+        <mat-option value="PICKED_UP">Picked Up</mat-option>
         <mat-option value="REJECTED">Rejected</mat-option>
+        <mat-option value="YET_TO_PICK_UP">Yet to Pick Up</mat-option>
+      
       </mat-select>
     </mat-form-field>
 
@@ -69,8 +71,9 @@
           <mat-select [(ngModel)]="order.status" (selectionChange)="onStatusChange(order)">
             <mat-option value="PENDING">Pending</mat-option>
             <mat-option value="COMPLETED">Completed</mat-option>
-            <mat-option value="ACCEPTED">Accepted</mat-option>
+            <mat-option value="PICKED_UP">Picked Up</mat-option>
             <mat-option value="REJECTED">Rejected</mat-option>
+            <mat-option value="YET_TO_PICK_UP">Yet to Pick Up</mat-option>
           </mat-select>
         </mat-form-field>
         <button
