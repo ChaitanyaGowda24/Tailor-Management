@@ -5,6 +5,42 @@ import { TailorService } from 'src/app/services/tailor.service';
 import jsPDF from 'jspdf';
 import { Tailor, Dress } from '../../models/tailor.model';
 import * as L from 'leaflet';
+import { MeasurementService } from 'src/app/services/measurement.service'; // Add MeasurementService
+import { OrderService } from 'src/app/services/order.service'; // Add OrderService
+
+// Add Gender enum to match backend
+enum Gender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE'
+}
+
+// Update interface to match exact database column order
+interface OrderData {
+  orderId?: number;           // '5'
+  clothType: string;          // 'Not Specified'
+  clothColor: string;         // 'Not Specified'
+  customerId: number;         // '20250127001'
+  orderDate: string;          // '2025-02-06 17:16:07.414000'
+  measureId: number;          // '22'
+  deliveryDate: string;       // '2025-01-30 17:16:07.414000'
+  shopName: string;          // 'ChaitanyaShop'
+  status: string;            // 'YET_TO_PICK_UP'
+  tailorId: number;          // '27012025001'
+  willProvideCloth: boolean; // '1'
+}
+
+// Update interface to match backend entity exactly
+interface MeasurementData {
+  measurement_id: number | null;
+  userId: number;
+  tailorId: number;
+  gender: Gender;
+  category: string;
+  design: string;
+  measurements: string;
+  price: number;
+}
+
 @Component({
 selector: 'app-order',
 templateUrl: './user-home.component.html',
@@ -284,7 +320,9 @@ designForm: FormGroup;
 
 constructor(private fb: FormBuilder,
     private tailorService: TailorService,
-    private router: Router // Inject Router
+    private router: Router, // Inject Router
+ private measurementService: MeasurementService, // Inject MeasurementService
+    private orderService: OrderService, // Inject OrderService
     ) {
    this.genderForm = this.fb.group({
 
@@ -413,6 +451,7 @@ getPriceForDress(tailor: Tailor, dressName: string): number {
 
   onShopSelect(shop: any): void {
     this.selectedShop = shop;
+console.log("selectedSHop", this.selectedShop );
     this.openDesignModal(); // Open design options modal after selecting a shop
   }
 
@@ -484,26 +523,7 @@ getPriceForDress(tailor: Tailor, dressName: string): number {
     this.isBillModalOpen = false;
   }
 
-  // Generate bill details
-    generateBill(): void {
-      this.billDetails = {
-        orderId: 12345, // Example order ID
-        customerId: 101, // Example customer ID
-        customerName: 'John Doe', // Example customer name
-        measureId: 202, // Example measurement ID
-        tailorId: 303, // Example tailor ID
-        tailorName: 'Tailor Shop A', // Example tailor name
-        shopId: 404, // Example shop ID
-        shopName: 'Tailor Shop A', // Example shop name
-        orderDate: new Date(), // Current date as order date
-        deliveryDate: new Date(new Date().setDate(new Date().getDate() + 7)), // 7 days from now as delivery date
-        gender: this.genderForm.value.gender,
-        dress: this.selectedDress,
-        measurements: this.measurementForm.value,
-        design: this.designForm.value,
-        price: this.price
-      };
-    }
+
 
     // Download bill as PDF
     downloadBill(): void {
@@ -553,7 +573,7 @@ openShopDetailsModal(shopId: number): void {
   this.tailorService.getTailorById(shopId).subscribe(
     (data: Tailor) => {
       this.selectedShopDetails = data; // Assign fetched data to selectedShopDetails
-
+    console.log(data);
       // Initialize the Leaflet map after the modal is opened and data is fetched
       setTimeout(() => {
         this.initMap();
@@ -622,4 +642,186 @@ private initMap(): void {
     .openPopup();
 }
 
+ generateBill(): void {
+  if (!this.validateOrderData()) {
+    return;
+  }
+
+  const userId = localStorage.getItem('id');
+  if (!userId) {
+    alert('Please log in to place an order');
+    return;
+  }
+
+  // Create the billDetails object with initial data
+  this.billDetails = {
+    customerId: Number(userId),
+    customerName: localStorage.getItem('name') || 'Customer', // Get customer name from localStorage
+    tailorId: Number(this.selectedShop.tailorId), // Use tailorId from selected shop
+    shopName: this.selectedShop.shopName,
+    orderDate: new Date(),
+    deliveryDate: new Date(new Date().setDate(new Date().getDate() + 7)),
+    gender: this.genderForm.get('gender')?.value?.toUpperCase() || 'MALE',
+    dress: this.selectedDress,
+    measurements: this.measurementForm.value,
+    design: this.designForm.value,
+    price: Number(this.selectedShop.price) || 0
+  };
+
+  console.log('Generated bill details:', this.billDetails);
+  this.sendMeasurementData();
+}
+
+private validateOrderData(orderData?: any): boolean {
+  // Case 1: Validating initial form data before generating bill
+  if (!orderData) {
+    if (!this.selectedShop?.tailorId) {
+      alert('Please select a valid shop');
+      return false;
+    }
+
+    if (!this.selectedDress?.name) {
+      alert('Please select a valid dress');
+      return false;
+    }
+
+    if (!this.measurementForm.valid) {
+      alert('Please fill in all measurement fields');
+      console.log('Invalid measurements:', this.measurementForm.value);
+      return false;
+    }
+
+    if (!this.designForm.valid) {
+      alert('Please fill in all design options');
+      console.log('Invalid design options:', this.designForm.value);
+      return false;
+    }
+
+    if (!this.genderForm.valid) {
+      alert('Please select a gender');
+      return false;
+    }
+
+    return true;
+  }
+
+  // Case 2: Validating order data before sending to backend
+  const requiredFields = ['customerId', 'measureId', 'tailorId', 'shopName', 'orderDate', 'deliveryDate', 'status'];
+  
+  for (const field of requiredFields) {
+    if (!orderData[field]) {
+      console.error(`Missing required field in order data: ${field}`);
+      return false;
+    }
+  }
+  
+  // Additional validation for numeric fields
+  if (!Number.isInteger(orderData.customerId) || 
+      !Number.isInteger(orderData.measureId) || 
+      !Number.isInteger(orderData.tailorId)) {
+    console.error('Invalid numeric fields in order data');
+    return false;
+  }
+
+  return true;
+}
+
+sendMeasurementData(): void {
+  if (!this.billDetails) {
+    console.error('Bill details not generated');
+    return;
+  }
+
+  // Format the design data
+  const designData = {
+    willProvideCloth: this.designForm.get('willProvideCloth')?.value,
+    clothType: this.designForm.get('clothType')?.value || '',
+    clothColor: this.designForm.get('clothColor')?.value || '',
+    neckTypes: this.designForm.get('neckTypes')?.value,
+    sleeveTypes: this.designForm.get('sleeveTypes')?.value,
+    cuts: this.designForm.get('cuts')?.value,
+    otherOptions: this.designForm.get('otherOptions')?.value
+  };
+
+  // Format the measurements data
+  const measurementsData = Object.keys(this.measurementForm.value).reduce((acc, key) => {
+    acc[key] = this.measurementForm.get(key)?.value;
+    return acc;
+  }, {} as any);
+
+  const measurementData = {
+    userId: this.billDetails.customerId,
+    tailorId: this.billDetails.tailorId,
+    gender: this.genderForm.get('gender')?.value?.toUpperCase(),
+    category: this.selectedDress.name,
+    design: JSON.stringify(designData),
+    measurements: JSON.stringify(measurementsData),
+    price: this.selectedShop.price
+  };
+
+  console.log('Sending measurement data:', measurementData);
+
+  this.measurementService.createMeasurement(measurementData).subscribe({
+    next: (response) => {
+      if (response && response.measurement_id) {
+        console.log('Created measurement with ID:', response.measurement_id);
+        this.sendOrderData(response.measurement_id);
+      } else {
+        console.error('Invalid response:', response);
+        alert('Error creating measurement');
+      }
+    },
+    error: (error) => {
+      console.error('Error creating measurement:', error);
+      alert('Failed to create measurement');
+    }
+  });
+}
+
+sendOrderData(measurementId: number): void {
+  if (!this.billDetails) {
+    console.error('Bill details not generated');
+    return;
+  }
+
+  if (!measurementId) {
+    console.error('No valid measurement ID provided');
+    return;
+  }
+
+  // Format order data with all required fields
+  const orderData: OrderData = {
+    clothType: this.designForm.get('clothType')?.value || 'Not Specified',
+    clothColor: this.designForm.get('clothColor')?.value || 'Not Specified',
+    customerId: this.billDetails.customerId,
+    orderDate: new Date().toISOString(),
+    measureId: measurementId, // Use the measurement ID from the measurement creation
+    deliveryDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString(),
+    shopName: this.billDetails.shopName,
+    status: 'YET_TO_PICK_UP',
+    tailorId: this.billDetails.tailorId, // Use tailorId from billDetails
+    willProvideCloth: this.designForm.get('willProvideCloth')?.value || true
+  };
+
+  console.log('Sending order data:', orderData);
+
+  this.orderService.createOrder(orderData).subscribe({
+    next: (response) => {
+      console.log('Order data sent successfully:', response);
+      
+      // Update billDetails with the order ID from response
+      if (response && response.orderId) {
+        this.billDetails.orderId = response.orderId;
+        console.log('Updated bill details with order ID:', this.billDetails);
+      }
+      
+      alert('Order placed successfully!');
+      this.router.navigate(['/user-home']);
+    },
+    error: (error) => {
+      console.error('Error sending order data:', error);
+      alert('Failed to place order. Please try again.');
+    }
+  });
+}
 }

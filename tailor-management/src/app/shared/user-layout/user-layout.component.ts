@@ -49,6 +49,7 @@ export class UserLayoutComponent implements AfterViewInit, OnInit {
       this.userService.getUserDetailsById(+userId).subscribe(
         (response: User) => {
           this.user = response; // Set the fetched user details
+          localStorage.setItem('name', response.name); // Save user's name in localStorage
           console.log('Fetched user data:', response);
         },
         (error) => {

@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin("*")
+
 @Entity
 public class Measurement {
     @Id

@@ -16,7 +16,7 @@ export class UserMyordersComponent implements OnInit {
   filterTailorId: string = '';
 
   // Status Options for Filter
-  statusOptions: string[] = ['PENDING', 'COMPLETED', 'ACCEPTED', 'REJECTED', 'IN_PROGRESS', 'YET_TO_PICKUP', 'PICKED_UP'];
+  statusOptions: string[] = ['PENDING', 'COMPLETED', 'ACCEPTED', 'REJECTED', 'IN_PROGRESS', 'YET_TO_PICK_UP', 'PICKED_UP'];
 
   // Orders Data
   orders: Order[] = [];
@@ -199,7 +199,7 @@ isStepActive(status: string): boolean {
     if (!this.selectedOrder) return false;
 
     const statusOrder = [
-      'YET_TO_PICKUP',
+      'YET_TO_PICK_UP',
       'PICKED_UP',
       'IN_PROGRESS',
       'COMPLETED',
