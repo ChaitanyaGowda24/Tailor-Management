@@ -58,7 +58,8 @@ private map: L.Map | null = null; // Store the Leaflet map instance
 // Existing properties
 isDressDetailsModalOpen: boolean = false; // New property for dress details modal
 
-
+// Add the missing property
+selectedGender: string = 'male';  // Default to male
 
 genderForm: FormGroup;
 dressCategories: any[] = [];
@@ -347,9 +348,21 @@ constructor(private fb: FormBuilder,
       }
     });
   }
-selectGender(gender: string): void {
-  this.genderForm.patchValue({ gender }); // Update the form value
-  this.updateDressCategories(gender); // Update dress categories
+selectGender(gender: string) {
+  this.selectedGender = gender;
+  // Replace filterDressCategories with updateDressCategories
+  this.updateDressCategories(gender);
+  
+  // Add smooth scrolling to category section
+  setTimeout(() => {
+    const categorySection = document.getElementById('category-section');
+    if (categorySection) {
+      categorySection.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start'
+      });
+    }
+  }, 100);
 }
 
 // Navigation methods
