@@ -1,30 +1,52 @@
+/* Global styles for the profile container */
 .profile-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  background-color: #ffffff; /* White background */
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif; /* Modern font */
 }
 
+/* Profile header section */
 .profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .profile-header h1 {
-  font-size: 2rem;
-  color: #3f51b5;
+  font-size: 2.5rem;
+  color: #2c3e50; /* Navy blue for a professional look */
+  font-weight: 600;
 }
 
+.profile-header button {
+  background-color: #2c3e50; /* Navy blue */
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-header button:hover {
+  background-color: #1a2530; /* Darker shade for hover */
+}
+
+/* Profile content layout */
 .profile-content {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 20px;
+  gap: 30px;
 }
 
+/* Profile picture section */
 .profile-picture-section {
   display: flex;
   justify-content: center;
@@ -36,48 +58,125 @@
 }
 
 .profile-img {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid #3f51b5;
+  border: 8px solid #2c3e50; /* Navy blue border */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-img:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Profile details section */
 .profile-details-section {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa; /* Soft gray background */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Form styling */
 .profile-form {
   display: grid;
-  gap: 15px;
+  gap: 20px;
 }
 
-mat-form-field {
+/* Input field styling */
+.profile-details-section .mat-form-field {
   width: 100%;
+  margin-bottom: 20px;
 }
 
+.profile-details-section .mat-input-element {
+  font-size: 1.1rem;
+  color: #2c3e50; /* Navy blue text */
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #ffffff; /* White background */
+  border: 2px solid #e0e0e0; /* Light gray border */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-details-section .mat-input-element:focus {
+  border-color: #2c3e50; /* Navy blue border on focus */
+  box-shadow: 0 0 8px rgba(44, 62, 80, 0.3); /* Subtle glow effect */
+  outline: none;
+}
+
+/* Label styling */
+.profile-details-section .mat-form-field-label {
+  color: #2c3e50; /* Navy blue for labels */
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+/* Floating label styling */
+.profile-details-section .mat-form-field.mat-focused .mat-form-field-label {
+  color: #2c3e50; /* Navy blue for focused labels */
+}
+
+/* Outline styling */
+.profile-details-section .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #e0e0e0; /* Light gray outline */
+}
+
+.profile-details-section .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+  color: #2c3e50; /* Navy blue outline when focused */
+}
+
+/* Placeholder styling */
+.profile-details-section .mat-input-element::placeholder {
+  color: #999999; /* Light gray placeholder text */
+  font-style: italic;
+}
+
+/* Change password button */
 .change-password-section {
   grid-column: span 2;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
+.change-password-section button {
+  background-color: #2c3e50; /* Navy blue */
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.change-password-section button:hover {
+  background-color: #1a2530; /* Darker shade for hover */
+}
+
+/* Save button */
 .save-button {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .save-button button {
-  padding: 10px 20px;
+  background-color: #2c3e50; /* Navy blue */
+  color: white;
   font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button button:hover {
+  background-color: #1a2530; /* Darker shade for hover */
 }

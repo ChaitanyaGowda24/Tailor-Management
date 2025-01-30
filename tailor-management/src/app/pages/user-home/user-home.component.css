@@ -261,7 +261,6 @@ h2 {
   background-color: #0056b3;
 }
 
-
 /* Modal Overlay */
 .modal-overlay {
   position: fixed;
@@ -274,17 +273,106 @@ h2 {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  max-height: 100vh; /* Limit modal height to 80% of viewport height */
-  overflow-y: auto; /* Enable vertical scrolling only when needed */
 }
 
 .modal {
-  background: white;
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Bill Heading Box */
+.bill-heading-box {
+  background-color: #e74c3c; /* Light color */
   padding: 20px;
   border-radius: 10px;
-  width: 600px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+  text-align: center;
 }
+
+.modal-title {
+  font-size: 28px;
+  color: #34495e; /* Subtle gray */
+  font-weight: 700;
+}
+
+/* Bill Table Styling */
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.bill-table td, .bill-table th {
+  padding: 15px;
+  border-bottom: 1px solid #dcdcdc;
+  text-align: left;
+  font-size: 16px;
+}
+
+.bill-table th {
+  font-size: 18px;
+  font-weight: 600;
+  color: #34495e;
+  background-color: #f4f6f7;
+}
+
+.section-header th {
+  background-color: #d6dbdf;
+  font-size: 16px;
+  padding: 15px;
+}
+
+.price-row td {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2d3436; /* Dark Black */
+}
+
+/* Buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.btn-close,
+.btn-download {
+  padding: 12px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+}
+
+.btn-close {
+  background: #e74c3c;
+}
+
+.btn-download {
+  background: #2980b9;
+}
+
+.btn-close:hover {
+  background: #c0392b;
+}
+
+.btn-download:hover {
+  background: #21618c;
+}
+
+/* Spacing adjustments */
+.bill-content {
+  padding: 15px;
+}
+
+
 
 .modal h2 {
   font-size: 20px;

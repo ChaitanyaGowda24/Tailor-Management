@@ -160,26 +160,125 @@
 <!-- Bill Modal -->
 <div *ngIf="isBillModalOpen" class="modal-overlay">
   <div class="modal">
-    <h2>Bill Details</h2>
-    <div *ngIf="billDetails">
-      <p><strong>Order ID:</strong> {{ billDetails.orderId }}</p>
-      <p><strong>Customer ID:</strong> {{ billDetails.customerId }}</p>
-      <p><strong>Customer Name:</strong> {{ billDetails.customerName }}</p>
-      <p><strong>Measurement ID:</strong> {{ billDetails.measureId }}</p>
-      <p><strong>Shop ID:</strong> {{ billDetails.shopId }}</p>
-      <p><strong>Shop Name:</strong> {{ billDetails.shopName }}</p>
-      <p><strong>Order Date:</strong> {{ billDetails.orderDate | date }}</p>
-      <p><strong>Delivery Date:</strong> {{ billDetails.deliveryDate | date }}</p>
-      <p><strong>Gender:</strong> {{ billDetails.gender }}</p>
-      <p><strong>Dress:</strong> {{ billDetails.dress.name }}</p>
-      <p><strong>Measurements:</strong> {{ billDetails.measurements | json }}</p>
-      <p><strong>Design:</strong> {{ billDetails.design | json }}</p>
-      <p><strong>Price:</strong> {{ billDetails.price }}</p>
+    <!-- Bill Heading -->
+    <div class="bill-heading-box">
+      <h2 class="modal-title">Bill Details</h2>
     </div>
-    <button type="button" (click)="closeBillModal()">Close</button>
-    <button type="button" (click)="downloadBill()">Download Bill</button>
+
+    <div *ngIf="billDetails" class="bill-content">
+      <!-- Table for Bill Details -->
+      <table class="bill-table">
+        <!-- Customer Details -->
+        <thead>
+        <tr class="section-header">
+          <th colspan="2">Customer Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><strong>Name:</strong></td>
+          <td>{{ billDetails.customerName }}</td>
+        </tr>
+        <tr>
+          <td><strong>Customer ID:</strong></td>
+          <td>{{ billDetails.customerId }}</td>
+        </tr>
+        <tr>
+          <td><strong>Gender:</strong></td>
+          <td>{{ billDetails.gender }}</td>
+        </tr>
+        </tbody>
+
+        <!-- Order Details -->
+        <thead>
+        <tr class="section-header">
+          <th colspan="2">Order Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><strong>Order ID:</strong></td>
+          <td>{{ billDetails.orderId }}</td>
+        </tr>
+        <tr>
+          <td><strong>Measurement ID:</strong></td>
+          <td>{{ billDetails.measureId }}</td>
+        </tr>
+        <tr>
+          <td><strong>Order Date:</strong></td>
+          <td>{{ billDetails.orderDate | date }}</td>
+        </tr>
+        <tr>
+          <td><strong>Delivery Date:</strong></td>
+          <td>{{ billDetails.deliveryDate | date }}</td>
+        </tr>
+        <tr>
+          <td><strong>Dress:</strong></td>
+          <td>{{ billDetails.dress.name }}</td>
+        </tr>
+        </tbody>
+
+        <!-- Shop Details -->
+        <thead>
+        <tr class="section-header">
+          <th colspan="2">Shop Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><strong>Shop Name:</strong></td>
+          <td>{{ billDetails.shopName }}</td>
+        </tr>
+        <tr>
+          <td><strong>Shop ID:</strong></td>
+          <td>{{ billDetails.shopId }}</td>
+        </tr>
+        </tbody>
+
+        <!-- Price Details -->
+        <thead>
+        <tr class="section-header">
+          <th colspan="2">Price Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><strong>Measurements:</strong></td>
+          <td>
+            <p>Chest: {{ billDetails.measurements.chest }}</p>
+            <p>Waist: {{ billDetails.measurements.waist }}</p>
+            <p>Shoulder: {{ billDetails.measurements.shoulder }}</p>
+            <p>Length: {{ billDetails.measurements.length }}</p>
+            <p>Sleeve: {{ billDetails.measurements.sleeve }}</p>
+            <p>Sleeve: {{ billDetails.measurements.neck }}</p>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Design:</strong></td>
+          <td>
+            <p>Neck Type: {{ billDetails.design.neckTypes }}</p>
+            <p>Sleeve Type: {{ billDetails.design.sleeveTypes }}</p>
+            <p>Cuts: {{ billDetails.design.cuts }}</p>
+            <p>Other Options: {{ billDetails.design.otherOptions }}</p>
+          </td>
+        </tr>
+        <tr class="price-row">
+          <td><strong>Total Price:</strong></td>
+          <td>₹{{ billDetails.price }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Buttons -->
+    <div class="modal-buttons">
+      <button type="button" class="btn-close" (click)="closeBillModal()">Close</button>
+      <button type="button" class="btn-download" (click)="downloadBill()">Download Bill</button>
+    </div>
   </div>
 </div>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <!--&lt;!&ndash; Shop Details Modal &ndash;&gt;-->
 <!--<div *ngIf="isShopDetailsModalOpen" class="modal-overlay">-->
 <!--  <div class="modal">-->
@@ -216,6 +315,17 @@
 <!--    </div>-->
 <!--  </div>-->
 <!--</div>-->
+=======
+=======
+>>>>>>> Stashed changes
+
+
+
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 <!-- Shop Details Modal -->
 <div *ngIf="isShopDetailsModalOpen" class="modal-overlay">
   <div class="modal">
