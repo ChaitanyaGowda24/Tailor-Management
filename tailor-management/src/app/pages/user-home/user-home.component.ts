@@ -7,6 +7,7 @@ import { Tailor, Dress } from '../../models/tailor.model';
 import * as L from 'leaflet';
 import { MeasurementService } from 'src/app/services/measurement.service'; // Add MeasurementService
 import { OrderService } from 'src/app/services/order.service'; // Add OrderService
+import html2canvas from 'html2canvas';
 
 // Add Gender enum to match backend
 enum Gender {
@@ -525,28 +526,36 @@ console.log("selectedSHop", this.selectedShop );
 
 
 
-    // Download bill as PDF
-    downloadBill(): void {
-      const doc = new jsPDF();
+ downloadBill() {
+   const billElement = document.getElementById('bill-content');
 
-      // Add bill details to the PDF
-      doc.setFontSize(18);
-      doc.text('Bill Details', 10, 10);
-      doc.setFontSize(12);
-      let y = 20;
-      Object.keys(this.billDetails).forEach((key) => {
-        if (key === 'measurements' || key === 'design') {
-          doc.text(`${key}: ${JSON.stringify(this.billDetails[key])}`, 10, y);
-        } else {
-          doc.text(`${key}: ${this.billDetails[key]}`, 10, y);
-        }
-        y += 10;
-      });
+   if (billElement) {
+     const newWindow = window.open('', '', 'width=800,height=1000');
 
-      // Save the PDF
-      doc.save('bill.pdf');
-    }
-
+     if (newWindow) {
+       newWindow.document.write(`
+         <html>
+         <head>
+           <title>Bill Details</title>
+           <style>
+             body { font-family: Arial, sans-serif; padding: 20px; }
+             .bill-table { width: 100%; border-collapse: collapse; }
+             .bill-table th, .bill-table td { border: 1px solid #000; padding: 8px; text-align: left; }
+             .section-header { background-color: #f7b162; color: black; font-weight: bold; }
+           </style>
+         </head>
+         <body>
+           ${billElement.innerHTML}
+           <script>
+             setTimeout(() => { window.print(); window.close(); }, 500);
+           <\/script>
+         </body>
+         </html>
+       `);
+       newWindow.document.close();
+     }
+   }
+ }
   objectKeys(obj: any): string[] {
     return Object.keys(obj);
   }
@@ -707,17 +716,17 @@ private validateOrderData(orderData?: any): boolean {
 
   // Case 2: Validating order data before sending to backend
   const requiredFields = ['customerId', 'measureId', 'tailorId', 'shopName', 'orderDate', 'deliveryDate', 'status'];
-  
+
   for (const field of requiredFields) {
     if (!orderData[field]) {
       console.error(`Missing required field in order data: ${field}`);
       return false;
     }
   }
-  
+
   // Additional validation for numeric fields
-  if (!Number.isInteger(orderData.customerId) || 
-      !Number.isInteger(orderData.measureId) || 
+  if (!Number.isInteger(orderData.customerId) ||
+      !Number.isInteger(orderData.measureId) ||
       !Number.isInteger(orderData.tailorId)) {
     console.error('Invalid numeric fields in order data');
     return false;
@@ -808,13 +817,13 @@ sendOrderData(measurementId: number): void {
   this.orderService.createOrder(orderData).subscribe({
     next: (response) => {
       console.log('Order data sent successfully:', response);
-      
+
       // Update billDetails with the order ID from response
       if (response && response.orderId) {
         this.billDetails.orderId = response.orderId;
         console.log('Updated bill details with order ID:', this.billDetails);
       }
-      
+
       alert('Order placed successfully!');
       this.router.navigate(['/user-home']);
     },
