@@ -27,8 +27,18 @@
       <mat-card-title>In Progress Orders</mat-card-title>
       <mat-card-content>{{ inProgressOrders }}</mat-card-content>
     </mat-card>
-  </div>
+  
 
+  <mat-card class="stat-card">
+    <mat-card-title>Yet To Pick Up Orders</mat-card-title>
+    <mat-card-content>{{ yetToPickUpOrders }}</mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <mat-card-title>Picked Up Orders</mat-card-title>
+    <mat-card-content>{{ pickedUpOrders }}</mat-card-content>
+  </mat-card>
+</div>
   <!-- Orders Overview Chart -->
   <div class="chart-section">
     <mat-card>
@@ -85,9 +95,5 @@
     </mat-card>
   </div>
 
-  <!-- Quick Actions -->
-  <div class="quick-actions">
-    <button mat-raised-button color="primary">Create New Order</button>
-    <button mat-raised-button color="accent">View All Orders</button>
-  </div>
+
 </div>

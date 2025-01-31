@@ -1,12 +1,11 @@
-<mat-card class="order-details-card">
+<div class="order-details-card">
   <mat-card-header>
     <mat-card-title>Order Details</mat-card-title>
     <mat-card-subtitle>Order ID: {{ data.orderId }}</mat-card-subtitle>
   </mat-card-header>
-  <mat-divider></mat-divider>
 
   <!-- Scrollable Content -->
-  <mat-dialog-content class="dialog-content">
+  <div class="dialog-content">
     <!-- Customer Details -->
     <div class="section">
       <h3 class="section-title">
@@ -19,7 +18,6 @@
         <p><span class="detail-label">Phone:</span> {{ data.customerDetails.phoneNumber }}</p>
       </div>
     </div>
-    <mat-divider></mat-divider>
 
     <!-- Order Details -->
     <div class="section">
@@ -36,7 +34,6 @@
         </p>
       </div>
     </div>
-    <mat-divider></mat-divider>
 
     <!-- Measurement Details -->
     <div class="section">
@@ -52,10 +49,10 @@
         <p><span class="detail-label">Price:</span> {{ data.measurementDetails.price | currency }}</p>
       </div>
     </div>
-  </mat-dialog-content>
+  </div>
 
   <!-- Dialog Actions -->
   <mat-dialog-actions align="end">
     <button mat-button (click)="onClose()">Close</button>
   </mat-dialog-actions>
-</mat-card>
+</div>

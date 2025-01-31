@@ -212,4 +212,78 @@ isStepActive(status: string): boolean {
 
     return stepIndex <= currentIndex;
   }
+
+  formatMeasurementDetails(details: MeasurementDetails): string {
+    if (!details) {
+      return '';
+    }
+
+    let formatted = '';
+
+    // Gender
+    if (details.gender) {
+      formatted += `Gender: ${details.gender.trim()}\n\n`;
+    }
+
+    // Category
+    if (details.category) {
+      formatted += `Category: ${details.category.trim()}\n\n`;
+    }
+
+    // Design
+    if (details.design) {
+      formatted += 'Design Details:\n';
+      try {
+        const designPairs = details.design.split(',').map(pair => pair.trim());
+        designPairs.forEach(pair => {
+          const [key, value] = pair.split(':').map(item => item.trim());
+          if (value && value.toLowerCase() !== 'null' && value.toLowerCase() !== 'undefined' && value !== '') {
+            const readableKey = key
+              .replace(/([A-Z])/g, ' $1')
+              .replace(/^./, str => str.toUpperCase());
+            formatted += `${readableKey}: ${value}\n`;
+          }
+        });
+        formatted += '\n';
+      } catch (error) {
+        console.error('Error parsing design:', error);
+      }
+    }
+
+    // Measurements
+    if (details.measurements) {
+      formatted += 'Measurements:\n';
+      try {
+        const measurementPairs = details.measurements.split(',').map(pair => pair.trim());
+        measurementPairs.forEach(pair => {
+          const [key, value] = pair.split(':').map(item => item.trim());
+          if (value && value.toLowerCase() !== 'null' && value.toLowerCase() !== 'undefined' && value !== '') {
+            const readableKey = key.charAt(0).toUpperCase() + key.slice(1);
+            formatted += `${readableKey}: ${value} cm\n`; // Add 'cm' only for measurements
+          }
+        });
+        formatted += '\n';
+      } catch (error) {
+        console.error('Error parsing measurements:', error);
+      }
+    }
+
+    // Price
+    if (details.price) {
+      formatted += `Price: ₹${details.price}`;
+    }
+
+    return formatted;
+  }
+
+  getMeasurementEntries(measurements: any): [string, any][] {
+    return Object.entries(measurements || {});
+  }
+  
+  formatLabel(label: string): string {
+    return label
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
 }

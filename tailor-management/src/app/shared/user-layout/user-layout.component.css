@@ -194,14 +194,17 @@
 /* Notification Dropdown */
 .notification-dropdown {
   position: absolute;
-  top: 70px;
-  right: 80px;
+  top: 100%;
+  right: 0;
   background: white;
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  z-index: 1001;
   width: 320px;
   animation: fadeIn 0.3s ease;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  margin-top: 10px;
 }
 
 .notification-item {
@@ -260,6 +263,7 @@
 
 /* Notification Button */
 .notification-button {
+  position: relative;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -315,4 +319,8 @@ button[mat-icon-button] mat-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mat-toolbar {
+  position: relative; /* Ensure toolbar is a positioning context */
 }

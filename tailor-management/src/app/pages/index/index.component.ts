@@ -49,6 +49,8 @@ private isMapInitialized = false;
       dress: [],
     };
 
+  isLoading: boolean = false; // Add loading state
+
   constructor(private userService: UserService, private tailorService: TailorService, private router: Router, private loginService: LoginService,) {
 
   }
@@ -126,18 +128,29 @@ openLoginPopup() {
 
  // Handle customer registration
   onCustomerRegister() {
-    // Set the current date and time
-      this.user.createdAt = new Date();
+    this.isLoading = true;
+    this.user.createdAt = new Date();
 
     this.userService.registerUser(this.user).subscribe(
       (response) => {
         console.log('Registration successful', response);
-        this.closeCustomerRegistrationPopup(); // Close the popup on success
-        alert('Registration successful!'); // Show success message
+        this.closeCustomerRegistrationPopup();
+        alert('Registration successful!');
+        // Reset the user form
+        this.user = {
+          name: '',
+          email: '',
+          address: '',
+          phoneNumber: '',
+          password: '',
+        };
       },
       (error) => {
         console.error('Registration failed', error);
-        alert('Registration failed. Please try again.'); // Show error message
+        alert('Registration failed. Please try again.');
+      },
+      () => {
+        this.isLoading = false;
       }
     );
   }
@@ -184,15 +197,42 @@ openLoginPopup() {
       }
 
       // Call the TailorService to register the tailor
+      this.isLoading = true; // Set loading to true
       this.tailorService.registerTailor(this.tailor).subscribe(
         (response) => {
           console.log('Tailor registration successful', response);
           this.closeTailorRegistrationPopup(); // Close the popup on success
           alert('Tailor registration successful!'); // Show success message
+          // Reset the tailor form
+          this.tailor = {
+            name: '',
+            shopName: '',
+            location: { latitude: 0, longitude: 0 },
+            email: '',
+            phone: '',
+            password: '',
+            dress: [],
+          };
+          // Reset all price toggle flags
+          this.showSuitsPrice = false;
+          this.showEthnicSuitPrice = false;
+          this.showTrousersPrice = false;
+          this.showFormalShirtsPrice = false;
+          this.showPathaniSuitPrice = false;
+          this.showDesiJacketPrice = false;
+          this.showBlousePrice = false;
+          this.showKurtiPrice = false;
+          this.showAnarkaliSuitPrice = false;
+          this.showPunjabiSuitPrice = false;
+          this.showChudidarSuitPrice = false;
+          this.showLehengaPrice = false;
         },
         (error) => {
           console.error('Tailor registration failed', error);
           alert('Tailor registration failed. Please try again.'); // Show error message
+        },
+        () => {
+          this.isLoading = false; // Set loading to false after completion
         }
       );
     }

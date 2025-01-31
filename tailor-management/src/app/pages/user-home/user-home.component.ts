@@ -501,9 +501,9 @@ console.log("selectedSHop", this.selectedShop );
       const designData = this.designForm.value;
       console.log('Design Data:', designData);
 
-      // Call the backend API to save the design options
-      // You can use a service to send the data to the backend
       this.closeDesignModal();
+      // Automatically open measurement modal after closing design modal
+      this.openMeasurementModal();
     }
 
   openMeasurementModal(): void {
@@ -535,9 +535,42 @@ console.log("selectedSHop", this.selectedShop );
 
   closeBillModal(): void {
     this.isBillModalOpen = false;
+    
+    // Reset all form data and selections
+    this.resetAllData();
   }
 
+  // Add new method to reset all data
+  private resetAllData(): void {
+    // Reset forms
+    this.genderForm.reset({ gender: 'male' });
+    this.measurementForm.reset();
+    this.designForm.reset({
+      willProvideCloth: true,
+      clothType: '',
+      clothColor: ''
+    });
 
+    // Reset selections
+    this.selectedDress = null;
+    this.selectedShop = null;
+    this.selectedShopDetails = null;
+    this.billDetails = null;
+    this.price = 0;
+
+    // Reset modal states
+    this.isDesignModalOpen = false;
+    this.isMeasurementModalOpen = false;
+    this.isBillModalOpen = false;
+    this.isShopDetailsModalOpen = false;
+    this.isDressDetailsModalOpen = false;
+
+    // Update dress categories to initial state
+    this.updateDressCategories('male');
+
+    // Scroll back to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
  downloadBill() {
    const billElement = document.getElementById('bill-content');

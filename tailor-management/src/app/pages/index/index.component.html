@@ -23,7 +23,7 @@
     </form>
   </div>
 </div>
-
+<div *ngIf="isLoading" class="loading-spinner">Loading...</div>
 <!-- Register Role Selection Popup -->
 <div class="popup-overlay" *ngIf="isRoleSelectionPopupOpen">
   <div class="popup">

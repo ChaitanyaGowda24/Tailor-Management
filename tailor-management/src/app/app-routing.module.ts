@@ -22,8 +22,8 @@ path: '',
 component: TailorLayoutComponent, // Use tailor-layout as a wrapper
 children: [
 { path: 'tailor-home', component: TailorHomeComponent, canActivate: [AuthGuard] },
-{ path: 'tailor-dashboard', component: TailorDashboardComponent },
-{ path: 'tailor-profile', component: TailorProfileComponent },
+{ path: 'tailor-dashboard', component: TailorDashboardComponent, canActivate: [AuthGuard] },
+{ path: 'tailor-profile', component: TailorProfileComponent, canActivate: [AuthGuard] },
 ],
 },
 {
@@ -31,8 +31,8 @@ path: '',
 component: UserLayoutComponent, // Use tailor-layout as a wrapper
 children: [
 { path: 'user-home', component: UserHomeComponent, canActivate: [AuthGuard] },
-{ path: 'user-myorders', component: UserMyordersComponent },
-{ path: 'user-profile', component: UserProfileComponent },
+{ path: 'user-myorders', component: UserMyordersComponent, canActivate: [AuthGuard] },
+{ path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard] },
 ],
 },
 ];

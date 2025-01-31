@@ -1,7 +1,7 @@
 <div class="dashboard-container">
   <!-- Dashboard Header -->
   <div class="dashboard-header">
-    <h1>My Orders Dashboard</h1>
+    <h1>My Orders</h1>
   </div>
 
   <!-- Dashboard Cards -->
@@ -70,72 +70,146 @@
   </div>
 </div>
 
-<!-- Order Details Popup -->
-<div *ngIf="isOrderDetailsModalOpen" class="modal-overlay">
-  <div class="modal">
-    <button class="close-button" (click)="closeOrderDetailsModal()">&times;</button>
-    <h2>Order Details</h2>
-
-    <!-- Tracking Bar -->
-    <div class="tracking-bar">
-      <div class="tracking-steps">
-        <div class="step" [class.active]="isStepActive('YET_TO_PICKUP')">
-          <span>Yet to Pickup</span>
-          <div class="circle" [class.blinking]="isStepActive('YET_TO_PICKUP')"></div>
-        </div>
-        <div class="step" [class.active]="isStepActive('PICKED_UP')">
-          <span>Picked Up</span>
-          <div class="circle" [class.blinking]="isStepActive('PICKED_UP')"></div>
-        </div>
-        <div class="step" [class.active]="isStepActive('IN_PROGRESS')">
-          <span>In Progress</span>
-          <div class="circle" [class.blinking]="isStepActive('IN_PROGRESS')"></div>
-        </div>
-        <div class="step" [class.active]="isStepActive('COMPLETED')">
-          <span>Completed</span>
-          <div class="circle" [class.blinking]="isStepActive('COMPLETED')"></div>
-        </div>
-        <div class="step" [class.active]="isStepActive('DELIVERED')">
-          <span>Delivered</span>
-          <div class="circle" [class.blinking]="isStepActive('DELIVERED')"></div>
-        </div>
-        <div class="step" [class.active]="isStepActive('REJECTED')">
-          <span>Rejected</span>
-          <div class="circle" [class.blinking]="isStepActive('REJECTED')"></div>
-        </div>
-
-        <!-- Scissors GIF Effect -->
-        <div [ngClass]="{'scissors-effect': true, 'rejected': selectedOrder?.status === 'REJECTED'}"></div>
-
-        <!-- Green/Red Line -->
-        <div class="status-line" [ngClass]="{'completed': selectedOrder?.status !== 'REJECTED'}"></div>
-      </div>
+<!-- Order Details Modal -->
+<div class="modal" *ngIf="isOrderDetailsModalOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Order Details</h2>
+      <button class="close-btn" (click)="closeOrderDetailsModal()">&times;</button>
     </div>
-
-
-    <div *ngIf="selectedOrder" class="order-details-content">
+    
+    <div class="modal-body" *ngIf="selectedOrder">
+      <!-- Basic Order Info -->
       <div class="order-info">
-        <p><strong>Order ID:</strong> {{ selectedOrder.orderId }}</p>
-        <p><strong>Tailor ID:</strong> {{ selectedOrder.tailorId || 'N/A' }}</p>
-        <p><strong>Customer Name:</strong> {{ selectedOrder.customerDetails.name }}</p>
-        <p><strong>Email:</strong> {{ selectedOrder.customerDetails.email }}</p>
-        <p><strong>Phone Number:</strong> {{ selectedOrder.customerDetails.phoneNumber }}</p>
-        <p><strong>Ordered On:</strong> {{ selectedOrder.orderDate | date }}</p>
-        <p><strong>Delivery Date:</strong> {{ selectedOrder.deliveryDate | date }}</p>
-        <p><strong>Status:</strong> {{ selectedOrder.status }}</p>
+        <h3>Order Information</h3>
+        <p><strong>Order ID:</strong> {{selectedOrder.orderId}}</p>
+        <p><strong>Order Date:</strong> {{selectedOrder.orderDate | date}}</p>
+        <p><strong>Status:</strong> {{selectedOrder.status}}</p>
       </div>
 
       <!-- Measurement Details -->
-      <div class="measurement-details">
+      <div class="measurement-details" *ngIf="selectedOrder.measurementDetails">
         <h3>Measurement Details</h3>
-        <p><strong>Gender:</strong> {{ selectedOrder.measurementDetails.gender }}</p>
-        <p><strong>Category:</strong> {{ selectedOrder.measurementDetails.category }}</p>
-        <p><strong>Design:</strong> {{ selectedOrder.measurementDetails.design }}</p>
-        <p><strong>Measurements:</strong> {{ selectedOrder.measurementDetails.measurements }}</p>
-        <p><strong>Price:</strong> ₹{{ selectedOrder.measurementDetails.price }}</p>
-      </div>
+        
+        <!-- Gender and Category -->
+        <div class="detail-section">
+          <p><strong>Gender:</strong> {{selectedOrder.measurementDetails.gender}}</p>
+          <p><strong>Category:</strong> {{selectedOrder.measurementDetails.category}}</p>
+        </div>
+
+        <!-- Design Details -->
+        <div class="detail-section" *ngIf="selectedOrder.measurementDetails.design">
+          <h4>Design Details</h4>
+          <div class="design-grid">
+            <ng-container *ngFor="let design of selectedOrder.measurementDetails.design.split(',')">
+              <ng-container *ngIf="design.split(':')[1]?.trim()">
+                <p>
+                  <strong>{{formatLabel(design.split(':')[0])}}: </strong>
+                  {{design.split(':')[1]}}
+                </p>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Measurements -->
+        <div class="detail-section" *ngIf="selectedOrder.measurementDetails.measurements">
+          <h4>Measurements</h4>
+          <div class="measurements-grid">
+            <ng-container *ngFor="let measurement of selectedOrder.measurementDetails.measurements.split(',')">
+              <ng-container *ngIf="measurement.split(':')[1]?.trim()">
+                <p>
+                  <strong>{{formatLabel(measurement.split(':')[0])}}: </strong>
+                  {{measurement.split(':')[1]}} cm
+                </p>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="detail-section">
+          <p class="price"><strong>Price:</strong> ₹{{selectedOrder.measurementDetails.price}}</p>
+        </div>
       </div>
     </div>
   </div>
+</div>
+
+<style>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.detail-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 5px;
+}
+
+.design-grid,
+.measurements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+h4 {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 8px 0;
+}
+
+.price {
+  font-size: 1.2em;
+  color: #2c3e50;
+}
+
+strong {
+  color: #2c3e50;
+}
+</style>
 
 

@@ -15,18 +15,20 @@ export class TailorDashboardComponent implements OnInit {
   pendingOrders = 0;
   rejectedOrders = 0;
   inProgressOrders = 0;
+  yetToPickUpOrders = 0;
+  pickedUpOrders = 0;
 
   // Recent orders
   recentOrders: Order[] = [];
 
   // Chart data
   chartData = {
-    labels: ['Completed', 'Pending', 'Rejected', 'In Progress'],
+    labels: ['Completed', 'Pending', 'Rejected', 'In Progress', 'Yet To Pick Up', 'Picked Up'],
     datasets: [
       {
-        data: [0, 0, 0, 0], // Initialize with zeros
-        backgroundColor: ['#4CAF50', '#FFC107', '#F44336', '#2196F3'],
-        hoverBackgroundColor: ['#45A049', '#FFB300', '#E53935', '#1E88E5'],
+        data: [0, 0, 0, 0, 0, 0], // Initialize with zeros (added two more zeros)
+        backgroundColor: ['#4CAF50', '#FFC107', '#F44336', '#2196F3', '#FF5722', '#9C27B0'], // Added two new colors
+        hoverBackgroundColor: ['#45A049', '#FFB300', '#E53935', '#1E88E5', '#FF7043', '#AB47BC'], // Added hover colors for the new colors
       },
     ],
   };
@@ -68,6 +70,8 @@ export class TailorDashboardComponent implements OnInit {
     this.pendingOrders = orders.filter((order) => order.status === 'PENDING').length;
     this.rejectedOrders = orders.filter((order) => order.status === 'REJECTED').length;
     this.inProgressOrders = orders.filter((order) => order.status === 'IN_PROGRESS').length;
+    this.yetToPickUpOrders = orders.filter((order) => order.status === 'YET_TO_PICK_UP').length;
+    this.pickedUpOrders = orders.filter((order) => order.status === 'PICKED_UP').length;
   }
 
   // Update the chart data
@@ -77,6 +81,8 @@ export class TailorDashboardComponent implements OnInit {
       this.pendingOrders,
       this.rejectedOrders,
       this.inProgressOrders,
+      this.yetToPickUpOrders,
+      this.pickedUpOrders,
     ];
   }
 
