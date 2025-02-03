@@ -38,6 +38,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CategoryPopupComponent } from './components/category-popup/category-popup.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { ToastComponent } from './components/toast/toast.component';
+import { ToastService } from './services/toast.service';
 
 @NgModule({
   declarations: [
@@ -56,34 +59,37 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     UserMyordersComponent,
     UserProfileComponent,
     ChangePasswordDialogComponent,
-    CategoryPopupComponent
+    CategoryPopupComponent,
+    ConfirmDialogComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule, // Add HttpClientModule here
     AppRoutingModule,
     FormsModule, // <-- Add this line
-ReactiveFormsModule,
-MatSnackBarModule,
-BrowserAnimationsModule,
-MatSidenavModule,
-MatToolbarModule,
-MatIconModule,
-MatListModule,
-MatTableModule,
-MatSelectModule,
-MatFormFieldModule,
-MatInputModule,
-MatDialogModule,
-MatButtonModule,
-MatCardModule,
-MatBadgeModule,
-MatDatepickerModule, // Add this
-MatNativeDateModule, // Add this
-MatCheckboxModule,
-
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
+    MatTableModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatCardModule,
+    MatBadgeModule,
+    MatDatepickerModule, // Add this
+    MatNativeDateModule, // Add this
+    MatCheckboxModule,
   ],
-  providers: [],
+  providers: [
+    ToastService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

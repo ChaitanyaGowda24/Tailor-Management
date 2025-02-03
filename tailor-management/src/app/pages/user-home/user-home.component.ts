@@ -8,6 +8,7 @@ import * as L from 'leaflet';
 import { MeasurementService } from 'src/app/services/measurement.service'; // Add MeasurementService
 import { OrderService } from 'src/app/services/order.service'; // Add OrderService
 import html2canvas from 'html2canvas';
+import { ToastService } from '../../services/toast.service';
 
 // Add Gender enum to match backend
 enum Gender {
@@ -325,6 +326,7 @@ constructor(private fb: FormBuilder,
     private router: Router, // Inject Router
  private measurementService: MeasurementService, // Inject MeasurementService
     private orderService: OrderService, // Inject OrderService
+    private toastService: ToastService  // Add this
     ) {
    this.genderForm = this.fb.group({
 
@@ -494,7 +496,7 @@ console.log("selectedSHop", this.selectedShop );
 
    saveDesignOptions() {
       if (this.designForm.invalid) {
-        alert('Please fill all required fields.');
+        this.toastService.show('Please fill all required fields.', 'error');
         return;
       }
 
@@ -731,29 +733,29 @@ private validateOrderData(orderData?: any): boolean {
   // Case 1: Validating initial form data before generating bill
   if (!orderData) {
     if (!this.selectedShop?.tailorId) {
-      alert('Please select a valid shop');
+      this.toastService.show('Please select a valid shop', 'error');
       return false;
     }
 
     if (!this.selectedDress?.name) {
-      alert('Please select a valid dress');
+      this.toastService.show('Please select a valid dress', 'error');
       return false;
     }
 
     if (!this.measurementForm.valid) {
-      alert('Please fill in all measurement fields');
+      this.toastService.show('Please fill in all measurement fields', 'error');
       console.log('Invalid measurements:', this.measurementForm.value);
       return false;
     }
 
     if (!this.designForm.valid) {
-      alert('Please fill in all design options');
+      this.toastService.show('Please fill in all design options', 'error');
       console.log('Invalid design options:', this.designForm.value);
       return false;
     }
 
     if (!this.genderForm.valid) {
-      alert('Please select a gender');
+      this.toastService.show('Please select a gender', 'error');
       return false;
     }
 
@@ -823,12 +825,12 @@ sendMeasurementData(): void {
         this.sendOrderData(response.measurement_id);
       } else {
         console.error('Invalid response:', response);
-        alert('Error creating measurement');
+        this.toastService.show('Error creating measurement', 'error');
       }
     },
     error: (error) => {
       console.error('Error creating measurement:', error);
-      alert('Failed to create measurement');
+      this.toastService.show('Failed to create measurement', 'error');
     }
   });
 }
@@ -870,12 +872,12 @@ sendOrderData(measurementId: number): void {
         console.log('Updated bill details with order ID:', this.billDetails);
       }
 
-      alert('Order placed successfully!');
+      this.toastService.show('Order placed successfully!', 'success');
       this.router.navigate(['/user-home']);
     },
     error: (error) => {
       console.error('Error sending order data:', error);
-      alert('Failed to place order. Please try again.');
+      this.toastService.show('Failed to place order. Please try again.', 'error');
     }
   });
 }

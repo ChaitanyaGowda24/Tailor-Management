@@ -3,6 +3,9 @@ import { Chart } from 'chart.js';
 import { OrderService } from '../../services/order.service';
 import { MeasurementService } from '../../services/measurement.service';
 import { Order, CustomerDetails, MeasurementDetails } from '../../models/order.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-user-myorders',
@@ -34,7 +37,9 @@ export class UserMyordersComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private measurementService: MeasurementService
+    private measurementService: MeasurementService,
+    private dialog: MatDialog,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -292,28 +297,32 @@ isStepActive(status: string): boolean {
   }
 
   async cancelOrder(order: any) {
-    if (confirm('Are you sure you want to cancel this order? This action cannot be undone.')) {
-      try {
-        // Delete the order
-        await this.orderService.deleteOrder(order.orderId).toPromise();
-        
-        // Delete the associated measurement
-        if (order.measurementId) {
-          await this.measurementService.deleteMeasurement(order.measurementId).toPromise();
-        }
-        
-        // Remove the order from the filtered orders array
-        this.filteredOrders = this.filteredOrders.filter(o => o.orderId !== order.orderId);
-        
-        // Update total orders count
-        this.totalOrders--;
-        
-        // Show success message
-        alert('Order cancelled successfully');
-      } catch (error) {
-        console.error('Error cancelling order:', error);
-        alert('Failed to cancel order. Please try again.');
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        message: 'Are you sure you want to cancel this order? This action cannot be undone.'
       }
-    }
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        try {
+          await this.orderService.deleteOrder(order.orderId).toPromise();
+          
+          if (order.measurementId) {
+            await this.measurementService.deleteMeasurement(order.measurementId).toPromise();
+          }
+          
+          this.filteredOrders = this.filteredOrders.filter(o => o.orderId !== order.orderId);
+          this.totalOrders--;
+          
+          // Show success toast
+          this.toastService.show('Order cancelled successfully', 'success');
+        } catch (error) {
+          console.error('Error cancelling order:', error);
+          this.toastService.show('Failed to cancel order. Please try again.', 'error');
+        }
+      }
+    });
   }
 }
