@@ -35,6 +35,16 @@ export class UserMyordersComponent implements OnInit {
   totalOrders: number = 0;
   statusChart: any;
 
+  // Add this property
+  orderStatusFlow: string[] = [
+    'YET_TO_PICK_UP',
+    'PICKED_UP',
+    'PENDING',
+    'IN_PROGRESS',
+    'COMPLETED',
+    'REJECTED'
+  ];
+
   constructor(
     private orderService: OrderService,
     private measurementService: MeasurementService,
@@ -204,22 +214,40 @@ export class UserMyordersComponent implements OnInit {
     }
   }
 
-isStepActive(status: string): boolean {
+  isStepActive(status: string): boolean {
     if (!this.selectedOrder) return false;
+    
+    // Show only REJECTED status when order is rejected
+    if (this.selectedOrder.status === 'REJECTED') {
+      return status === 'REJECTED';
+    }
+    
+    // For non-rejected orders, don't show REJECTED step
+    if (status === 'REJECTED') {
+      return false;
+    }
+    
+    const currentIndex = this.orderStatusFlow.indexOf(this.selectedOrder.status);
+    const stepIndex = this.orderStatusFlow.indexOf(status);
+    return stepIndex <= currentIndex && currentIndex !== -1 && stepIndex !== -1;
+  }
 
-    const statusOrder = [
-      'YET_TO_PICK_UP',
-      'PICKED_UP',
-      'IN_PROGRESS',
-      'COMPLETED',
-      'DELIVERED',
-      'REJECTED'
-    ];
-
-    const currentIndex = statusOrder.indexOf(this.selectedOrder.status);
-    const stepIndex = statusOrder.indexOf(status);
-
-    return stepIndex <= currentIndex;
+  isStepCompleted(status: string): boolean {
+    if (!this.selectedOrder) return false;
+    
+    // No steps should show as completed when order is rejected
+    if (this.selectedOrder.status === 'REJECTED') {
+      return false;
+    }
+    
+    // REJECTED status never shows as completed
+    if (status === 'REJECTED') {
+      return false;
+    }
+    
+    const currentIndex = this.orderStatusFlow.indexOf(this.selectedOrder.status);
+    const stepIndex = this.orderStatusFlow.indexOf(status);
+    return currentIndex !== -1 && stepIndex !== -1 && stepIndex < currentIndex;
   }
 
   formatMeasurementDetails(details: MeasurementDetails): string {
@@ -324,5 +352,10 @@ isStepActive(status: string): boolean {
         }
       }
     });
+  }
+
+  // Add new method to check if order is rejected
+  isOrderRejected(): boolean {
+    return this.selectedOrder?.status === 'REJECTED';
   }
 }

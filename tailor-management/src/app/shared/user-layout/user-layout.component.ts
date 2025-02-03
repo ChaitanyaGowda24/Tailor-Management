@@ -7,6 +7,7 @@ import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { NotificationService } from '../../services/notification.service'; // Import NotificationService
 import { Notification } from '../../models/notification.model'; // Import Notification model
+import { ToastService } from '../../services/toast.service'; // Add this import
 
 @Component({
   selector: 'app-user-layout',
@@ -27,7 +28,8 @@ export class UserLayoutComponent implements AfterViewInit, OnInit {
   constructor(
     private userService: UserService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService  // Add ToastService to constructor
   ) {}
 
   ngOnInit() {
@@ -75,25 +77,37 @@ export class UserLayoutComponent implements AfterViewInit, OnInit {
     }
   }
 
- markAllAsRead() {
-   const userId = localStorage.getItem('id'); // Get userId from local storage
-   if (userId) {
-     // Iterate through each notification and mark it as read
-     this.notifications.forEach((notification) => {
-       this.notificationService.markNotificationAsRead(notification.id).subscribe(
-         (response: string) => {
-           console.log(response); // Log success for each notification
-         },
-         (error) => {
-           console.error('Failed to mark notification as read', error);
-         }
-       );
-     });
+  markAllAsRead() {
+    const userId = localStorage.getItem('id');
+    if (userId) {
+      let completedCount = 0;
+      const totalNotifications = this.notifications.length;
 
-     this.notifications = []; // Clear the notifications list
-     this.isNotificationDropdownOpen = false; // Close the dropdown
-   }
- }
+      if (totalNotifications === 0) {
+        this.toastService.show('No notifications to mark as read', 'error');
+        this.isNotificationDropdownOpen = false; // Close dropdown even if no notifications
+        return;
+      }
+
+      this.notifications.forEach((notification) => {
+        this.notificationService.markNotificationAsRead(notification.id).subscribe(
+          (response: string) => {
+            completedCount++;
+            if (completedCount === totalNotifications) {
+              this.toastService.show('All notifications marked as read', 'success');
+              this.notifications = [];
+              this.isNotificationDropdownOpen = false; // Close the dropdown after marking all as read
+            }
+          },
+          (error) => {
+            console.error('Failed to mark notification as read', error);
+            this.toastService.show('Failed to mark notifications as read', 'error');
+            this.isNotificationDropdownOpen = false; // Close dropdown even on error
+          }
+        );
+      });
+    }
+  }
 
   toggleSidenav() {
     this.sidenav.toggle();

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from 'src/app/components/change-password-dialog/change-password-dialog.component';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
 selector: 'app-user-profile',
@@ -18,7 +18,7 @@ loggedInUser: User | null = null;
 
 constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
+    private toastService: ToastService,
     private userService: UserService
   ) {
     this.profileForm = this.fb.group({
@@ -49,15 +49,11 @@ constructor(
           });
         },
         (error) => {
-          this.snackBar.open('Failed to fetch user details', 'Close', {
-            duration: 3000,
-          });
+          this.toastService.show('Failed to fetch user details', 'error');
         }
       );
     } else {
-      this.snackBar.open('User ID not found in localStorage', 'Close', {
-        duration: 3000,
-      });
+      this.toastService.show('User ID not found in localStorage', 'error');
     }
   }
 
@@ -78,9 +74,7 @@ saveProfile(): void {
   if (this.profileForm.valid) {
     const userId = localStorage.getItem('id'); // Get user ID from localStorage
     if (!userId) {
-      this.snackBar.open('User ID not found in localStorage', 'Close', {
-        duration: 3000,
-      });
+      this.toastService.show('User ID not found in localStorage', 'error');
       return;
     }
 
@@ -104,21 +98,15 @@ saveProfile(): void {
       (user: User) => {
         this.loggedInUser = user;
         this.isEditing = false;
-        this.snackBar.open('Profile updated successfully!', 'Close', {
-          duration: 3000,
-        });
+        this.toastService.show('Profile updated successfully!', 'success');
       },
       (error) => {
         console.error('Error updating profile:', error); // Debugging
-        this.snackBar.open('Failed to update profile', 'Close', {
-          duration: 3000,
-        });
+        this.toastService.show('Failed to update profile', 'error');
       }
     );
   } else {
-    this.snackBar.open('Form is invalid', 'Close', {
-      duration: 3000,
-    });
+    this.toastService.show('Form is invalid', 'error');
   }
 }
 }

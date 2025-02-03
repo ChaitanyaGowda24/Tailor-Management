@@ -84,7 +84,27 @@
     </div>
     
     <div class="modal-body" *ngIf="selectedOrder">
-      <!-- Basic Order Info -->
+      <!-- Add Order Status Tracker -->
+      <div class="order-status-tracker">
+        <div class="status-step" 
+             *ngFor="let status of orderStatusFlow; let i = last" 
+             [class.active]="isStepActive(status)"
+             [class.completed]="isStepCompleted(status)"
+             [class.rejected]="isOrderRejected() && status === 'REJECTED'"
+             [class.hidden]="status === 'REJECTED' && !isOrderRejected()"
+             [class.last]="i">
+          <div class="status-icon">
+            <i class="fas" [class.fa-check]="!isOrderRejected()" [class.fa-times]="isOrderRejected() && status === 'REJECTED'"></i>
+          </div>
+          <div class="status-label">{{ formatLabel(status) }}</div>
+          <div class="status-line" 
+               *ngIf="!i"
+               [class.rejected]="isOrderRejected()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Existing Order Info -->
       <div class="order-info">
         <h3>Order Information</h3>
         <p><strong>Order ID:</strong> {{selectedOrder.orderId}}</p>
@@ -229,6 +249,94 @@ strong {
 .cancel-btn:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
+}
+
+.order-status-tracker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.status-step {
+  flex: 1;
+  position: relative;
+  text-align: center;
+}
+
+.status-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e9ecef;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.status-icon i {
+  color: white;
+  font-size: 14px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.status-line {
+  position: absolute;
+  top: 15px;
+  left: calc(50% + 15px);
+  right: calc(-50% + 15px);
+  height: 2px;
+  background: #e9ecef;
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+.status-label {
+  font-size: 12px;
+  color: #6c757d;
+  transition: all 0.3s ease;
+}
+
+/* Active and Completed States */
+.status-step.active .status-icon,
+.status-step.completed .status-icon {
+  background: #28a745;
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
+}
+
+.status-step.active .status-icon i,
+.status-step.completed .status-icon i {
+  opacity: 1;
+}
+
+.status-step.active .status-label,
+.status-step.completed .status-label {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.status-step.completed .status-line {
+  background: #28a745;
+}
+
+/* Animation for status changes */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.status-step.active .status-icon {
+  animation: pulse 1s ease infinite;
 }
 </style>
 

@@ -18,7 +18,10 @@
     <h2>Login</h2>
     <form (ngSubmit)="onLogin()">
       <input type="email" placeholder="Email" [(ngModel)]="loginRequest.email" name="email" required>
-      <input type="password" placeholder="Password"  [(ngModel)]="loginRequest.password" name="password" required>
+      <div class="password-container">
+        <input [type]="showLoginPassword ? 'text' : 'password'" placeholder="Password" [(ngModel)]="loginRequest.password" name="password" required>
+        <i class="fas" [class.fa-eye]="!showLoginPassword" [class.fa-eye-slash]="showLoginPassword" (click)="togglePasswordVisibility('login')"></i>
+      </div>
       <button type="submit">Login</button>
     </form>
   </div>
@@ -39,13 +42,43 @@
   <div class="popup">
     <button class="close-btn" (click)="closeCustomerRegistrationPopup()">&times;</button>
     <h2>Customer Registration</h2>
-    <form (ngSubmit)="onCustomerRegister()">
-      <input type="text" placeholder="Name"  [(ngModel)]="user.name" name="name" required>
-      <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" required>
-      <input type="tel" placeholder="Phone Number"  [(ngModel)]="user.phoneNumber" name="phoneNumber"  required>
+    <form (ngSubmit)="onCustomerRegister()" #customerForm="ngForm">
+      <input type="text" placeholder="Name" [(ngModel)]="user.name" name="name" 
+        pattern="^[a-zA-Z0-9]+$" required 
+        #name="ngModel">
+      <div class="error-message" *ngIf="name.invalid && (name.dirty || name.touched)">
+        Name can only contain letters and numbers
+      </div>
+
+      <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" 
+        email required 
+        #email="ngModel">
+      <div class="error-message" *ngIf="email.invalid && (email.dirty || email.touched)">
+        Please enter a valid email
+      </div>
+
+      <input type="tel" placeholder="Phone Number" [(ngModel)]="user.phoneNumber" 
+        name="phoneNumber" pattern="^[0-9]{10}$" required 
+        #phone="ngModel">
+      <div class="error-message" *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+        Phone number must be 10 digits
+      </div>
+
       <input type="text" placeholder="Address" [(ngModel)]="user.address" name="street" required>
-      <input type="password" placeholder="Password" [(ngModel)]="user.password" name="password"  required>
-      <button type="submit">Register</button>
+
+      <div class="password-container">
+        <input [type]="showCustomerPassword ? 'text' : 'password'" 
+          placeholder="Password" [(ngModel)]="user.password" 
+          name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" 
+          required #password="ngModel">
+        <i class="fas" [class.fa-eye]="!showCustomerPassword" [class.fa-eye-slash]="showCustomerPassword" 
+          (click)="togglePasswordVisibility('customer')"></i>
+      </div>
+      <div class="error-message" *ngIf="password.invalid && (password.dirty || password.touched)">
+        Password must be at least 8 characters with uppercase, lowercase and numbers
+      </div>
+
+      <button type="submit" [disabled]="!customerForm.valid">Register</button>
       <button type="button" (click)="closeCustomerRegistrationPopup()">Cancel</button>
     </form>
   </div>
@@ -56,17 +89,42 @@
   <div class="popup">
     <button class="close-btn" (click)="closeTailorRegistrationPopup()">&times;</button>
     <h2>Tailor Registration</h2>
-    <form (ngSubmit)="onTailorRegister()">
-      <input type="text" placeholder="Name" [(ngModel)]="tailor.name" name="name" required>
-      <input type="text" placeholder="Shop Name"  [(ngModel)]="tailor.shopName" name="shopName" required>
-      <input type="tel" placeholder="Phone Number" [(ngModel)]="tailor.phone" name="phone" required>
-      <input type="email" placeholder="Email" [(ngModel)]="tailor.email" name="email" required>
-      <input type="password" placeholder="Password"  [(ngModel)]="tailor.password" name="password" required>
+    <form (ngSubmit)="onTailorRegister()" #tailorForm="ngForm">
+      <input type="text" placeholder="Name" [(ngModel)]="tailor.name" 
+        name="name" pattern="^[a-zA-Z0-9]+$" required 
+        #tailorName="ngModel">
+      <div class="error-message" *ngIf="tailorName.invalid && (tailorName.dirty || tailorName.touched)">
+        Name can only contain letters and numbers
+      </div>
 
-<!--      <select [(ngModel)]="tailor.isDelivery" name="isDelivery" required>-->
-<!--        <option value="Yes">Yes</option>-->
-<!--        <option value="No">No</option>-->
-<!--      </select>-->
+      <input type="text" placeholder="Shop Name" [(ngModel)]="tailor.shopName" 
+        name="shopName" required>
+
+      <input type="tel" placeholder="Phone Number" [(ngModel)]="tailor.phone" 
+        name="phone" pattern="^[0-9]{10}$" required 
+        #tailorPhone="ngModel">
+      <div class="error-message" *ngIf="tailorPhone.invalid && (tailorPhone.dirty || tailorPhone.touched)">
+        Phone number must be 10 digits
+      </div>
+
+      <input type="email" placeholder="Email" [(ngModel)]="tailor.email" 
+        name="email" email required 
+        #tailorEmail="ngModel">
+      <div class="error-message" *ngIf="tailorEmail.invalid && (tailorEmail.dirty || tailorEmail.touched)">
+        Please enter a valid email
+      </div>
+
+      <div class="password-container">
+        <input [type]="showTailorPassword ? 'text' : 'password'" 
+          placeholder="Password" [(ngModel)]="tailor.password" 
+          name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" 
+          required #tailorPassword="ngModel">
+        <i class="fas" [class.fa-eye]="!showTailorPassword" [class.fa-eye-slash]="showTailorPassword" 
+          (click)="togglePasswordVisibility('tailor')"></i>
+      </div>
+      <div class="error-message" *ngIf="tailorPassword.invalid && (tailorPassword.dirty || tailorPassword.touched)">
+        Password must be at least 8 characters with uppercase, lowercase and numbers
+      </div>
 
       <h3>Dresses You Stitch</h3>
       <label><input type="checkbox" (change)="togglePriceInput('Suits')"> Suits</label>
@@ -207,9 +265,19 @@
       <input type="hidden" name="latitude" [(ngModel)]="latitude">
       <input type="hidden" name="longitude" [(ngModel)]="longitude">
       <!-- Other form fields -->
-      <button type="submit">Register</button>
+      <button type="submit" [disabled]="!tailorForm.valid">Register</button>
       <button type="button" (click)="closeTailorRegistrationPopup()">Cancel</button>
     </form>
+  </div>
+</div>
+
+<!-- Error Popup -->
+<div class="popup-overlay" *ngIf="isErrorPopupOpen">
+  <div class="popup error-popup">
+    <h2>Registration Failed</h2>
+    <p>{{ errorMessage }}</p>
+    <button (click)="retryRegistration()">Retry</button>
+    <button (click)="closeErrorPopup()">Close</button>
   </div>
 </div>
 
@@ -261,3 +329,21 @@
 <footer>
   <p>&copy; 2025 दर्जीDukan. All Rights Reserved.</p>
 </footer>
+
+<style>
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.error-popup {
+  text-align: center;
+}
+
+.error-popup button {
+  margin: 10px;
+  padding: 8px 16px;
+}
+</style>

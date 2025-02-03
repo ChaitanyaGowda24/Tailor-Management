@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MapComponent } from 'src/app/map/map.component';
 import { TailorService } from '../../services/tailor.service';
 import { Tailor, Dress } from '../../models/tailor.model';
 import { CategoryPopupComponent } from 'src/app/components/category-popup/category-popup.component';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-tailor-profile',
@@ -39,7 +39,7 @@ export class TailorProfileComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
+    private toastService: ToastService,
     private tailorService: TailorService,
     private dialog: MatDialog
   ) {
@@ -73,9 +73,7 @@ export class TailorProfileComponent implements OnInit {
         },
         (error) => {
           console.error('Failed to fetch tailor details', error);
-          this.snackBar.open('Failed to fetch tailor details!', 'Close', {
-            duration: 2000,
-          });
+          this.toastService.show('Failed to fetch tailor details!', 'error');
         }
       );
     }
@@ -134,18 +132,14 @@ export class TailorProfileComponent implements OnInit {
 
       this.tailorService.updateTailor(updatedDetails).subscribe(
         (response) => {
-          this.snackBar.open('Profile updated successfully!', 'Close', {
-            duration: 3000,
-          });
+          this.toastService.show('Profile updated successfully!', 'success');
           this.isEditing = false;
           this.toggleFormControls(false); // Disable form after saving
           this.tailor = response;
         },
         (error) => {
           console.error('Failed to update tailor details', error);
-          this.snackBar.open('Failed to update profile!', 'Close', {
-            duration: 3000,
-          });
+          this.toastService.show('Failed to update profile!', 'error');
         }
       );
     }
@@ -187,27 +181,21 @@ export class TailorProfileComponent implements OnInit {
           ];
           this.initialLocation = newLocation;
           this.mapComponent.updateLocation(newLocation);
-          this.snackBar.open('Location updated!', 'Close', { duration: 2000 });
+          this.toastService.show('Location updated!', 'success');
         },
         (error) => {
           console.error('Error getting location:', error);
-          this.snackBar.open('Failed to get location!', 'Close', {
-            duration: 2000,
-          });
+          this.toastService.show('Failed to get location!', 'error');
         }
       );
     } else {
-      this.snackBar.open('Geolocation is not supported by this browser.', 'Close', {
-        duration: 2000,
-      });
+      this.toastService.show('Geolocation is not supported by this browser.', 'error');
     }
   }
 
   // Update price for a category
   updatePrice(category: Dress, newPrice: number) {
     category.price = newPrice;
-    this.snackBar.open(`Price updated for ${category.name}`, 'Close', {
-      duration: 2000,
-    });
+    this.toastService.show(`Price updated for ${category.name}`, 'success');
   }
 }

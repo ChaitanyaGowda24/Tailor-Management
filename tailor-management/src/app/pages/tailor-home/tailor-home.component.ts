@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClient } from '@angular/common/http';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
 selector: 'app-tailor-home',
@@ -43,7 +44,8 @@ statusFilter: string = '';
 constructor(
     public dialog: MatDialog,
     private orderService: OrderService,
-    private http: HttpClient // Inject HttpClient here
+    private http: HttpClient,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -101,13 +103,14 @@ constructor(
   const url = `http://localhost:8084/orders/${order.orderId}/status`;
   const tailorId = Number(localStorage.getItem('id'));
   
-  // Send the new status as a plain string
   const body = `"${order.status}"`;
 
-  // First update the order status
   this.http.put<Order>(url, body, { headers: { 'Content-Type': 'application/json' } }).subscribe(
     (updatedOrder: Order) => {
       console.log('Status updated successfully:', updatedOrder);
+      
+      // Show success toast
+      this.toastService.show(`Order #${order.orderId} status updated to ${order.status}`, 'success');
 
       // Update local data
       const index = this.originalData.findIndex((o) => o.orderId === order.orderId);
@@ -143,6 +146,8 @@ constructor(
     },
     (error) => {
       console.error('Failed to update status:', error);
+      // Show error toast
+      this.toastService.show('Failed to update status', 'error');
     }
   );
 }

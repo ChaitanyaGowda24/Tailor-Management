@@ -8,6 +8,7 @@ import { Tailor, Location, Dress } from '../../models/tailor.model'; // Import t
 import * as L from 'leaflet';
 import { jwtDecode } from 'jwt-decode';
 import { LoginService} from '../../services/login.service'; // Import the service and models
+import { ToastService } from '../../services/toast.service'; // Add this import
 
 
 @Component({
@@ -51,7 +52,17 @@ private isMapInitialized = false;
 
   isLoading: boolean = false; // Add loading state
 
-  constructor(private userService: UserService, private tailorService: TailorService, private router: Router, private loginService: LoginService,) {
+  // Add these properties at the top of the class with other properties
+  showLoginPassword = false;
+  showCustomerPassword = false;
+  showTailorPassword = false;
+
+  // Add these properties
+  isErrorPopupOpen = false;
+  errorMessage = '';
+  lastAttemptedRegistration: 'customer' | 'tailor' | null = null;
+
+  constructor(private userService: UserService, private tailorService: TailorService, private router: Router, private loginService: LoginService, private toastService: ToastService) {
 
   }
 
@@ -167,30 +178,20 @@ openLoginPopup() {
  // Handle customer registration
   onCustomerRegister() {
     this.isLoading = true;
-    this.user.createdAt = new Date();
-
-    this.userService.registerUser(this.user).subscribe(
-      (response) => {
-        console.log('Registration successful', response);
-        this.closeCustomerRegistrationPopup();
-        alert('Registration successful!');
-        // Reset the user form
-        this.user = {
-          name: '',
-          email: '',
-          address: '',
-          phoneNumber: '',
-          password: '',
-        };
-      },
-      (error) => {
-        console.error('Registration failed', error);
-        alert('Registration failed. Please try again.');
-      },
-      () => {
+    this.lastAttemptedRegistration = 'customer';
+    
+    this.userService.registerUser(this.user).subscribe({
+      next: (response) => {
         this.isLoading = false;
+        this.closeCustomerRegistrationPopup();
+        this.toastService.show('Registration successful!', 'success');
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.error || 'Registration failed. Please try again.';
+        this.isErrorPopupOpen = true;
       }
-    );
+    });
   }
 
   onLogin() {
@@ -236,11 +237,11 @@ openLoginPopup() {
 
       // Call the TailorService to register the tailor
       this.isLoading = true; // Set loading to true
-      this.tailorService.registerTailor(this.tailor).subscribe(
-        (response) => {
-          console.log('Tailor registration successful', response);
+      this.tailorService.registerTailor(this.tailor).subscribe({
+        next: (response) => {
+          this.isLoading = false;
           this.closeTailorRegistrationPopup(); // Close the popup on success
-          alert('Tailor registration successful!'); // Show success message
+          this.toastService.show('Registration successful!', 'success'); // Update this line
           // Reset the tailor form
           this.tailor = {
             name: '',
@@ -265,14 +266,12 @@ openLoginPopup() {
           this.showChudidarSuitPrice = false;
           this.showLehengaPrice = false;
         },
-        (error) => {
-          console.error('Tailor registration failed', error);
-          alert('Tailor registration failed. Please try again.'); // Show error message
-        },
-        () => {
-          this.isLoading = false; // Set loading to false after completion
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.error || 'Registration failed. Please try again.';
+          this.isErrorPopupOpen = true;
         }
-      );
+      });
     }
   getDressPrice(dressName: string): number {
     const dress = this.tailor.dress.find((d: any) => d.name === dressName);
@@ -436,6 +435,35 @@ openLoginPopup() {
     console.error('Geolocation is not supported by this browser.');
     alert('Geolocation is not supported by your browser.');
   }
+}
+
+// Add this method to handle password visibility
+togglePasswordVisibility(type: 'login' | 'customer' | 'tailor') {
+  switch (type) {
+    case 'login':
+      this.showLoginPassword = !this.showLoginPassword;
+      break;
+    case 'customer':
+      this.showCustomerPassword = !this.showCustomerPassword;
+      break;
+    case 'tailor':
+      this.showTailorPassword = !this.showTailorPassword;
+      break;
+  }
+}
+
+retryRegistration() {
+  this.closeErrorPopup();
+  if (this.lastAttemptedRegistration === 'customer') {
+    this.openCustomerRegistrationPopup();
+  } else if (this.lastAttemptedRegistration === 'tailor') {
+    this.openTailorRegistrationPopup();
+  }
+}
+
+closeErrorPopup() {
+  this.isErrorPopupOpen = false;
+  this.errorMessage = '';
 }
 }
 

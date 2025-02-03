@@ -524,6 +524,11 @@ console.log("selectedSHop", this.selectedShop );
   }
 
   calculatePrice(): void {
+    if (!this.measurementForm.valid) {
+      this.toastService.show('Please fill all measurement fields', 'error');
+      return;
+    }
+
     const measurements = this.measurementForm.value;
     // Mock price calculation logic
     this.price = 1000; // Replace with actual calculation
@@ -713,8 +718,8 @@ private initMap(): void {
   // Create the billDetails object with initial data
   this.billDetails = {
     customerId: Number(userId),
-    customerName: localStorage.getItem('name') || 'Customer', // Get customer name from localStorage
-    tailorId: Number(this.selectedShop.tailorId), // Use tailorId from selected shop
+    customerName: localStorage.getItem('name') || 'Customer',
+    tailorId: Number(this.selectedShop.tailorId),
     shopName: this.selectedShop.shopName,
     orderDate: new Date(),
     deliveryDate: new Date(new Date().setDate(new Date().getDate() + 7)),
