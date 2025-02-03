@@ -22,7 +22,9 @@ interface MeasurementResponse {
   providedIn: 'root'
 })
 export class MeasurementService {
-  private apiUrl = 'http://localhost:8083/measurements/saveMeasurement';
+  private baseUrl = 'http://localhost:8083/measurements';
+  private saveUrl = `${this.baseUrl}/saveMeasurement`;
+  private deleteUrl = `${this.baseUrl}/deleteMeasurement`;
 
   constructor(private http: HttpClient) {}
 
@@ -73,10 +75,16 @@ export class MeasurementService {
       console.log('- measurements is string:', typeof requestBody.measurements === 'string');
       console.log('- price is number:', typeof requestBody.price === 'number');
 
-      return this.http.post(this.apiUrl, requestBody, { headers });
+      return this.http.post(this.saveUrl, requestBody, { headers });
     } catch (error) {
       console.error('Error formatting measurement data:', error);
       throw error;
     }
+
+  }
+
+  // Delete a measurement by ID
+  deleteMeasurement(measurementId: number): Observable<any> {
+    return this.http.delete(`${this.deleteUrl}/${measurementId}`);
   }
 }

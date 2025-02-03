@@ -63,6 +63,11 @@
         <td>{{ order.status}} </td>
         <td>
           <button (click)="viewOrderDetails(order)">View Details</button>
+          <button (click)="cancelOrder(order)" 
+                  [disabled]="order.status === 'Completed' || order.status === 'Cancelled'"
+                  class="cancel-btn">
+            Cancel Order
+          </button>
         </td>
       </tr>
       </tbody>
@@ -209,6 +214,21 @@ p {
 
 strong {
   color: #2c3e50;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 </style>
 

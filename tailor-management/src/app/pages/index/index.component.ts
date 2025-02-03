@@ -91,6 +91,11 @@ openLoginPopup() {
 
   closeLoginPopup() {
     this.isLoginPopupOpen = false;
+    // Reset login form
+    this.loginRequest = {
+      email: '',
+      password: '',
+    };
   }
 
   openRoleSelectionPopup() {
@@ -108,6 +113,14 @@ openLoginPopup() {
 
   closeCustomerRegistrationPopup() {
     this.isCustomerRegistrationPopupOpen = false;
+    // Reset customer registration form
+    this.user = {
+      name: '',
+      email: '',
+      address: '',
+      phoneNumber: '',
+      password: '',
+    };
   }
 
   openTailorRegistrationPopup() {
@@ -117,12 +130,37 @@ openLoginPopup() {
 
  closeTailorRegistrationPopup() {
     this.isTailorRegistrationPopupOpen = false;
-    this.isMapInitialized = false; // Reset the map initialization flag
+    this.isMapInitialized = false;
+
+    // Reset tailor registration form
+    this.tailor = {
+      name: '',
+      shopName: '',
+      location: { latitude: 0, longitude: 0 },
+      email: '',
+      phone: '',
+      password: '',
+      dress: [],
+    };
+
+    // Reset all price toggle flags
+    this.showSuitsPrice = false;
+    this.showEthnicSuitPrice = false;
+    this.showTrousersPrice = false;
+    this.showFormalShirtsPrice = false;
+    this.showPathaniSuitPrice = false;
+    this.showDesiJacketPrice = false;
+    this.showBlousePrice = false;
+    this.showKurtiPrice = false;
+    this.showAnarkaliSuitPrice = false;
+    this.showPunjabiSuitPrice = false;
+    this.showChudidarSuitPrice = false;
+    this.showLehengaPrice = false;
 
     // Destroy the map if it exists
     if (this.map) {
-      this.map.remove(); // Remove the map instance
-      this.map = undefined; // Reset the map variable
+      this.map.remove();
+      this.map = undefined;
     }
   }
 

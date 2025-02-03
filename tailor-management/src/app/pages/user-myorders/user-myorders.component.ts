@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
-import { OrderService } from 'src/app/services/order.service';
+import { OrderService } from '../../services/order.service';
+import { MeasurementService } from '../../services/measurement.service';
 import { Order, CustomerDetails, MeasurementDetails } from '../../models/order.model';
 
 @Component({
@@ -31,7 +32,10 @@ export class UserMyordersComponent implements OnInit {
   totalOrders: number = 0;
   statusChart: any;
 
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private measurementService: MeasurementService
+  ) {}
 
   ngOnInit(): void {
     const customerId = localStorage.getItem('id');
@@ -285,5 +289,31 @@ isStepActive(status: string): boolean {
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
+  }
+
+  async cancelOrder(order: any) {
+    if (confirm('Are you sure you want to cancel this order? This action cannot be undone.')) {
+      try {
+        // Delete the order
+        await this.orderService.deleteOrder(order.orderId).toPromise();
+        
+        // Delete the associated measurement
+        if (order.measurementId) {
+          await this.measurementService.deleteMeasurement(order.measurementId).toPromise();
+        }
+        
+        // Remove the order from the filtered orders array
+        this.filteredOrders = this.filteredOrders.filter(o => o.orderId !== order.orderId);
+        
+        // Update total orders count
+        this.totalOrders--;
+        
+        // Show success message
+        alert('Order cancelled successfully');
+      } catch (error) {
+        console.error('Error cancelling order:', error);
+        alert('Failed to cancel order. Please try again.');
+      }
+    }
   }
 }

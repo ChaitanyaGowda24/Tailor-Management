@@ -29,7 +29,13 @@ export class OrderService {
   getOrderDetails(orderId: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}/${orderId}/details`);
   }
-createOrder(data: any): Observable<any> {
+
+  createOrder(data: any): Observable<any> {
     return this.http.post(this.baseUrl, data);
+  }
+
+  // Delete an order by ID
+  deleteOrder(orderId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${orderId}`);
   }
 }

@@ -6,6 +6,7 @@ import com.tailor.measurementService.entity.Gender;
 import com.tailor.measurementService.entity.Measurement;
 import com.tailor.measurementService.service.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -53,5 +54,11 @@ public class MeasurementController {
         System.out.println("Saved Entity: " + savedMeasurement);
 
         return savedMeasurement;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long measurementId) {
+        measurementService.deleteMeasurement(measurementId);
+        return ResponseEntity.noContent().build();
     }
 }

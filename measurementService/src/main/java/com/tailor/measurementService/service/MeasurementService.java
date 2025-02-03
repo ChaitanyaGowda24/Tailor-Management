@@ -63,5 +63,8 @@ public class MeasurementService {
 
         return responseDto;
     }
-
+    // Delete order
+    public void deleteMeasurement(long measurementId) {
+        measurementRepository.deleteById(measurementId);
+    }
 }
